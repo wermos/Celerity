@@ -34,7 +34,7 @@ class vec3 {
             return m_e[i];
         }
 
-        vec3& operator+=(const vec3 &v) {
+        vec3& operator+=(const vec3& v) {
             m_e[0] += v.m_e[0];
             m_e[1] += v.m_e[1];
             m_e[2] += v.m_e[2];
@@ -60,6 +60,22 @@ class vec3 {
             return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
         }
 
+        friend std::ostream& operator<<(std::ostream& out, const vec3& v);
+
+        friend vec3 operator+(const vec3& u, const vec3& v);
+        
+        friend vec3 operator-(const vec3& u, const vec3& v);
+        
+        friend vec3 operator*(const vec3& u, const vec3& v);
+        friend vec3 operator*(double t, const vec3& v);
+        friend vec3 operator*(const vec3& v, double t);
+        
+        friend vec3 operator/(vec3 v, double t);
+        
+        friend double dot(const vec3& u, const vec3& v);
+        friend vec3 cross(const vec3& u, const vec3& v);
+        
+        friend vec3 unit_vector(vec3 v);
     private:
         double m_e[3];
 };
