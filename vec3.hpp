@@ -75,7 +75,7 @@ class vec3 {
         friend double dot(const vec3& u, const vec3& v);
         friend vec3 cross(const vec3& u, const vec3& v);
         
-        friend vec3 unit_vector(vec3 v);
+        friend vec3 unitVector(vec3 v);
         //TODO: Make operator implementations depend on each other
         //TODO: Change name of "unit_vector" function to "normalize"
     private:

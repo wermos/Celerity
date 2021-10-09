@@ -3,11 +3,11 @@
 int main() {
 
     // Image
-    const int image_width = 256;
-    const int image_height = 256;
+    const int imageWidth = 256;
+    const int imageHeight = 256;
 
     // Render
-    std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
+    std::cout << "P3\n" << imageWidth << " " << imageHeight << "\n255\n";
     //PPM format starts with
     //P3
     //<width> <height>
@@ -17,12 +17,12 @@ int main() {
     //<height> tells the viewer how many rows, and
     //<max value of color> tells the viewer how to normalize the color values
 
-    for (int j = image_height - 1; j >= 0; --j) {
+    for (int j = imageHeight - 1; j >= 0; --j) {
         std::cerr << "\rScanlines remaining: " << j << " " << std::flush;
 
-        for (int i = 0; i < image_width; ++i) {
-            auto r = double(i) / (image_width - 1);
-            auto g = double(j) / (image_height - 1);
+        for (int i = 0; i < imageWidth; ++i) {
+            auto r = double(i) / (imageWidth - 1);
+            auto g = double(j) / (imageHeight - 1);
             auto b = 0.25;
 
             int ir = static_cast<int>(255.999 * r);
