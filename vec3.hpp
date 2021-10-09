@@ -35,9 +35,9 @@ class vec3 {
         }
 
         vec3& operator+=(const vec3 &v) {
-            m_e[0] += v.e[0];
-            m_e[1] += v.e[1];
-            m_e[2] += v.e[2];
+            m_e[0] += v.m_e[0];
+            m_e[1] += v.m_e[1];
+            m_e[2] += v.m_e[2];
             return *this;
         }
 
