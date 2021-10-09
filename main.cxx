@@ -11,9 +11,11 @@ int main() {
     //PPM format starts with
     //P3
     //<width> <height>
+    //<max value of color>
     //where "P3" tells the viewer that the colors are in ASCII
-    //<width> tells the viewer how many columns there are in the file, and
-    //<height> tells the viewer how many rows.
+    //<width> tells the viewer how many columns there are in the picture,
+    //<height> tells the viewer how many rows, and
+    //<max value of color> tells the viewer how to normalize the color values
 
     for (int j = image_height - 1; j >= 0; --j) {
         std::cerr << "\rScanlines remaining: " << j << " " << std::flush;
