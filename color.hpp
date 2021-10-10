@@ -32,8 +32,8 @@ class color {
             return static_cast<int>(255.999 * m_color[2]);
         }
 
-        // vec3 operator-() const {
-        //     return vec3(-m_e[0], -m_e[1], -m_e[2]);
+        // color operator-() const {
+        //     return color(-m_e[0], -m_e[1], -m_e[2]);
         // }
 
         // double operator[](int i) const {
@@ -44,21 +44,21 @@ class color {
         //     return m_e[i];
         // }
 
-        // vec3& operator+=(const vec3& v) {
+        // color& operator+=(const color& v) {
         //     m_e[0] += v.m_e[0];
         //     m_e[1] += v.m_e[1];
         //     m_e[2] += v.m_e[2];
         //     return *this;
         // }
 
-        // vec3& operator*=(const double t) {
+        // color& operator*=(const double t) {
         //     m_e[0] *= t;
         //     m_e[1] *= t;
         //     m_e[2] *= t;
         //     return *this;
         // }
 
-        // vec3& operator/=(const double t) {
+        // color& operator/=(const double t) {
         //     return *this *= (1 / t);
         // }
 
@@ -72,15 +72,17 @@ class color {
 
         friend std::ostream& operator<<(std::ostream& out, const color& v);
 
-        // friend vec3 operator+(const vec3& u, const vec3& v);
-        
-        // friend vec3 operator-(const vec3& u, const vec3& v);
-        
-        // friend vec3 operator*(const vec3& u, const vec3& v);
-        // friend vec3 operator*(double t, const vec3& v);
-        // friend vec3 operator*(const vec3& v, double t);
-        
-        // friend vec3 operator/(vec3 v, double t);
+        friend color operator+(const color& u, const color& v);
+
+        // friend color operator-(const color& u, const color& v);
+
+        // friend color operator*(const color& u, const color& v);
+        friend color operator*(double t, const color& c);
+        // friend color operator*(const color& v, double t);
+
+        // friend color operator/(color v, double t);
+
+		//TODO: Make operator implementations depend on each other
     private:
         double m_color[3];
 };
