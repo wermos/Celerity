@@ -1,13 +1,13 @@
 #include <iostream>
 
-#ifndef STB_IMAGE_WRITE_IMPLEMENTATION
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#endif
-
 #include "vec3.hpp"
 #include "color.hpp"
 #include "ray.hpp"
 
+
+#ifndef STB_IMAGE_WRITE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#endif
 #include "stb_image_write.h"
 
 color rayColor(const ray& r) {
