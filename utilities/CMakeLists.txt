@@ -19,5 +19,5 @@ target_link_libraries(utilities PUBLIC math)
 target_include_directories(utilities PUBLIC include)
 target_include_directories(utilities PUBLIC math/include)
 
-#include the header only stb library in the search path
+#include the header-only stb library in the search path
 target_include_directories(utilities PUBLIC stb)
