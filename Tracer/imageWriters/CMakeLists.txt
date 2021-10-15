@@ -14,3 +14,4 @@ file(GLOB_RECURSE SOURCES
 add_library(imageWriters ${SOURCES})
 
 target_include_directories(imageWriters PUBLIC include)
+target_include_directories(imageWriters PUBLIC ../../utilities/stb)
