@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(RayTracer VERSION 0.2)
+project(RayTracer VERSION 0.4)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -28,4 +28,5 @@ add_executable(RayTracer ${SOURCES})
 
 #message(STATUS "The value of INCLUDE_DIRS is ${INCLUDE_DIRS}")
 target_include_directories(RayTracer PUBLIC ${INCLUDE_DIRS} PUBLIC include)
+
 target_link_libraries(RayTracer PUBLIC utilities)
