@@ -52,11 +52,11 @@ class vec3 {
             return *this *= (1 / t);
         }
 
-        double length() const {
+        double inline length() const {
             return std::sqrt(length_squared());
         }
 
-        double length_squared() const {
+        double inline length_squared() const {
             return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
         }
 
