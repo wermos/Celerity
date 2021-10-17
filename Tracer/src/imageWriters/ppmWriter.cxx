@@ -25,9 +25,9 @@ ppmWriter::ppmWriter(int imageWidth, int imageHeight) : m_imageWidth(imageWidth)
 
 inline void write(color c) {
 	if (useStandardOutput) {
-		std::cout << c;
+		std::cout << c << "\n";
 	} else {
-		m_file << c;
+		m_file << c << "\n";
 	}
 }
 
