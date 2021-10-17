@@ -9,9 +9,9 @@
 
 class ppmWriter {
 	public:
-		ppmWriter(int imageWidth, int imageHeight);
+		ppmWriter(const int imageWidth, const int imageHeight);
 
-		void write(color c) {
+		void write(const color c) {
 			if (m_useStandardOutput) {
 				std::cout << c << "\n";
 			} else {
@@ -19,7 +19,7 @@ class ppmWriter {
 			}
 		}
 
-		void write(int r, int g, int b) {
+		void write(const int r, const int g, const int b) {
 			if (m_useStandardOutput) {
 				std::cout << r << " " << g << " " << b << "\n";
 			} else {
