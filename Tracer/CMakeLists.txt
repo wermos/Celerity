@@ -11,11 +11,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_subdirectory(../utilities utilities)
 
 file(GLOB_RECURSE SOURCES
-	src/*.cxx)
+	CONFIGURE_DEPENDS
+	src/*.cxx
+	)
+
+file(GLOB_RECURSE INCLUDE_DIRS LIST_DIRECTORIES TRUE
+	CONFIGURE_DEPENDS
+	./*/include
+	)
+
 
 # add the executable
-add_executable(RayTracer ${SOURCES} main.cxx)
+add_executable(RayTracer ${SOURCES})
 
 #target_include_directories(RayTracer PUBLIC ../../utilities/stb)
+target_include_directories(RayTracer PUBLIC ${INCLUDE_DIRS})
 
 target_link_libraries(RayTracer PUBLIC utilities)
