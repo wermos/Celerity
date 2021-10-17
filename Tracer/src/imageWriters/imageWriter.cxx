@@ -1,29 +1,14 @@
 #include "imageWriter.hpp"
 
-imageWriter::imageWriter(int imageWidth, int imageHeight) : m_imageWidth(imageWidth),
-	m_imageHeight(imageHeight) {
+imageWriter::imageWriter(const int imageWidth, const int imageHeight) :
+	m_imageWidth(imageWidth), m_imageHeight(imageHeight),
+	m_strideInBytes(m_imageWidth * m_pngComp),
+	m_jpgData(new unsigned char[m_imageWidth * m_imageHeight * m_jpgComp]),
+	m_pngData(new unsigned char[m_imageWidth * m_imageHeight * m_pngComp]),
+	m_jpgDataCounter(0), m_pngDataCounter(0)
+	{}
 
-	if (m_file.good()) {
-		m_file << "P3\n" << imageWidth << " " << imageHeight << "\n255\n";
-	} else {
-		useStandardOutput = true;
-		std::cerr << "Error opening file. Switching to standard output.\n";
-		std::cout << "P3\n" << imageWidth << " " << imageHeight << "\n255\n";
-	}
-}
-
-inline void write(color c) {
-	if (useStandardOutput) {
-		std::cout << c;
-	} else {
-		m_file << c;
-	}
-}
-
-inline void write(int r, int g, int b) {
-	if (useStandardOutput) {
-		std::cout << r << " " << g << " " << b << "\n";
-	else {
-		m_file << r << " " << g << " " << b << "\n";
-	}
+imageWriter::~imageWriter() {
+	delete[] m_jpgData;
+	delete[] m_pngData;
 }
