@@ -11,15 +11,28 @@ class ppmWriter {
 	public:
 		ppmWriter(int imageWidth, int imageHeight);
 
-		inline void write(color c);
-		inline void write(int r, int g, int b);
+		void write(color c) {
+			if (m_useStandardOutput) {
+				std::cout << c << "\n";
+			} else {
+				m_file << c << "\n";
+			}
+		}
+
+		void write(int r, int g, int b) {
+			if (m_useStandardOutput) {
+				std::cout << r << " " << g << " " << b << "\n";
+			} else {
+				m_file << r << " " << g << " " << b << "\n";
+			}
+		}
 
 	private:
 		const std::string m_fileName = "pic.ppm";
 		std::ofstream m_file;
-		bool useStandardOutput = false;
+		bool m_useStandardOutput = false;
 
-		int imageWidth, imageHeight;
+		const int m_imageWidth, m_imageHeight;
 };
 
 #endif // PPM_WRITER_HPP

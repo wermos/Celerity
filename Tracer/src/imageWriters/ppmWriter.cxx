@@ -7,7 +7,7 @@ ppmWriter::ppmWriter(int imageWidth, int imageHeight) : m_imageWidth(imageWidth)
 	if (m_file.good()) {
 		m_file << "P3\n" << imageWidth << " " << imageHeight << "\n255\n";
 	} else {
-		useStandardOutput = true;
+		m_useStandardOutput = true;
 		std::cerr << "Error opening file. Switching to standard output.\n";
 		std::cout << "P3\n" << imageWidth << " " << imageHeight << "\n255\n";
 	}
@@ -21,20 +21,4 @@ ppmWriter::ppmWriter(int imageWidth, int imageHeight) : m_imageWidth(imageWidth)
 	 * <height> tells the viewer how many rows, and
 	 * <max value of color> tells the viewer how to normalize the color values
 	 */
-}
-
-inline void write(color c) {
-	if (useStandardOutput) {
-		std::cout << c << "\n";
-	} else {
-		m_file << c << "\n";
-	}
-}
-
-inline void write(int r, int g, int b) {
-	if (useStandardOutput) {
-		std::cout << r << " " << g << " " << b << "\n";
-	else {
-		m_file << r << " " << g << " " << b << "\n";
-	}
 }
