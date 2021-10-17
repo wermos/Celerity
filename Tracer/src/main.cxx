@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 
 #include "vec3.hpp"
 #include "color.hpp"
@@ -36,7 +35,7 @@ int main() {
     auto lowerLeftCorner = origin - (horizontal / 2) - (vertical / 2) - vec3(0, 0, focalLength);
 
 	//Initialize file writers
-	ppmWriter p(imageWidth, imageHeight);
+	ppmWriter pw(imageWidth, imageHeight);
 
     // Render
     for (int j = imageHeight - 1; j >= 0; --j) {
@@ -49,7 +48,7 @@ int main() {
             ray r(origin, lowerLeftCorner + u * horizontal + v * vertical - origin);
             color pixelColor = rayColor(r);
 
-            p.write(pixelColor);
+            pw.write(pixelColor);
         }
     }
 
