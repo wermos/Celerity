@@ -4,7 +4,7 @@ std::ostream& operator<<(std::ostream& out, const color& pixelColor) {
     // Write the translated [0,255] value of each color component.
     out << pixelColor.r() << " "
         << pixelColor.g() << " "
-        << pixelColor.b() << "\n";
+        << pixelColor.b();
 	return out;
 }
 
