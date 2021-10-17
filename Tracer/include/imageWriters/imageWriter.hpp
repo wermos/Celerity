@@ -15,14 +15,12 @@ class imageWriter {
 			m_pngData[m_pngDataCounter++] = static_cast<unsigned char>(c.r());
 			m_pngData[m_pngDataCounter++] = static_cast<unsigned char>(c.g());
 			m_pngData[m_pngDataCounter++] = static_cast<unsigned char>(c.b());
-			// m_pngDataCounter += 3;
 		}
 
 		void writeToJPG(const color c) {
 			m_jpgData[m_jpgDataCounter++] = static_cast<unsigned char>(c.r());
 			m_jpgData[m_jpgDataCounter++] = static_cast<unsigned char>(c.g());
 			m_jpgData[m_jpgDataCounter++] = static_cast<unsigned char>(c.b());
-			// m_jpgDataCounter += 3;
 		}
 
 		int writePNG() {
