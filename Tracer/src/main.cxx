@@ -5,6 +5,10 @@
 #include "ray.hpp"
 
 #include "ppmWriter.hpp"
+#include "imageWriter.hpp"
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
 
 color rayColor(const ray& r) {
     vec3 unitDirection = unitVector(r.direction());
@@ -36,6 +40,7 @@ int main() {
 
 	//Initialize file writers
 	ppmWriter pw(imageWidth, imageHeight);
+	imageWriter iw(imageWidth, imageHeight);
 
     // Render
     for (int j = imageHeight - 1; j >= 0; --j) {
@@ -49,8 +54,24 @@ int main() {
             color pixelColor = rayColor(r);
 
             pw.write(pixelColor);
+			iw.writeToPNG(pixelColor);
+			iw.writeToJPG(pixelColor);
         }
     }
 
-    std::cerr << "\nDone.\n";
+	std::cerr << "\n";
+
+	if (iw.writePNG() != 0) {
+		std::cout << "PNG Image generated successfully.\n";
+	} else {
+		std::cout << "An error occurred while generating the PNG image.\n";
+	}
+
+	if (iw.writeJPG() != 0) {
+		std::cout << "JPG Image generated successfully.\n";
+	} else {
+		std::cout << "An error occurred while generating the JPG image.\n";
+	}
+
+    std::cerr << "Done.\n";
 }
