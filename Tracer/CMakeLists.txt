@@ -15,16 +15,17 @@ file(GLOB_RECURSE SOURCES
 	src/*.cxx
 	)
 
-file(GLOB_RECURSE INCLUDE_DIRS LIST_DIRECTORIES TRUE
+	file(GLOB_RECURSE INCLUDE_DIRS LIST_DIRECTORIES TRUE
 	CONFIGURE_DEPENDS
-	./*/include
+	include/*[^hpp] # The idea is to include all the `files' inside include/ as
+					# well as the directories, but to exclude all the .hpp
+					# files. (The assumption is that the directories only cont-
+					# ain .hpp files.)
 	)
-
 
 # add the executable
 add_executable(RayTracer ${SOURCES})
 
-#target_include_directories(RayTracer PUBLIC ../../utilities/stb)
-target_include_directories(RayTracer PUBLIC ${INCLUDE_DIRS})
-
+#message(STATUS "The value of INCLUDE_DIRS is ${INCLUDE_DIRS}")
+target_include_directories(RayTracer PUBLIC ${INCLUDE_DIRS} PUBLIC include)
 target_link_libraries(RayTracer PUBLIC utilities)
