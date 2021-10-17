@@ -23,6 +23,9 @@ class imageWriter {
 			m_jpgData[m_jpgDataCounter++] = static_cast<unsigned char>(c.b());
 		}
 
+		//TODO: Explore the stbi_write_png_func and stbi_write_jpg_func functions
+		//which might not require having the entire image in memory while writing
+		//it.
 		int writePNG() {
 			return stbi_write_png(m_pngFileName.c_str(), m_imageWidth,
 								  m_imageHeight, m_pngComp, m_pngData, m_strideInBytes);
