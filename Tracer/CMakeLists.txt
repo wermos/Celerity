@@ -27,6 +27,10 @@ file(GLOB_RECURSE SOURCES
 add_executable(RayTracer ${SOURCES})
 
 #message(STATUS "The value of INCLUDE_DIRS is ${INCLUDE_DIRS}")
-target_include_directories(RayTracer PUBLIC ${INCLUDE_DIRS} PUBLIC include)
+target_include_directories(RayTracer PUBLIC include)
+foreach(DIR ${INCLUDE_DIRS})
+	#message(STATUS "${DIR} was just added to target_include_directories.")
+	target_include_directories(RayTracer PUBLIC ${DIR})
+endforeach()	
 
 target_link_libraries(RayTracer PUBLIC utilities)

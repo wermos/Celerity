@@ -22,7 +22,11 @@ file(GLOB_RECURSE INCLUDE_DIRS LIST_DIRECTORIES TRUE
 add_library(utilities ${SOURCES})
 
 #message(STATUS "The value of INCLUDE_DIRS is ${INCLUDE_DIRS}")
-target_include_directories(utilities PUBLIC ${INCLUDE_DIRS} PUBLIC include)
+target_include_directories(utilities PUBLIC include)
+foreach(DIR ${INCLUDE_DIRS})
+	#message(STATUS "${DIR} was just added to target_include_directories.")
+	target_include_directories(utilities PUBLIC ${DIR})
+endforeach()	
 
 #include the header-only stb library in the search path
 target_include_directories(utilities PUBLIC stb)
