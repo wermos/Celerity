@@ -7,6 +7,8 @@
 #include "ppmWriter.hpp"
 #include "imageWriter.hpp"
 
+#include "instrumentor.hpp"
+
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
@@ -23,6 +25,10 @@ color rayColor(const ray& r) {
 }
 
 int main() {
+	Instrumentor::get().beginSession("main");
+	{
+	PROFILE_FUNCTION();
+
     // Image
     constexpr auto aspectRatio = 16.0 / 9.0;
     constexpr int imageWidth = 400;
@@ -74,4 +80,6 @@ int main() {
 	}
 
     std::cerr << "Done.\n";
+	}
+	Instrumentor::get().endSession();
 }
