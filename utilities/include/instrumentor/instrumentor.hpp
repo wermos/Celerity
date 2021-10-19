@@ -8,38 +8,37 @@
 #include <chrono>
 #include <thread>
 
-/**
- * __clang__ checks for the clang compiler,
- * __GNUC__ along with __GNUG__ checks for the GCC compiler,
- * and _MSC_VER checks for the MSVC compiler.
- *
- */
-#ifndef FUNCTION_NAME
-	#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
-	#define FUNCTION_NAME __PRETTY_FUNCTION__
-	#elif defined(_MSC_VER)
-	namespace {
-		// This function exists to delete the "__cdecl" part of the function
-		// name from the __FUNCSIG__ output
-		inline const char* cdecl_delete(const char* functionName) {
-			std::string funcName(functionName);
-			int i = funcName.find("__cdecl");
-			return funcName.erase(i, 7).c_str();
-		}
-	}
-	#define FUNCTION_NAME cdecl_delete(__FUNCSIG__)
-	#endif // compiler checking
-#endif // FUNCTION_NAME
-
 #define PROFILE 1
 
 #if PROFILE == 1
-#define PROFILE_SCOPE(name) InstrumentationTimer timer##__FILE__##__LINE__(name)
-#define PROFILE_FUNCTION() PROFILE_SCOPE(FUNCTION_NAME)
-#else
-#define PROFILE_SCOPE(name)
-#define PROFILE_FUNCTION()
-#endif
+	/**
+	* __clang__ checks for the clang compiler,
+	* __GNUC__ along with __GNUG__ checks for the GCC compiler,
+	* and _MSC_VER checks for the MSVC compiler.
+	*
+	*/
+	#ifndef FUNCTION__NAME
+		#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
+		#define FUNCTION__NAME __PRETTY_FUNCTION__
+		#elif defined(_MSC_VER)
+		namespace {
+			// This function exists to delete the "__cdecl" part of the function
+			// name from the __FUNCSIG__ output
+			inline const char* cdecl_delete(const char* functionName) {
+				std::string funcName(functionName);
+				int i = funcName.find("__cdecl ");
+				return funcName.erase(i, 8).c_str();
+			}
+		}
+		#define FUNCTION__NAME cdecl_delete(__FUNCSIG__)
+		#endif // compiler checking
+	#endif // FUNCTION__NAME
+	#define PROFILE_SCOPE(name) InstrumentationTimer timer##__FILE__##__LINE__(name)
+	#define PROFILE_FUNCTION() PROFILE_SCOPE(FUNCTION__NAME)
+	#else
+	#define PROFILE_SCOPE(name)
+	#define PROFILE_FUNCTION()
+#endif // PROFILE
 
 // Lifted off of Cherno: https://gist.github.com/TheCherno/31f135eea6ee729ab5f26a6908eb3a5e
 // Link to video: https://www.youtube.com/watch?v=xlAH4dbMVnU
@@ -48,7 +47,7 @@
 
 // Usage: include this header file somewhere in your code (eg. precompiled header), and then use like:
 //
-// Instrumentor::eet().beginSession("Session Name");        // Begin session
+// Instrumentor::get().beginSession("Session Name");        // Begin session
 // {
 //     InstrumentationTimer timer("Profiled Scope Name");   // Place code like this in scopes you'd like to include in profiling
 //     // Code
