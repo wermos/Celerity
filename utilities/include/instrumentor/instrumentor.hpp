@@ -8,7 +8,42 @@
 #include <chrono>
 #include <thread>
 
+/**
+ * __clang__ checks for the clang compiler,
+ * __GNUC__ along with __GNUG__ checks for the GCC compiler,
+ * and _MSC_VER checks for the MSVC compiler.
+ *
+ */
+#ifndef FUNCTION_NAME
+	#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
+	#define FUNCTION_NAME __PRETTY_FUNCTION__
+	#elif defined(_MSC_VER)
+	namespace {
+		// This function exists to delete the "__cdecl" part of the function
+		// name from the __FUNCSIG__ output
+		inline const char* cdecl_delete(const char* functionName) {
+			std::string funcName(functionName);
+			int i = funcName.find("__cdecl");
+			return funcName.erase(i, 7).c_str();
+		}
+	}
+	#define FUNCTION_NAME cdecl_delete(__FUNCSIG__)
+	#endif // compiler checking
+#endif // FUNCTION_NAME
+
+#define PROFILE 1
+
+#if PROFILE == 1
+#define PROFILE_SCOPE(name) InstrumentationTimer timer##__FILE__##__LINE__(name)
+#define PROFILE_FUNCTION() PROFILE_SCOPE(FUNCTION_NAME)
+#else
+#define PROFILE_SCOPE(name)
+#define PROFILE_FUNCTION()
+#endif
+
 // Lifted off of Cherno: https://gist.github.com/TheCherno/31f135eea6ee729ab5f26a6908eb3a5e
+// Link to video: https://www.youtube.com/watch?v=xlAH4dbMVnU
+//
 // Basic instrumentation profiler by Cherno
 
 // Usage: include this header file somewhere in your code (eg. precompiled header), and then use like:
@@ -21,7 +56,6 @@
 // Instrumentor::get().endSession();                        // End Session
 //
 // You will probably want to macro-fy this, to switch on/off easily and use things like __FUNCSIG__ for the profile name.
-//
 
 struct ProfileResult {
     std::string m_name;
@@ -35,8 +69,10 @@ struct InstrumentationSession {
 
 class Instrumentor {
 	public:
-		Instrumentor() : m_currentSession(nullptr), m_profileCount(0)
-		{}
+		// Deleting the copy constructor and copy assignment operator; standard procedure in
+		// singleton classes.
+		Instrumentor (const Instrumentor&) = delete;
+		Instrumentor operator=(const Instrumentor&) = delete;
 
 		void beginSession(const std::string& name, const std::string& filepath = "results.json") {
 			m_outputStream.open(filepath);
@@ -88,6 +124,10 @@ class Instrumentor {
 		}
 
 	private:
+		// Making the constructor private so as to prevent users from constructing an object
+		Instrumentor() : m_currentSession(nullptr), m_profileCount(0)
+		{}
+
 		InstrumentationSession* m_currentSession;
 		std::ofstream m_outputStream;
 		int m_profileCount;
