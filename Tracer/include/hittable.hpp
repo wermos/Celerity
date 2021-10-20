@@ -9,6 +9,12 @@ struct hitRecord {
     point3 m_point;
     vec3 m_normal;
     double m_t;
+	bool m_frontFace;
+
+    inline void setFaceNormal(const ray& r, const vec3& outwardNormal) {
+        m_frontFace = dot(r.direction(), outwardNormal) < 0;
+        m_normal = m_frontFace ? outwardNormal : -outwardNormal;
+    }
 };
 
 // Using a concept instead of an abstract class to reduce runtime overhead.
