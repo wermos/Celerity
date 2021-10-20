@@ -6,6 +6,7 @@
 #include <algorithm>
 
 #include <chrono>
+#include <mutex>
 #include <thread>
 
 #define PROFILE 1
@@ -41,10 +42,11 @@
 #endif // PROFILE
 
 // Lifted off of Cherno: https://gist.github.com/TheCherno/31f135eea6ee729ab5f26a6908eb3a5e
+// With minor modifications (most importantly, the mutex stuff) made by @davechurchill here: https://pastebin.com/qw5Neq4U
 // Link to video: https://www.youtube.com/watch?v=xlAH4dbMVnU
 //
-// Basic instrumentation profiler by Cherno
-
+// Basic (thread-safe due to upgrades) instrumentation profiler by Cherno
+//
 // Usage: include this header file somewhere in your code (eg. precompiled header), and then use like:
 //
 // Instrumentor::get().beginSession("Session Name");        // Begin session
@@ -62,10 +64,6 @@ struct ProfileResult {
     uint32_t m_threadID;
 };
 
-struct InstrumentationSession {
-    std::string m_name;
-};
-
 class Instrumentor {
 	public:
 		// Deleting the copy constructor and copy assignment operator; standard procedure in
@@ -74,20 +72,30 @@ class Instrumentor {
 		Instrumentor operator=(const Instrumentor&) = delete;
 
 		void beginSession(const std::string& name, const std::string& filepath = "results.json") {
+			if (m_activeSession) {
+				endSession();
+			}
+        	m_activeSession = true;
+			m_sessionName = name;
+
 			m_outputStream.open(filepath);
 			writeHeader();
-			m_currentSession = new InstrumentationSession{name};
 		}
 
 		void endSession() {
+			if (!m_activeSession) {
+				return;
+			}
+
+        	m_activeSession = false;
 			writeFooter();
 			m_outputStream.close();
-			delete m_currentSession;
-			m_currentSession = nullptr;
 			m_profileCount = 0;
 		}
 
 		void writeProfile(const ProfileResult& result) {
+			std::lock_guard<std::mutex> lock(m_lock);
+
 			if (m_profileCount++ > 0)
 				m_outputStream << ",";
 
@@ -103,18 +111,19 @@ class Instrumentor {
 			m_outputStream << "\"tid\":" << result.m_threadID << ",";
 			m_outputStream << "\"ts\":" << result.m_startTime;
 			m_outputStream << "}";
-
-			m_outputStream.flush();
+			// Forced flushes are not necessary, as the OS makes sure that data in the
+			// internal buffers are written to disk even if the applciation crashes.
+			// Reference: https://stackoverflow.com/a/5132379/12591388
 		}
 
 		void writeHeader() {
 			m_outputStream << "{\"otherData\": {},\"traceEvents\":[";
-			m_outputStream.flush();
+			// Force flush not necessary
 		}
 
 		void writeFooter() {
 			m_outputStream << "]}";
-			m_outputStream.flush();
+			// Force flush not necessary
 		}
 
 		static Instrumentor& get() {
@@ -122,30 +131,37 @@ class Instrumentor {
 			return instance;
 		}
 
+		~Instrumentor() {
+			endSession();
+		} // just in case someone forgets to end the session themselves.
+
 	private:
 		// Making the constructor private so as to prevent users from constructing an object
-		Instrumentor() : m_currentSession(nullptr), m_profileCount(0)
+		Instrumentor()
 		{}
 
-		InstrumentationSession* m_currentSession;
+		std::string m_sessionName = "None";
+		bool m_activeSession = false;
 		std::ofstream m_outputStream;
-		int m_profileCount;
+		std::mutex m_lock;
+		int m_profileCount = 0;
 };
 
 class InstrumentationTimer {
 	public:
-		InstrumentationTimer(const char* name) : m_name(name), m_stopped(false) {
+		InstrumentationTimer(const char* name)
+			: m_name(name), m_profRes({name, 0, 0, 0}) {
 			m_startTimepoint = std::chrono::high_resolution_clock::now();
 		}
 
 		void stop() {
 			auto endTimepoint = std::chrono::high_resolution_clock::now();
 
-			long long startTime = std::chrono::time_point_cast<std::chrono::microseconds>(m_startTimepoint).time_since_epoch().count();
-			long long endTime = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
+			m_profRes.m_startTime = std::chrono::time_point_cast<std::chrono::microseconds>(m_startTimepoint).time_since_epoch().count();
+			m_profRes.m_endTime = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
 
-			uint32_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
-			Instrumentor::get().writeProfile({m_name, startTime, endTime, threadID});
+			m_profRes.m_threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
+			Instrumentor::get().writeProfile(m_profRes);
 
 			m_stopped = true;
 		}
@@ -158,8 +174,9 @@ class InstrumentationTimer {
 
 	private:
 		const char* m_name;
+		ProfileResult m_profRes;
 		std::chrono::time_point<std::chrono::high_resolution_clock> m_startTimepoint;
-		bool m_stopped;
+		bool m_stopped = false;
 };
 
 #endif // INSTRUMENTOR_HPP
