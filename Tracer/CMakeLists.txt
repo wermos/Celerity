@@ -7,6 +7,18 @@ project(RayTracer VERSION 0.4)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Add a Profile build type to generate runtime information
+# Update the documentation string of CMAKE_BUILD_TYPE for GUIs
+set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
+	"Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel Profile."
+  	FORCE)
+
+# Do a #define PROFILE so that the conditionally included code si actually included.
+if (CMAKE_BUILD_TYPE STREQUAL "Profile")
+	set(CMAKE_BUILD_TYPE Release)
+	add_compile_definitions(PROFILE)
+endif()
+
 # add the utilities library
 add_subdirectory(../utilities utilities)
 
@@ -31,6 +43,6 @@ target_include_directories(RayTracer PUBLIC include)
 foreach(DIR ${INCLUDE_DIRS})
 	#message(STATUS "${DIR} was just added to target_include_directories.")
 	target_include_directories(RayTracer PUBLIC ${DIR})
-endforeach()	
+endforeach()
 
 target_link_libraries(RayTracer PUBLIC utilities)
