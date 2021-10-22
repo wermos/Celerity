@@ -1,4 +1,2 @@
-CompileFlags:                     # Tweak the parse settings
-  Add: [-xc++, -Wall, -I/home/tirthankar/RayTracer/include/**]
-  # treat all files as C++, enable more warnings
-#  Remove: -W*                     # strip all other warning-related flags
+CompileFlags:                      # Tweak the parse settings
+  Add: [-xc++, -Wall, -std=c++20]  # treat all files as C++, enable more warnings
