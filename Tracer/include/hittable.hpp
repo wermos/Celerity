@@ -26,4 +26,16 @@ concept HittableObject =
 		// https://en.cppreference.com/w/cpp/language/constraints
 	};
 
+template <typename Derived>
+class hittableObjectBase requires HittableObject<Derived> {
+	public:
+		bool hit(const ray& r, double t_min, double t_max, hitRecord& rec) const {
+			return typeCast()->hit(r, t_min, t_max, rec);
+		}
+	private:
+		const Derived* typeCast() const {
+			return static_cast<Derived*>(this);
+		}
+};
+
 #endif // HITTABLE_HPP
