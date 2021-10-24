@@ -20,7 +20,7 @@
 color rayColor(const ray& r, const hittableList& world) {
 	hitRecord record;
 
-	if (world.hit(r, 0, infinity, rec)) {
+	if (world.hit(r, 0, infinity, record)) {
         return 0.5 * (record.m_normal + color(1,1,1));
     }
 
