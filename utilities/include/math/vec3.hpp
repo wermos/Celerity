@@ -4,10 +4,13 @@
 #include <cmath>
 #include <iostream>
 
+#include "color.hpp"
+
 class vec3 {
     public:
         vec3() : m_e{0, 0, 0} {}
         vec3(double e0, double e1, double e2) : m_e{e0, e1, e2} {}
+		vec3(const color& c) : m_e{c.raw_r(), c.raw_b(), c.raw_g()} {}
 
         double x() const {
             return m_e[0];
@@ -83,6 +86,6 @@ class vec3 {
 };
 
 // Type aliases for vec3
-using point3 = vec3;   // 3D point
+using point3 = vec3;    // 3D point
 
 #endif // VEC3_HPP
