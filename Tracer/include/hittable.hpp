@@ -17,25 +17,9 @@ struct hitRecord {
     }
 };
 
-// Using a concept instead of an abstract class to reduce runtime overhead.
-template <typename T>
-concept HittableObject =
-	requires (T object, const ray& r, double t_min, double t_max, hitRecord& rec) {
-		{ object.hit(r, t_min, t_max, rec) } -> std::convertible_to<bool>;
-		// Way of writing the concept shamelessly lifted from here:
-		// https://en.cppreference.com/w/cpp/language/constraints
-	};
-
-template <typename Derived>
-class hittableObjectBase requires HittableObject<Derived> {
+class hittableObject {
 	public:
-		bool hit(const ray& r, double t_min, double t_max, hitRecord& rec) const {
-			return typeCast()->hit(r, t_min, t_max, rec);
-		}
-	private:
-		const Derived* typeCast() const {
-			return static_cast<Derived*>(this);
-		}
+		virtual bool hit(const ray& r, double t_min, double t_max, hitRecord& rec) const = 0;
 };
 
 #endif // HITTABLE_HPP

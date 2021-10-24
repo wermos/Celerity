@@ -5,7 +5,7 @@
 #include "vec3.hpp"
 #include "ray.hpp"
 
-class sphere : public hittableObjectBase<sphere> {
+class sphere : public hittableObject {
 	public:
 		sphere() = default;
 

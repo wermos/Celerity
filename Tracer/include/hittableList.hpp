@@ -6,11 +6,11 @@
 
 #include "hittable.hpp"
 
-class hittableList requires HittableObject<hittableList> {
+class hittableList : public hittableObject {
     public:
         hittableList() = default;
 
-        hittableList(std::shared_ptr<hittableObjectBase> object) {
+        hittableList(std::shared_ptr<hittableObject> object) {
 			add(object);
 		}
 
@@ -18,14 +18,14 @@ class hittableList requires HittableObject<hittableList> {
 			m_objects.clear();
 		}
 
-        void add(std::shared_ptr<hittableObjectBase> object) {
+        void add(std::shared_ptr<hittableObject> object) {
 			m_objects.push_back(object);
 		}
 
-        bool hit(const ray& r, double t_min, double t_max, hit_record& rec) const;
+        bool hit(const ray& r, double t_min, double t_max, hitRecord& rec) const;
 
     public:
-        std::vector<std::shared_ptr<hittableObjectBase>> m_objects;
+        std::vector<std::shared_ptr<hittableObject>> m_objects;
 };
 
 #endif // HITTABLE_LIST_HPP
