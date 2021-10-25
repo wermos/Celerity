@@ -47,8 +47,10 @@ class imageWriter {
 		const std::string m_pngFileName = "pic.png";
 		const int m_strideInBytes;
 
-		unsigned char* const m_jpgData;
-		unsigned char* const m_pngData;
+		//Constant pointer to non-const data
+		uint8_t* const m_jpgData;
+		uint8_t* const m_pngData;
+
 		int m_jpgDataCounter, m_pngDataCounter;
 };
 
