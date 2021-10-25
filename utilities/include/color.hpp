@@ -5,7 +5,7 @@
 
 class color {
     public:
-        color(double r = 0, double g = 0, double b = 0) : m_color{r, g, b} {}
+        color(const double r = 0, const double g = 0, const double b = 0) : m_color{r, g, b} {}
 
         const double raw_r() const {
             return m_color[0];
