@@ -27,12 +27,17 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
-color rayColor(const ray& r, const HittableList& world) {
+color rayColor(const ray& r, const HittableList& world, int depth) {
+	// If we've exceeded the ray bounce limit, no more light is gathered.
+    if (depth <= 0) {
+        return color(0, 0, 0);
+	}
+
 	HitRecord record;
 
 	if (world.hit(r, 0, infinity, record)) {
-		vec3 temp = 0.5 * (record.normal + color(1,1,1));
-        return {temp.x(), temp.y(), temp.z()};
+		point3 target = record.point + record.normal + randomInUnitSphere();
+        return 0.5 * rayColor(ray(rec.point, target - rec.point), world, --depth);
     }
 
     vec3 unitDirection = unitVector(r.direction());
@@ -56,6 +61,7 @@ int main() {
 		constexpr int imageWidth = 1920;
 		constexpr int imageHeight = static_cast<int>(imageWidth / aspectRatio);
 		constexpr int samplesPerPixel = 100;
+		constexpr int maxDepth = 50;
 
 		// World
     	HittableList world;
@@ -81,7 +87,7 @@ int main() {
 
                 	ray r = camera.getRay(u, v);
 
-                	pixelColor += rayColor(r, world);
+                	pixelColor += rayColor(r, world, maxDepth);
             	}
 
 				pixelColor.combine(samplesPerPixel);
