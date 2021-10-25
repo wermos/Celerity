@@ -10,7 +10,7 @@ inline constexpr double infinity = std::numeric_limits<double>::infinity();
 
 // Utility Functions
 
-inline double degrees_to_radians(double degrees) {
+inline double degreesToRadians(double degrees) {
     return (degrees * std::numbers::pi) / 180.0;
 }
 

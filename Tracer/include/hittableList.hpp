@@ -6,26 +6,25 @@
 
 #include "hittable.hpp"
 
-class hittableList : public hittableObject {
+class HittableList : public HittableObject {
     public:
-        hittableList() = default;
+        HittableList() = default;
 
-        hittableList(std::shared_ptr<hittableObject> object) {
-			add(object);
-		}
+        HittableList(std::shared_ptr<HittableObject> object) : m_objects({object})
+		{}
 
         void clear() {
 			m_objects.clear();
 		}
 
-        void add(std::shared_ptr<hittableObject> object) {
+        void add(std::shared_ptr<HittableObject> object) {
 			m_objects.push_back(object);
 		}
 
-        bool hit(const ray& r, double t_min, double t_max, hitRecord& rec) const;
+        virtual bool hit(const ray& r, double t_min, double t_max, HitRecord& rec) const override;
 
-    public:
-        std::vector<std::shared_ptr<hittableObject>> m_objects;
+    private:
+        std::vector<std::shared_ptr<HittableObject>> m_objects;
 };
 
 #endif // HITTABLE_LIST_HPP

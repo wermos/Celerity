@@ -17,11 +17,12 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
-color rayColor(const ray& r, const hittableList& world) {
-	hitRecord record;
+color rayColor(const ray& r, const HittableList& world) {
+	HitRecord record;
 
 	if (world.hit(r, 0, infinity, record)) {
-        return 0.5 * (record.m_normal + color(1,1,1));
+		vec3 temp = 0.5 * (record.normal + color(1,1,1));
+        return {temp.x(), temp.y(), temp.z()};
     }
 
     vec3 unitDirection = unitVector(r.direction());
@@ -46,9 +47,9 @@ int main() {
 		constexpr int imageHeight = static_cast<int>(imageWidth / aspectRatio);
 
 		// World
-    	hittableList world;
-    	world.add(std::make_shared<sphere>(point3(0, 0, -1), 0.5));
-    	world.add(std::make_shared<sphere>(point3(0, -100.5, -1), 100));
+    	HittableList world;
+    	world.add(std::make_shared<Sphere>(point3(0, 0, -1), 0.5));
+    	world.add(std::make_shared<Sphere>(point3(0, -100.5, -1), 100));
 
 		// Camera
 		constexpr auto viewportHeight = 2.0;

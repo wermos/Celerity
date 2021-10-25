@@ -1,14 +1,14 @@
 #include "hittableList.hpp"
 
-bool hittableList::hit(const ray& r, double t_min, double t_max, hitRecord& rec) const {
-    hitRecord tempRec;
+bool HittableList::hit(const ray& r, double tMin, double tMax, HitRecord& rec) const {
+    HitRecord tempRec;
     bool hitAnything = false;
-    auto closestSoFar = t_max;
+    auto closestSoFar = tMax;
 
     for (const auto& object : m_objects) {
-        if (object->hit(r, t_min, closestSoFar, tempRec)) {
+        if (object->hit(r, tMin, closestSoFar, tempRec)) {
             hitAnything = true;
-            closestSoFar = tempRec.m_t;
+            closestSoFar = tempRec.t;
             rec = tempRec;
         }
     }

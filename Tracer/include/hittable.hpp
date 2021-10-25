@@ -1,25 +1,23 @@
 #ifndef HITTABLE_HPP
 #define HITTABLE_HPP
 
-#include <concepts>
-
 #include "ray.hpp"
 
-struct hitRecord {
-    point3 m_point;
-    vec3 m_normal;
-    double m_t;
-	bool m_frontFace;
+struct HitRecord {
+    point3 point;
+    vec3 normal;
+    double t;
+	bool frontFace;
 
     inline void setFaceNormal(const ray& r, const vec3& outwardNormal) {
-        m_frontFace = dot(r.direction(), outwardNormal) < 0;
-        m_normal = m_frontFace ? outwardNormal : -outwardNormal;
+        frontFace = dot(r.direction(), outwardNormal) < 0;
+        normal = frontFace ? outwardNormal : -outwardNormal;
     }
 };
 
-class hittableObject {
+class HittableObject {
 	public:
-		virtual bool hit(const ray& r, double t_min, double t_max, hitRecord& rec) const = 0;
+		virtual bool hit(const ray& r, double tMin, double tMax, HitRecord& rec) const = 0;
 };
 
 #endif // HITTABLE_HPP

@@ -5,14 +5,13 @@
 #include "vec3.hpp"
 #include "ray.hpp"
 
-class sphere : public hittableObject {
+class Sphere : public HittableObject {
 	public:
-		sphere() = default;
 
-        sphere(point3 center, double radius) : m_center(center), m_radius(radius)
-		{}
+        Sphere(point3 center, double radius) : m_center(center), m_radius(radius) {};
 
-        bool hit(const ray& r, double t_min, double t_max, hitRecord& rec) const;
+        bool hit(
+			const ray& r, double tMin, double tMax, HitRecord& rec) const override;
 
     private:
         point3 m_center;
