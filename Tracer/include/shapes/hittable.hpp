@@ -3,6 +3,8 @@
 
 #include "ray.hpp"
 
+//This goes inside the shapes directory because it defines an interface for shapes
+
 struct HitRecord {
     point3 point;
     vec3 normal;

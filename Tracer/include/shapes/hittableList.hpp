@@ -6,6 +6,9 @@
 
 #include "hittable.hpp"
 
+//This goes inside the shapes directory because it defines a shape-related
+//data structure.
+
 class HittableList : public HittableObject {
     public:
         HittableList() = default;
