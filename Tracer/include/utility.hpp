@@ -31,14 +31,4 @@ inline double randomDouble(double min, double max) {
     return distribution(generator);
 }
 
-inline double clamp(double x, double min, double max) {
-    if (x < min) {
-		return min;
-	}
-    if (x > max) {
-		return max;
-	}
-    return x;
-}
-
 #endif // UTILITY_HPP
