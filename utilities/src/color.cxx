@@ -16,3 +16,16 @@ color operator+(const color& c1, const color& c2) {
 color operator*(double t, const color& c) {
 	return color(t * c.m_color[0], t * c.m_color[1], t * c.m_color[2]);
 }
+
+color color::combine(int samplesPerPixel) {
+			// Divide the color by the number of samples.
+			auto scale = 1.0 / samplesPerPixel;
+			m_color[0] *= scale;
+			m_color[1] *= scale;
+			m_color[2] *= scale;
+
+			// Write the translated [0,255] value of each color component.
+			return {clamp(m_color[0], 0.0, 0.999),
+					clamp(m_color[1], 0.0, 0.999),
+					clamp(m_color[2], 0.0, 0.999)};
+}

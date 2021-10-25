@@ -31,23 +31,17 @@ class color {
             return static_cast<int>(255.999 * m_color[2]);
         }
 
+		color& operator+=(const color& c) {
+            m_color[0] += c.m_color[0];
+            m_color[1] += c.m_color[1];
+            m_color[2] += c.m_color[2];
+            return *this;
+		}
+
+		color combine(int samplesPerPixel);
+
         // color operator-() const {
         //     return color(-m_e[0], -m_e[1], -m_e[2]);
-        // }
-
-        // double operator[](int i) const {
-        //     return m_e[i];
-        // }
-
-        // double& operator[](int i) {
-        //     return m_e[i];
-        // }
-
-        // color& operator+=(const color& v) {
-        //     m_e[0] += v.m_e[0];
-        //     m_e[1] += v.m_e[1];
-        //     m_e[2] += v.m_e[2];
-        //     return *this;
         // }
 
         // color& operator*=(const double t) {
@@ -84,6 +78,16 @@ class color {
 		//TODO: Make operator implementations depend on each other
     private:
         double m_color[3];
+
+		inline double clamp(double x, double min, double max) {
+		    if (x < min) {
+				return min;
+			}
+		    if (x > max) {
+				return max;
+			}
+		    return x;
+		}
 };
 
 #endif // COLOR_HPP
