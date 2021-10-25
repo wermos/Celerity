@@ -3,6 +3,8 @@
 
 #include <cmath>
 #include <iostream>
+#include <random>
+#include <numbers>
 
 #include "color.hpp"
 
@@ -63,6 +65,23 @@ class vec3 {
             return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
         }
 
+		const vec3 randomInUnitSphere() const {
+			//Generate theta and phi for spherical coordinates, and return
+			//the Cartesian coordinates.
+
+			//Spherical to Cartesian conversion: (r, theta, phi) -> (x, y, z)
+			// x = r sin theta cos phi
+			// y = r sin theta sin phi
+			// z = r cos theta
+
+			//Different from the book:
+			//https://raytracing.github.io/books/RayTracingInOneWeekend.html#diffusematerials
+			double thetaRad = randomDouble() * std::numbers::pi;
+			double phiRad = randomDouble(0, 2) * std::numbers::pi;
+
+			return {sin(thetaRad) * cos(phiRad), sin(thetaRad) * sin(phiRad), cos(thetaRad)};
+		}
+
         friend std::ostream& operator<<(std::ostream& out, const vec3& v);
 
         friend vec3 operator+(const vec3& u, const vec3& v);
@@ -83,6 +102,22 @@ class vec3 {
         //TODO: Change name of "unit_vector" function to "normalize"
     private:
         double m_e[3];
+
+		inline const double randomDouble() const {
+			// Returns a random real in [0,1).
+			static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+			static std::mt19937_64 generator;
+
+			return distribution(generator);
+		}
+
+		inline const double randomDouble(double min, double max) const {
+			// Returns a random real in [min,max).
+			static std::uniform_real_distribution<double> distribution(min, max);
+			static std::mt19937_64 generator;
+
+			return distribution(generator);
+		}
 };
 
 // Type aliases for vec3
