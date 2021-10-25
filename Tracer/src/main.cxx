@@ -1,17 +1,27 @@
+//STL includes
 #include <iostream>
 
+//Math includes
 #include "vec3.hpp"
 #include "color.hpp"
 #include "ray.hpp"
 
+//Object-related includes
 #include "hittable.hpp"
 #include "sphere.hpp"
 #include "hittableList.hpp"
+
+//Camera includes
+#include "camera.hpp"
+
+//Utility includes
 #include "utility.hpp"
 
+//Image writer includes
 #include "ppmWriter.hpp"
 #include "imageWriter.hpp"
 
+//Profiling includes
 #include "instrumentor.hpp"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -45,6 +55,7 @@ int main() {
 		constexpr auto aspectRatio = 16.0 / 9.0;
 		constexpr int imageWidth = 1920;
 		constexpr int imageHeight = static_cast<int>(imageWidth / aspectRatio);
+		constexpr int samplesPerPixel = 100;
 
 		// World
     	HittableList world;
@@ -52,14 +63,7 @@ int main() {
     	world.add(std::make_shared<Sphere>(point3(0, -100.5, -1), 100));
 
 		// Camera
-		constexpr auto viewportHeight = 2.0;
-		constexpr auto viewportWidth = aspectRatio * viewportHeight;
-		constexpr auto focalLength = 1.0;
-
-		auto origin = point3(0, 0, 0);
-		auto horizontal = vec3(viewportWidth, 0, 0);
-		auto vertical = vec3(0, viewportHeight, 0);
-		auto lowerLeftCorner = origin - (horizontal / 2) - (vertical / 2) - vec3(0, 0, focalLength);
+    	Camera camera;
 
 		//Initialize file writers
 		ppmWriter pw(imageWidth, imageHeight);
@@ -70,11 +74,17 @@ int main() {
 			std::cerr << "\rScanlines remaining: " << j << " " << std::flush;
 
 			for (int i = 0; i < imageWidth; ++i) {
-				auto u = double(i) / (imageWidth - 1);
-				auto v = double(j) / (imageHeight - 1);
+				color pixelColor;
+				for (int s = 0; s < samplesPerPixel; ++s) {
+                	auto u = (i + randomDouble()) / (imageWidth - 1);
+                	auto v = (j + randomDouble()) / (imageHeight - 1);
 
-				ray r(origin, lowerLeftCorner + u * horizontal + v * vertical - origin);
-				color pixelColor = rayColor(r, world);
+                	ray r = camera.getRay(u, v);
+
+                	pixelColor += rayColor(r, world);
+            	}
+
+				pixelColor.combine(samplesPerPixel);
 
 				pw.write(pixelColor);
 				iw.writeToPNG(pixelColor);
