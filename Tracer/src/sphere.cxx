@@ -1,6 +1,6 @@
 #include "sphere.hpp"
 
-bool sphere::hit(const ray& r, double t_min, double t_max, hitRecord& record) const {
+bool Sphere::hit(const ray& r, double tMin, double tMax, HitRecord& record) const {
     vec3 oc = r.origin() - m_center;
     auto a = r.direction().length_squared();
     auto half_b = dot(oc, r.direction());
@@ -15,15 +15,16 @@ bool sphere::hit(const ray& r, double t_min, double t_max, hitRecord& record) co
 
     // Find the nearest root that lies in the acceptable range.
     auto root = (-half_b - sqrtd) / a;
-    if (root < t_min || t_max < root) {
-        root = (-half_b + sqrtd) /
-        if (root < t_min || t_max < root)
+    if (root < tMin || tMax < root) {
+        root = (-half_b + sqrtd) / a;
+        if (root < tMin || tMax < root) {
             return false;
+		}
     }
 
-    record.m_t = root;
-    record.m_point = r.at(record.m_t);
-    record.m_normal = (record.m_point - m_center) / m_radius;
+    record.t = root;
+    record.point = r.at(record.t);
+    record.normal = (record.point - m_center) / m_radius;
 
     return true;
 }
