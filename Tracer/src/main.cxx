@@ -36,8 +36,8 @@ color rayColor(const ray& r, const HittableList& world, int depth) {
 	HitRecord record;
 
 	if (world.hit(r, 0, infinity, record)) {
-		point3 target = record.point + record.normal + randomInUnitSphere();
-        return 0.5 * rayColor(ray(rec.point, target - rec.point), world, --depth);
+		point3 target = record.point + record.normal + vec3::randomInUnitSphere();
+        return 0.5 * rayColor(ray(record.point, target - record.point), world, --depth);
     }
 
     vec3 unitDirection = unitVector(r.direction());
