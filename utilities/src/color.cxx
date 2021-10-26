@@ -20,9 +20,12 @@ color operator*(double t, const color& c) {
 color color::combine(int samplesPerPixel) {
 			// Divide the color by the number of samples.
 			auto scale = 1.0 / samplesPerPixel;
-			m_color[0] *= scale;
-			m_color[1] *= scale;
-			m_color[2] *= scale;
+
+			// Divide the color by the number of samples and gamma-correct for gamma=2.0.
+			m_color[0] *= sqrt(scale * m_color[0]);
+			m_color[1] *= sqrt(scale * m_color[1]);
+			m_color[2] *= sqrt(scale * m_color[2]);
+
 
 			// Write the translated [0,255] value of each color component.
 			return {clamp(m_color[0], 0.0, 0.999),
