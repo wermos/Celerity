@@ -1,3 +1,4 @@
+#include <cmath>
 #include "color.hpp"
 
 std::ostream& operator<<(std::ostream& out, const color& pixelColor) {
