@@ -65,7 +65,7 @@ class vec3 {
             return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
         }
 
-		const vec3 randomInUnitSphere() const {
+		static const vec3 randomInUnitSphere() {
 			//Generate theta and phi for spherical coordinates, and return
 			//the Cartesian coordinates.
 
@@ -103,7 +103,7 @@ class vec3 {
     private:
         double m_e[3];
 
-		inline const double randomDouble() const {
+		static const double randomDouble() {
 			// Returns a random real in [0,1).
 			static std::uniform_real_distribution<double> distribution(0.0, 1.0);
 			static std::mt19937_64 generator;
@@ -111,7 +111,7 @@ class vec3 {
 			return distribution(generator);
 		}
 
-		inline const double randomDouble(double min, double max) const {
+		static const double randomDouble(double min, double max) {
 			// Returns a random real in [min,max).
 			static std::uniform_real_distribution<double> distribution(min, max);
 			static std::mt19937_64 generator;
