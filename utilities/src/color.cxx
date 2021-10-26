@@ -23,9 +23,9 @@ color color::combine(int samplesPerPixel) {
 			auto scale = 1.0 / samplesPerPixel;
 
 			// Divide the color by the number of samples and gamma-correct for gamma=2.0.
-			m_color[0] *= sqrt(scale * m_color[0]);
-			m_color[1] *= sqrt(scale * m_color[1]);
-			m_color[2] *= sqrt(scale * m_color[2]);
+			m_color[0] = sqrt(scale * m_color[0]);
+			m_color[1] = sqrt(scale * m_color[1]);
+			m_color[2] = sqrt(scale * m_color[2]);
 
 
 			// Write the translated [0,255] value of each color component.
