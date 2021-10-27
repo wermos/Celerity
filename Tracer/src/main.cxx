@@ -35,7 +35,8 @@ color rayColor(const ray& r, const HittableList& world, int depth) {
 
 	HitRecord record;
 
-	if (world.hit(r, 0, infinity, record)) {
+	if (world.hit(r, 0.001, infinity, record)) {
+		//TODO: Investigate whether it is worth it to make the tolerance customizable.
 		point3 target = record.point + record.normal + vec3::randomInUnitSphere();
         return 0.5 * rayColor(ray(record.point, target - record.point), world, --depth);
     }
