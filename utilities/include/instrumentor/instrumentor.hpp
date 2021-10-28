@@ -59,9 +59,9 @@
 // You will probably want to macro-fy this, to switch on/off easily and use things like __FUNCSIG__ for the profile name.
 
 struct ProfileResult {
-    std::string m_name;
-    long long m_startTime, m_endTime;
-    uint32_t m_threadID;
+    std::string name;
+    long long startTime, endTime;
+    uint32_t threadID;
 };
 
 class Instrumentor {
@@ -99,17 +99,17 @@ class Instrumentor {
 			if (m_profileCount++ > 0)
 				m_outputStream << ",";
 
-			std::string name = result.m_name;
+			std::string name = result.name;
 			std::replace(name.begin(), name.end(), '"', '\'');
 
 			m_outputStream << "{";
 			m_outputStream << "\"cat\":\"function\",";
-			m_outputStream << "\"dur\":" << (result.m_endTime - result.m_startTime) << ',';
+			m_outputStream << "\"dur\":" << (result.endTime - result.startTime) << ',';
 			m_outputStream << "\"name\":\"" << name << "\",";
 			m_outputStream << "\"ph\":\"X\",";
 			m_outputStream << "\"pid\":0,";
-			m_outputStream << "\"tid\":" << result.m_threadID << ",";
-			m_outputStream << "\"ts\":" << result.m_startTime;
+			m_outputStream << "\"tid\":" << result.threadID << ",";
+			m_outputStream << "\"ts\":" << result.startTime;
 			m_outputStream << "}";
 			// Forced flushes are not necessary, as the OS makes sure that data in the
 			// internal buffers are written to disk even if the applciation crashes.
@@ -150,18 +150,22 @@ class Instrumentor {
 class InstrumentationTimer {
 	public:
 		InstrumentationTimer(const char* name)
-			: m_name(name), m_profRes({name, 0, 0, 0}) {
+			: m_name(name), m_profileResult({name, 0, 0, 0}) {
 			m_startTimepoint = std::chrono::high_resolution_clock::now();
 		}
 
 		void stop() {
 			auto endTimepoint = std::chrono::high_resolution_clock::now();
 
-			m_profRes.m_startTime = std::chrono::time_point_cast<std::chrono::microseconds>(m_startTimepoint).time_since_epoch().count();
-			m_profRes.m_endTime = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
+			m_profileResult.startTime =
+				std::chrono::time_point_cast<std::chrono::microseconds>(m_startTimepoint)
+				.time_since_epoch().count();
+			m_profileResult.endTime =
+				std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint)
+				.time_since_epoch().count();
 
-			m_profRes.m_threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
-			Instrumentor::get().writeProfile(m_profRes);
+			m_profileResult.threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
+			Instrumentor::get().writeProfile(m_profileResult);
 
 			m_stopped = true;
 		}
@@ -174,7 +178,7 @@ class InstrumentationTimer {
 
 	private:
 		const char* m_name;
-		ProfileResult m_profRes;
+		ProfileResult m_profileResult;
 		std::chrono::time_point<std::chrono::high_resolution_clock> m_startTimepoint;
 		bool m_stopped = false;
 };
