@@ -1,13 +1,17 @@
 #ifndef HITTABLE_HPP
 #define HITTABLE_HPP
 
+#include <memory>
+
 #include "ray.hpp"
+#include "material.hpp"
 
 //This goes inside the shapes directory because it defines an interface for shapes
 
 struct HitRecord {
     point3 point;
     vec3 normal;
+	std::shared_ptr<Material> material;
     double t;
 	bool frontFace;
 
