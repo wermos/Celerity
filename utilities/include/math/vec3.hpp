@@ -76,15 +76,10 @@ class vec3 {
 
 			//Different from the book:
 			//https://raytracing.github.io/books/RayTracingInOneWeekend.html#diffusematerials
-			// double thetaRad = randomDouble(0, 1.0) * std::numbers::pi;
-			// double phiRad = randomDouble(0, 2.0) * std::numbers::pi;
+			double thetaRad = randomDouble() * std::numbers::pi;
+			double phiRad = randomDouble(0, 2) * std::numbers::pi;
 
-			// return {sin(thetaRad) * cos(phiRad), sin(thetaRad) * sin(phiRad), cos(thetaRad)};
-			while (true) {
-				auto p = randomVector();
-				if (p.x() * p.x() + p.y() * p.y() + p.z() * p.z() >= 1) continue;
-				return unitVector(p);
-			}
+			return {sin(thetaRad) * cos(phiRad), sin(thetaRad) * sin(phiRad), cos(thetaRad)};
 		}
 
         friend std::ostream& operator<<(std::ostream& out, const vec3& v);
@@ -108,14 +103,6 @@ class vec3 {
     private:
         double m_e[3];
 
-		// static const double randomDouble() {
-		// 	// Returns a random real in [0,1).
-		// 	static std::uniform_real_distribution<double> distribution(0.0, 1.0);
-		// 	static std::mt19937_64 generator;
-
-		// 	return distribution(generator);
-		// }
-
 		static const double randomDouble(double min, double max) {
 			// Returns a random real in [min,max).
 			static std::uniform_real_distribution<double> distribution(min, max);
@@ -124,9 +111,10 @@ class vec3 {
 			return distribution(generator);
 		}
 
-        static const vec3 randomVector() {
-            return {randomDouble(-1.0, 1.0), randomDouble(-1.0, 1.0), randomDouble(-1.0, 1.0)};
-        }
+		static const double randomDouble() {
+			// Returns a random real in [0,1).
+			return randomDouble(0.0, 1.0);
+		}
 };
 
 // Type aliases for vec3
