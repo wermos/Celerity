@@ -24,7 +24,10 @@ bool Sphere::hit(const ray& r, double tMin, double tMax, HitRecord& record) cons
 
     record.t = root;
     record.point = r.at(record.t);
-    record.normal = (record.point - m_center) / m_radius;
+
+	vec3 outwardNormal = (record.point - m_center) / m_radius;
+    record.setFaceNormal(r, outwardNormal);
+	record.material = m_material;
 
     return true;
 }
