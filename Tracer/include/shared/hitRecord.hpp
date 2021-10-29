@@ -3,6 +3,9 @@
 
 #include <memory>
 
+#include "vec3.hpp"
+#include "ray.hpp"
+
 class Material;
 
 struct HitRecord {
