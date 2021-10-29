@@ -1,12 +1,9 @@
-#ifndef HITTABLE_HPP
-#define HITTABLE_HPP
+#ifndef HIT_RECORD_HPP
+#define HIT_RECORD_HPP
 
 #include <memory>
 
-#include "ray.hpp"
-#include "material.hpp"
-
-//This goes inside the shapes directory because it defines an interface for shapes
+class Material;
 
 struct HitRecord {
     point3 point;
@@ -21,9 +18,4 @@ struct HitRecord {
     }
 };
 
-class HittableObject {
-	public:
-		virtual bool hit(const ray& r, double tMin, double tMax, HitRecord& rec) const = 0;
-};
-
-#endif // HITTABLE_HPP
+#endif // HIT_RECORD_HPP
