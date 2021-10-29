@@ -13,12 +13,12 @@
 
 class Sphere : public HittableObject {
 	public:
-		Sphere() = default;
+		// No default constructor because this class is not default-constructible.
 
         Sphere(point3 center, double radius, std::shared_ptr<Material> material) :
-			m_center(center), m_radius(radius), m_material(material) {};
+			m_center(center), m_radius(radius), m_material(material) {}
 
-        bool hit(
+        virtual bool hit(
 			const ray& r, double tMin, double tMax, HitRecord& rec) const override;
 
     private:
