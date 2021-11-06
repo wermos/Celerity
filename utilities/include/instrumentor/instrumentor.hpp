@@ -112,7 +112,7 @@ class Instrumentor {
 			m_outputStream << "\"ts\":" << result.startTime;
 			m_outputStream << "}";
 			// Forced flushes are not necessary, as the OS makes sure that data in the
-			// internal buffers are written to disk even if the applciation crashes.
+			// internal buffers are written to disk even if the application crashes.
 			// Reference: https://stackoverflow.com/a/5132379/12591388
 		}
 
