@@ -5,6 +5,24 @@
 #include <random>
 #include <numbers>
 
+/** This little trick is used by PBRT () and mentioned here:
+ * https://pbr-book.org/3ed-2018/Utilities/Main_Include_File
+ *
+ * Its main advantages are:
+ * 	- Making it possible to build versions of the ray tracer using either
+ *    representation, and
+ * 	- Being able to switch to doubles for numerically tricky situations as well
+ *    as to verify that rounding error with floats isn’t causing errors for a
+ *    given scene.
+*/
+#ifdef USE_FLOAT_AS_DOUBLE
+typedef double Float;
+#else
+typedef float Float;
+#endif // USE_FLOAT_AS_DOUBLE
+//TODO: Use this trick everywhere
+
+
 // Constants
 
 inline constexpr double infinity = std::numeric_limits<double>::infinity();
