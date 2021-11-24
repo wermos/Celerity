@@ -26,7 +26,9 @@ target_include_directories(utilities PUBLIC include)
 foreach(DIR ${INCLUDE_DIRS})
 	#message(STATUS "${DIR} was just added to target_include_directories.")
 	target_include_directories(utilities PUBLIC ${DIR})
-endforeach()	
+endforeach()
+
+target_include_directories(RayTracer PUBLIC ../shared)
 
 #include the header-only stb library in the search path
 target_include_directories(utilities PUBLIC stb)

@@ -45,4 +45,6 @@ foreach(DIR ${INCLUDE_DIRS})
 	target_include_directories(RayTracer PUBLIC ${DIR})
 endforeach()
 
+target_include_directories(RayTracer PUBLIC ../shared)
+
 target_link_libraries(RayTracer PUBLIC utilities)
