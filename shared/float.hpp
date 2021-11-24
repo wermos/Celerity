@@ -12,10 +12,10 @@
  *    as to verify that rounding error with floats isn’t causing errors for a
  *    given scene.
 */
-#ifdef USE_FLOAT_AS_DOUBLE
+#ifdef USE_DOUBLE_AS_FLOAT_TYPE
 typedef double Float;
 #else
 typedef float Float;
-#endif // USE_FLOAT_AS_DOUBLE
+#endif // USE_DOUBLE_AS_FLOAT_TYPE
 
 #endif
