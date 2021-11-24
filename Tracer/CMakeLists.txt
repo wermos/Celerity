@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(RayTracer VERSION 0.4)
+project(RayTracer VERSION 0.4.3)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -13,7 +13,7 @@ set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
 	"Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel Profile."
   	FORCE)
 
-# Do a #define PROFILE so that the conditionally included code si actually included.
+# Do a #define PROFILE so that the conditionally included code is actually included.
 if (CMAKE_BUILD_TYPE STREQUAL "Profile")
 	set(CMAKE_BUILD_TYPE Release)
 	add_compile_definitions(PROFILE)
