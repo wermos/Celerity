@@ -1,4 +1,4 @@
-# Tracer [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# Tracer [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![](https://tokei.rs/b1/github/wermos/Tracer)](https://tokei.rs/b1/github/wermos/Tracer) [![Windows](https://github.com/wermos/Tracer/actions/workflows/windows.yml/badge.svg)](https://github.com/wermos/Tracer/actions/workflows/windows.yml/badge.svg) [![Linux GCC](https://github.com/wermos/Tracer/actions/workflows/linux-gcc.yml/badge.svg)](https://github.com/wermos/Tracer/actions/workflows/linux-gcc.yml/badge.svg) [![Linux Clang](https://github.com/wermos/Tracer/actions/workflows/linux-clang.yml/badge.svg)](https://github.com/wermos/Tracer/actions/workflows/linux-clang.yml/badge.svg)
 A ray-tracing engine, written using [this book](https://raytracing.github.io/books/RayTracingInOneWeekend.html) for inspiration and the theory behind the ideas.
 
 # Building the Project
