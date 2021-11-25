@@ -10,7 +10,7 @@ jobs:
       matrix:
         os: [ ubuntu-18.04, ubuntu-20.04 ]
         gcc-version: [ 10, 11 ]
-		BUILD_TYPE: [ Release, Debug, Profile ]
+        BUILD_TYPE: [ Release, Debug, Profile ]
 
     name: ${{ matrix.os }} (GCC ${{ matrix.gcc-version }}) (${{ matrix.BUILD_TYPE}} Build)
     steps:

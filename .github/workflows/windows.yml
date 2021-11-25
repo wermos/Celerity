@@ -10,11 +10,11 @@ env:
 
 jobs:
   windows_vs2019:
-	runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: windows-latest
-		BUILD_TYPE: [ Release, Debug, Profile ]
+        BUILD_TYPE: [ Release, Debug, Profile ]
 
     name: Windows (VS 2019) (${{matrix.BUILD_TYPE}} Build)
     # The CMake configure and build commands are platform agnostic and should work equally
