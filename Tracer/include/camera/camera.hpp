@@ -18,7 +18,7 @@ class Camera {
             m_lowerLeftCorner = m_origin - (m_horizontal / 2) - (m_vertical / 2) - vec3(0, 0, focalLength);
         }
 
-        const ray getRay(double u, double v) const {
+        const ray getRay(Float u, Float v) const {
             return {m_origin, m_lowerLeftCorner + (u * m_horizontal) + (v * m_vertical) - m_origin};
         }
 

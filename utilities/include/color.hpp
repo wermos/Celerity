@@ -1,33 +1,35 @@
 #ifndef COLOR_HPP
 #define COLOR_HPP
 
-#include <iostream>
+#include <ostream>
+
+#include "float.hpp"
 
 class color {
     public:
-        color(const double r = 0, const double g = 0, const double b = 0) : m_color{r, g, b} {}
+        color(const Float r = 0, const Float g = 0, const Float b = 0) : m_color{r, g, b} {}
 
-        const double raw_r() const {
+        const Float raw_r() const {
             return m_color[0];
         }
 
-        const double raw_g() const {
+        const Float raw_g() const {
             return m_color[1];
         }
 
-        const double raw_b() const {
+        const Float raw_b() const {
             return m_color[2];
         }
 
-        const int r(double max = 259.999) const {
+        const int r(Float max = 259.999) const {
             return static_cast<int>(255.999 * m_color[0]);
         }
 
-        const int g(double max = 259.999) const {
+        const int g(Float max = 259.999) const {
             return static_cast<int>(255.999 * m_color[1]);
         }
 
-        const int b(double max = 259.999) const {
+        const int b(Float max = 259.999) const {
             return static_cast<int>(255.999 * m_color[2]);
         }
 
@@ -44,22 +46,22 @@ class color {
         //     return color(-m_e[0], -m_e[1], -m_e[2]);
         // }
 
-        // color& operator*=(const double t) {
+        // color& operator*=(const Float t) {
         //     m_e[0] *= t;
         //     m_e[1] *= t;
         //     m_e[2] *= t;
         //     return *this;
         // }
 
-        // color& operator/=(const double t) {
+        // color& operator/=(const Float t) {
         //     return *this *= (1 / t);
         // }
 
-        // double length() const {
+        // Float length() const {
         //     return std::sqrt(length_squared());
         // }
 
-        // double length_squared() const {
+        // Float length_squared() const {
         //     return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
         // }
 
@@ -70,16 +72,16 @@ class color {
         // friend color operator-(const color& u, const color& v);
 
         // friend color operator*(const color& u, const color& v);
-        friend color operator*(double t, const color& c);
-        // friend color operator*(const color& v, double t);
+        friend color operator*(Float t, const color& c);
+        // friend color operator*(const color& v, Float t);
 
-        // friend color operator/(color v, double t);
+        // friend color operator/(color v, Float t);
 
 		//TODO: Make operator implementations depend on each other
     private:
-        double m_color[3];
+        Float m_color[3];
 
-		inline double clamp(double x, double min, double max) {
+		inline Float clamp(Float x, Float min, Float max) {
 		    if (x < min) {
 				return min;
 			}

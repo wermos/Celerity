@@ -1,6 +1,6 @@
 #include "sphere.hpp"
 
-bool Sphere::hit(const ray& r, double tMin, double tMax, HitRecord& record) const {
+bool Sphere::hit(const ray& r, Float tMin, Float tMax, HitRecord& record) const {
     vec3 oc = r.origin() - m_center;
     auto a = r.direction().length_squared();
     auto half_b = dot(oc, r.direction());

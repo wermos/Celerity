@@ -14,7 +14,7 @@ color operator+(const color& c1, const color& c2) {
 				 c1.m_color[2] + c2.m_color[2]);
 }
 
-color operator*(double t, const color& c) {
+color operator*(Float t, const color& c) {
 	return color(t * c.m_color[0], t * c.m_color[1], t * c.m_color[2]);
 }
 

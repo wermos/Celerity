@@ -17,19 +17,19 @@ vec3 operator*(const vec3& u, const vec3& v) {
     return vec3(u.m_e[0] * v.m_e[0], u.m_e[1] * v.m_e[1], u.m_e[2] * v.m_e[2]);
 }
 
-vec3 operator*(double t, const vec3& v) {
+vec3 operator*(Float t, const vec3& v) {
     return vec3(t * v.m_e[0], t * v.m_e[1], t * v.m_e[2]);
 }
 
-vec3 operator*(const vec3& v, double t) {
+vec3 operator*(const vec3& v, Float t) {
     return t * v;
 }
 
-vec3 operator/(vec3 v, double t) {
+vec3 operator/(vec3 v, Float t) {
     return (1 / t) * v;
 }
 
-double dot(const vec3& u, const vec3& v) {
+Float dot(const vec3& u, const vec3& v) {
     return u.m_e[0] * v.m_e[0]
          + u.m_e[1] * v.m_e[1]
          + u.m_e[2] * v.m_e[2];

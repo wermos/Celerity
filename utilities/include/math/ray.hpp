@@ -1,6 +1,8 @@
 #ifndef RAY_HPP
 #define RAY_HPP
 
+#include "float.hpp"
+
 #include "vec3.hpp"
 
 class ray {
@@ -18,7 +20,7 @@ class ray {
             return m_direction;
         }
 
-        const point3 at(double t) const {
+        const point3 at(Float t) const {
             return m_origin + t * m_direction;
         }
 

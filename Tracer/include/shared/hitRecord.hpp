@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "float.hpp"
+
 #include "vec3.hpp"
 #include "ray.hpp"
 
@@ -12,7 +14,7 @@ struct HitRecord {
     point3 point;
     vec3 normal;
 	std::shared_ptr<Material> material;
-    double t;
+    Float t;
 	bool frontFace;
 
     inline void setFaceNormal(const ray& r, const vec3& outwardNormal) {

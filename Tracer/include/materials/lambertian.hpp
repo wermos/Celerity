@@ -1,8 +1,9 @@
 #ifndef LAMBERTIAN_HPP
 #define LAMBERTIAN_HPP
 
-#include "hitRecord.hpp"
+#include "float.hpp"
 
+#include "hitRecord.hpp"
 #include "material.hpp"
 
 #include "color.hpp"
