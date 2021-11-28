@@ -10,12 +10,12 @@ jobs:
       matrix:
         os: [ ubuntu-18.04, ubuntu-20.04 ]
         clang-version: [ 10, 11, 12 ]
+        BUILD_TYPE: [ Release, Debug, Profile ]
         exclude:
           # excludes clang-11 and clang-12 on Ubuntu 18.04 because it doesn't exist in the
           #standard repositories.
-        - os: ubuntu-18.04
-          clang-version: [ 11, 12 ]
-        BUILD_TYPE: [ Release, Debug, Profile ]
+          - os: ubuntu-18.04
+            clang-version: [ 11, 12 ]
 
     name: ${{ matrix.os }} (Clang ${{matrix.clang-version }}) (${{ matrix.BUILD_TYPE}} Build)
     steps:
