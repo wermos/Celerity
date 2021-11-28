@@ -4,25 +4,14 @@ on:
   push:
     branches: main
 
-env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
-
 jobs:
   windows_vs2019:
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     strategy:
       matrix:
-        os: windows-latest
         BUILD_TYPE: [ Release, Debug, Profile ]
 
     name: Windows (VS 2019) (${{matrix.BUILD_TYPE}} Build)
-    # The CMake configure and build commands are platform agnostic and should work equally
-    # well on Windows or Mac.  You can convert this to a matrix build if you need
-    # cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-    runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v2
 

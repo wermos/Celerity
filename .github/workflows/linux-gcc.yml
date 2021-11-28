@@ -5,14 +5,13 @@ on:
 
 jobs:
   ubuntu_build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
-        os: [ ubuntu-18.04, ubuntu-20.04 ]
-        gcc-version: [ 10, 11 ]
+        gcc-version: 10 #kept it like this to allow for future additions in the build matrix
         BUILD_TYPE: [ Release, Debug, Profile ]
 
-    name: ${{ matrix.os }} (GCC ${{ matrix.gcc-version }}) (${{ matrix.BUILD_TYPE}} Build)
+    name: Ubuntu 20.04 ${{ matrix.gcc-version }}) (${{ matrix.BUILD_TYPE}} Build)
     steps:
       - uses: actions/checkout@v2
 
@@ -25,7 +24,7 @@ jobs:
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
-          key: ${{ matrix.os }}-gcc-${{ matrix.gcc-version }}
+          key: ubuntu-20.04-gcc-${{ matrix.gcc-version }}
           max-size: 50M
 
       - name: Configure CMake
