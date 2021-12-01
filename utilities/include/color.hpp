@@ -71,7 +71,7 @@ class color {
 
         // friend color operator-(const color& u, const color& v);
 
-        // friend color operator*(const color& u, const color& v);
+        friend color operator*(const color& u, const color& v);
         friend color operator*(Float t, const color& c);
         // friend color operator*(const color& v, Float t);
 
