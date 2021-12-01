@@ -88,6 +88,16 @@ class vec3 {
 #endif
 		}
 
+		const bool nearZero() const {
+        	// Returns true if the vector is close to zero in all dimensions.
+        	const auto threshold = 1e-8;
+        	return (fabs(m_e[0]) < threshold) && (fabs(m_e[1]) < threshold) && (fabs(m_e[2]) < threshold);
+    	}
+
+		static const vec3 reflect(const vec3& v, const vec3& normal) {
+    		return v - 2 * dot(v,normal) * normal;
+		}
+
         friend std::ostream& operator<<(std::ostream& out, const vec3& v);
 
         friend vec3 operator+(const vec3& u, const vec3& v);
