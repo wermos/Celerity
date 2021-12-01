@@ -1,27 +1,32 @@
-//STL includes
+// STL includes
 #include <iostream>
 
-//Math includes
+// Math includes
 #include "vec3.hpp"
 #include "color.hpp"
 #include "ray.hpp"
 
-//Object-related includes
+// Object-related includes
 #include "hittable.hpp"
 #include "sphere.hpp"
 #include "hittableList.hpp"
 
-//Camera includes
+// Material-related includes
+//#include "material.hpp"
+#include "lambertian.hpp"
+#include "metal.hpp"
+
+// Camera includes
 #include "camera.hpp"
 
-//Utility includes
+// Utility includes
 #include "utility.hpp"
 
-//Image writer includes
+// Image writer includes
 #include "ppmWriter.hpp"
 #include "imageWriter.hpp"
 
-//Profiling includes
+// Profiling includes
 #include "instrumentor.hpp"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -37,8 +42,14 @@ color rayColor(const ray& r, const HittableList& world, int depth) {
 
 	if (world.hit(r, 0.001, infinity, record)) {
 		//TODO: Investigate whether it is worth it to make the tolerance customizable.
-		point3 target = record.point + record.normal + vec3::randomInUnitSphere();
-        return 0.5 * rayColor(ray(record.point, target - record.point), world, --depth);
+		ray scattered;
+        color attenuation;
+
+		if (record.material->scatter(r, record, attenuation, scattered)) {
+            return attenuation * rayColor(scattered, world, depth - 1);
+		}
+
+        return color(0, 0, 0);
     }
 
     vec3 unitDirection = unitVector(r.direction());
@@ -66,8 +77,16 @@ int main() {
 
 		// World
     	HittableList world;
-    	world.add(std::make_shared<Sphere>(point3(0, 0, -1), 0.5));
-    	world.add(std::make_shared<Sphere>(point3(0, -100.5, -1), 100));
+
+    	auto groundMaterial = std::make_shared<Lambertian>(color(0.8, 0.8, 0.0));
+    	auto centerMaterial = std::make_shared<Lambertian>(color(0.7, 0.3, 0.3));
+    	auto leftMaterial   = std::make_shared<Metal>(color(0.8, 0.8, 0.8));
+    	auto rightMaterial  = std::make_shared<Metal>(color(0.8, 0.6, 0.2));
+
+    	world.add(std::make_shared<Sphere>(point3( 0.0, -100.5, -1.0), 100.0, groundMaterial));
+    	world.add(std::make_shared<Sphere>(point3( 0.0,    0.0, -1.0),   0.5, centerMaterial));
+    	world.add(std::make_shared<Sphere>(point3(-1.0,    0.0, -1.0),   0.5, leftMaterial));
+    	world.add(std::make_shared<Sphere>(point3( 1.0,    0.0, -1.0),   0.5, rightMaterial));
 
 		// Camera
     	Camera camera;
