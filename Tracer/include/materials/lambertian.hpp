@@ -20,4 +20,4 @@ class Lambertian : public Material {
         color m_albedo;
 };
 
-#endif //LAMBERTIAN_HPP
+#endif // LAMBERTIAN_HPP
