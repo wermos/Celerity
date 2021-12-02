@@ -54,5 +54,5 @@ jobs:
       
       - name: Run executable
         run: |
-          cd ${{ github.workspace }}/build/Tracer/ \
+          cd build/Tracer
           ./RayTracer
