@@ -31,6 +31,6 @@ jobs:
               -- /m:12
     
     - name: Run executable
-      run: `
+      run: |
         cd ${{ github.workspace }}/build/Tracer/ `
         ./RayTracer.exe
