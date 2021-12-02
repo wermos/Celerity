@@ -15,29 +15,31 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-	  - name: Install Dependencies
+	    - name: Install Dependencies
         run: |
           sudo apt-get update -q
           sudo apt-get install -yq --no-install-recommends \
                                gcc-${{ matrix.gcc-version }}
-                               
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1
-      with:
-        key: ubuntu-20.04-gcc-${{ matrix.gcc-version }}
-        max-size: 50M
-    - name: Configure CMake
-      run: |
-        cmake -B${{ github.workspace }}/build \
-              -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
-              -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-              -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-              -G"Unix Makefiles"
-      env:
-        CC: gcc-${{ matrix.gcc-version }}
-        CXX: g++-${{ matrix.gcc-version }}
-    - name: Build
-      run: |
-        cmake --build ${{ github.workspace }}/build \
-              --config ${{ matrix.BUILD_TYPE }} \
-              -- -j2
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: ubuntu-20.04-gcc-${{ matrix.gcc-version }}
+          max-size: 50M
+    
+      - name: Configure CMake
+        run: |
+          cmake -B${{ github.workspace }}/build \
+                -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
+                -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+                -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+                -G"Unix Makefiles"
+        env:
+          CC: gcc-${{ matrix.gcc-version }}
+          CXX: g++-${{ matrix.gcc-version }}
+    
+      - name: Build
+        run: |
+          cmake --build ${{ github.workspace }}/build \
+                --config ${{ matrix.BUILD_TYPE }} \
+                -- -j2

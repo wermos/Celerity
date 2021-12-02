@@ -15,7 +15,9 @@ jobs:
           # excludes clang-11 and clang-12 on Ubuntu 18.04 because it doesn't exist in the
           #standard repositories.
           - os: ubuntu-18.04
-            clang-version: [ 11, 12 ]
+            clang-version: 11
+          - os: ubuntu-18.04
+            clang-version: 12
 
     name: ${{ matrix.os }} (Clang ${{matrix.clang-version }}) (${{ matrix.BUILD_TYPE}} Build)
     steps:
