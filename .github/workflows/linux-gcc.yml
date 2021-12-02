@@ -43,3 +43,8 @@ jobs:
           cmake --build ${{ github.workspace }}/build \
                 --config ${{ matrix.BUILD_TYPE }} \
                 -- -j2
+    
+      - name: Run executable
+        run: |
+          cd ${{ github.workspace }}/build/Tracer/ \
+          ./RayTracer

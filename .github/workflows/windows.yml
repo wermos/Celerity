@@ -29,3 +29,8 @@ jobs:
         cmake --build ${{github.workspace}}/build `
               --config ${{matrix.BUILD_TYPE}} `
               -- /m:12
+    
+    - name: Run executable
+      run: `
+        cd ${{ github.workspace }}/build/Tracer/ `
+        ./RayTracer.exe
