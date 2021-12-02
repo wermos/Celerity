@@ -20,11 +20,11 @@ A ray-tracing engine, written using [this book](https://raytracing.github.io/boo
 		- For more help, you can visit the [CMake docs](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html).
 	* To pass in a specific build type, you can append `-DCMAKE_BUILD_TYPE=[type]` to the above command. The choices for `[type]` are `Debug`, `Release`, `RelWithDebInfo`, `MinSizeRel`, and `Profile`.
 	    - All the build types except for `Profile` are available for all CMake projects by default.
-		- The `Profile` build type is simply a release build but with instrumentation-related code packaged along with it. This allows for benchmarking the code.
+		- The `Profile` build type is simply a Release build but with instrumentation related code packaged along with it. This allows for benchmarking the code.
 3. Run the executable.
-    * The executable will be in `build/Tracer/`. The name of the executable `RayTracer` (Linux) or `RayTrace.exe` (Windows).
+    * The executable will be in `build/Tracer/`. The name of the executable `RayTracer` (Linux) or `RayTracer.exe` (Windows).
 
 # Benchmarks
 The benchmarks for the code are stored in the current working directory from where the executable is run in a file whose default name is `results.json`.
 
-To see a nice visual depiction of all the profiling data, one can simply upload the output `.json` file into [Perfetto UI](https://ui.perfetto.dev/).
+To see a nice visual depiction of all the profiling data, one can simply upload the `.json` file into [Perfetto UI](https://ui.perfetto.dev/).
