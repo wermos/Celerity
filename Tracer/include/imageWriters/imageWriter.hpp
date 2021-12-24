@@ -11,13 +11,13 @@ class imageWriter {
 	public:
 		imageWriter(const int imageWidth, const int imageHeight);
 
-		void writeToPNG(const color c) {
+		void writeToPNGBuffer(const color c) {
 			m_pngData[m_pngDataCounter++] = static_cast<uint8_t>(c.r());
 			m_pngData[m_pngDataCounter++] = static_cast<uint8_t>(c.g());
 			m_pngData[m_pngDataCounter++] = static_cast<uint8_t>(c.b());
 		}
 
-		void writeToJPG(const color c) {
+		void writeToJPGBuffer(const color c) {
 			m_jpgData[m_jpgDataCounter++] = static_cast<uint8_t>(c.r());
 			m_jpgData[m_jpgDataCounter++] = static_cast<uint8_t>(c.g());
 			m_jpgData[m_jpgDataCounter++] = static_cast<uint8_t>(c.b());
