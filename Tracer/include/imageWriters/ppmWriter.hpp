@@ -11,8 +11,8 @@ class ppmWriter {
 	public:
 		ppmWriter(const int imageWidth, const int imageHeight);
 
-		void write(const color c) {
-			if (m_useStandardOutput) {
+		void writeToBuffer(const color c) {
+			if constexpr (m_useStandardOutput) {
 				std::cout << c << "\n";
 			} else {
 				m_file << c << "\n";
@@ -20,7 +20,7 @@ class ppmWriter {
 		}
 
 		void write(const int r, const int g, const int b) {
-			if (m_useStandardOutput) {
+			if constexpr (m_useStandardOutput) {
 				std::cout << r << " " << g << " " << b << "\n";
 			} else {
 				m_file << r << " " << g << " " << b << "\n";
