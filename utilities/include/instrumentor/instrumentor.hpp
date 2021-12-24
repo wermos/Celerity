@@ -22,6 +22,8 @@
 		#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
 		#define FUNCTION__NAME __PRETTY_FUNCTION__
 		#elif defined(_MSC_VER)
+		// The following function was thrown into an anonymous namespace to prevent
+		// users from accessing it from other files
 		namespace {
 			// This function exists to delete the "__cdecl" part of the function
 			// name from the __FUNCSIG__ output
@@ -137,8 +139,7 @@ class Instrumentor {
 
 	private:
 		// Making the constructor private so as to prevent users from constructing an object
-		Instrumentor()
-		{}
+		Instrumentor() {}
 
 		std::string m_sessionName = "None";
 		bool m_activeSession = false;
