@@ -1,7 +1,7 @@
 // STL includes
 #include <iostream>
-#include <array>
 #include <thread>
+#include <functional>
 #include <atomic>
 
 // Math includes
@@ -66,18 +66,17 @@ color rayColor(const ray& r, const HittableList& world, int depth) {
 	//smooth and linear color gradient.
 }
 
-void render(std::atomic<int> scanLinesLeft, int imageWidth, int imageHeight,
-			HittableList& world, int maxRayDepth, Camera& camera, int samplesPerPixel,
+void render(std::atomic<int>& scanLinesLeft, const int imageWidth, const int imageHeight,
+			const HittableList& world, const int maxRayDepth, const Camera& camera, const int samplesPerPixel,
 			imageWriter& iw, ppmWriter& pw) {
 	while (scanLinesLeft > 0) {
 		std::cerr << "\rScanlines remaining: " << scanLinesLeft << " " << std::flush;
-		scanLinesLeft--;
 
 		for (int i = 0; i < imageWidth; ++i) {
 			color pixelColor;
 			for (int s = 0; s < samplesPerPixel; ++s) {
 				auto u = (i + randomDouble()) / (imageWidth - 1);
-				auto v = (j + randomDouble()) / (imageHeight - 1);
+				auto v = (scanLinesLeft + randomDouble()) / (imageHeight - 1);
 
 				ray r = camera.getRay(u, v);
 
@@ -86,10 +85,12 @@ void render(std::atomic<int> scanLinesLeft, int imageWidth, int imageHeight,
 
 			pixelColor.combine(samplesPerPixel);
 
-			pw.write(pixelColor);
+			pw.writeToBuffer(pixelColor);
 			iw.writeToPNGBuffer(pixelColor);
 			iw.writeToJPGBuffer(pixelColor);
 		}
+
+		scanLinesLeft--;
 	}
 }
 
@@ -122,28 +123,30 @@ int main() {
 		Camera camera;
 
 		//Initialize file writers
-		ppmWriter pw(imageWidth, imageHeight, false);
+		ppmWriter pw(imageWidth, imageHeight);
 		imageWriter iw(imageWidth, imageHeight);
 
 		// Thread-related initializations
-		constexpr int numThreads = std::thread::hardware_concurrency();
-		auto threadPool = std::array<std::thread, numThreads>();
+		const auto numThreads = std::thread::hardware_concurrency();
+		auto threadPool = new std::thread[numThreads];
 		//This will be modified by multiple threads so it needs to be thread-safe
 		std::atomic<int> scanLinesLeft = imageHeight - 1;
 
 		// Kick off each thread with the render() task
 		for (int i = 0; i < numThreads; ++i) {
-			threadPool[i] = std::thread(render, scanLinesLeft, imageWidth, imageHeight,
-										world, maxRayDepth, camera, samplesPerPixel,
-										iw, pw);
+			threadPool[i] = std::thread(render, std::ref(scanLinesLeft), imageWidth, imageHeight,
+										std::cref(world), maxRayDepth, std::cref(camera),
+										samplesPerPixel, std::ref(iw), std::ref(pw));
 		}
 
 		std::cerr << "\n";
 
 		// Wait for all threads to finish their tasks
-		for (auto& t: threadPool) {
-			t.join();
+		for (int i = 0; i < numThreads; ++i) {
+			threadPool[i].join();
 		}
+
+		delete[] threadPool;
 
 		// Write image file to disk
 		if (iw.writePNG() != 0) {

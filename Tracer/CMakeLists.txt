@@ -7,6 +7,8 @@ project(RayTracer VERSION 0.4.3)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+find_package(Threads REQUIRED) # TODO: Make this optional
+
 # Add a Profile build type to generate runtime information
 # Update the documentation string of CMAKE_BUILD_TYPE for GUIs
 set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
@@ -48,3 +50,4 @@ endforeach()
 target_include_directories(RayTracer PUBLIC ../shared)
 
 target_link_libraries(RayTracer PUBLIC utilities)
+target_link_libraries(RayTracer PUBLIC ${CMAKE_THREAD_LIBS_INIT})
