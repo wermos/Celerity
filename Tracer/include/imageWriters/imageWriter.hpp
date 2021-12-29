@@ -17,10 +17,22 @@ class imageWriter {
 			m_pngData[m_pngDataCounter++] = static_cast<uint8_t>(c.b());
 		}
 
+		void writeToPNGBuffer(int index, const color c) {
+			m_pngData[index++] = static_cast<uint8_t>(c.r());
+			m_pngData[index++] = static_cast<uint8_t>(c.g());
+			m_pngData[index] = static_cast<uint8_t>(c.b());
+		}
+
 		void writeToJPGBuffer(const color c) {
 			m_jpgData[m_jpgDataCounter++] = static_cast<uint8_t>(c.r());
 			m_jpgData[m_jpgDataCounter++] = static_cast<uint8_t>(c.g());
 			m_jpgData[m_jpgDataCounter++] = static_cast<uint8_t>(c.b());
+		}
+
+		void writeToJPGBuffer(int index, const color c) {
+			m_jpgData[index++] = static_cast<uint8_t>(c.r());
+			m_jpgData[index++] = static_cast<uint8_t>(c.g());
+			m_jpgData[index] = static_cast<uint8_t>(c.b());
 		}
 
 		//TODO: Explore the stbi_write_png_func and stbi_write_jpg_func functions
