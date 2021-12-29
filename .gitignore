@@ -7,3 +7,8 @@ build/*
 
 # Clangd
 .cache/*
+
+# Build output
+*.png
+*.jpg
+*.json
