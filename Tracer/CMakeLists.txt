@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(RayTracer VERSION 0.4.3)
+project(RayTracer VERSION 0.4.3.2)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+set(THREADS_THREAD_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED) # TODO: Make this optional
 
 # Add a Profile build type to generate runtime information
