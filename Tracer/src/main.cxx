@@ -1,8 +1,9 @@
 // STL includes
-#include <iostream>
-#include <thread>
-#include <functional>
-#include <atomic>
+#include <iostream> // For std::cerr and std::cout
+#include <thread> // For std::thread
+#include <functional> // For std::ref and std::cref
+#include <atomic> // For std:atomic<T>
+#include <syncstream> // For std::osyncstream
 
 // Math includes
 #include "vec3.hpp"
@@ -67,16 +68,21 @@ color rayColor(const ray& r, const HittableList& world, int depth) {
 }
 
 void render(std::atomic<int>& scanLinesLeft, const int imageWidth, const int imageHeight,
-			const HittableList& world, const int maxRayDepth, const Camera& camera, const int samplesPerPixel,
-			imageWriter& iw, ppmWriter& pw) {
-	while (scanLinesLeft > 0) {
-		std::cerr << "\rScanlines remaining: " << scanLinesLeft << " " << std::flush;
+			const HittableList& world, const int maxRayDepth, const Camera& camera,
+			const int samplesPerPixel, imageWriter& iw) {
+	while (scanLinesLeft >= 0) {
+		int currentRow = scanLinesLeft;
+		scanLinesLeft--;
+		currentRow = imageHeight - currentRow - 1;
+
+		std::osyncstream sync_log(std::clog);
+		sync_log << "\rScanlines remaining: " << scanLinesLeft << " " << std::flush;
 
 		for (int i = 0; i < imageWidth; ++i) {
 			color pixelColor;
 			for (int s = 0; s < samplesPerPixel; ++s) {
 				auto u = (i + randomDouble()) / (imageWidth - 1);
-				auto v = (scanLinesLeft + randomDouble()) / (imageHeight - 1);
+				auto v = (currentRow + randomDouble()) / (imageHeight - 1);
 
 				ray r = camera.getRay(u, v);
 
@@ -85,12 +91,10 @@ void render(std::atomic<int>& scanLinesLeft, const int imageWidth, const int ima
 
 			pixelColor.combine(samplesPerPixel);
 
-			pw.writeToBuffer(pixelColor);
-			iw.writeToPNGBuffer(pixelColor);
-			iw.writeToJPGBuffer(pixelColor);
+			iw.writeToPNGBuffer(currentRow * imageWidth + i, pixelColor);
+			iw.writeToJPGBuffer(currentRow * imageWidth + i, pixelColor);
 		}
 
-		scanLinesLeft--;
 	}
 }
 
@@ -123,7 +127,8 @@ int main() {
 		Camera camera;
 
 		//Initialize file writers
-		ppmWriter pw(imageWidth, imageHeight);
+		// Making a PPM while using multiple threads is a massive pain and not worth it.
+		// ppmWriter pw(imageWidth, imageHeight);
 		imageWriter iw(imageWidth, imageHeight);
 
 		// Thread-related initializations
@@ -136,10 +141,8 @@ int main() {
 		for (int i = 0; i < numThreads; ++i) {
 			threadPool[i] = std::thread(render, std::ref(scanLinesLeft), imageWidth, imageHeight,
 										std::cref(world), maxRayDepth, std::cref(camera),
-										samplesPerPixel, std::ref(iw), std::ref(pw));
+										samplesPerPixel, std::ref(iw));
 		}
-
-		std::cerr << "\n";
 
 		// Wait for all threads to finish their tasks
 		for (int i = 0; i < numThreads; ++i) {
@@ -147,6 +150,8 @@ int main() {
 		}
 
 		delete[] threadPool;
+
+		std::clog << "\n";
 
 		// Write image file to disk
 		if (iw.writePNG() != 0) {
@@ -161,7 +166,7 @@ int main() {
 			std::cout << "An error occurred while generating the JPG image.\n";
 		}
 
-		std::cerr << "Done.\n";
+		std::clog << "Done.\n";
 	}
 	Instrumentor::get().endSession();
 }
