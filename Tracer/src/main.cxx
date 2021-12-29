@@ -71,18 +71,18 @@ void render(std::atomic<int>& scanLinesLeft, const int imageWidth, const int ima
 			const HittableList& world, const int maxRayDepth, const Camera& camera,
 			const int samplesPerPixel, imageWriter& iw) {
 	while (scanLinesLeft >= 0) {
-		int currentRow = scanLinesLeft;
+		int currentImageRow = scanLinesLeft;
 		scanLinesLeft--;
-		currentRow = imageHeight - currentRow - 1;
+		int bufferRow = imageHeight - currentImageRow - 1;
 
-		std::osyncstream sync_log(std::clog);
-		sync_log << "\rScanlines remaining: " << scanLinesLeft << " " << std::flush;
+		std::osyncstream syncedLog(std::clog);
+		syncedLog << "\rScanlines remaining: " << currentImageRow << " " << std::flush;
 
 		for (int i = 0; i < imageWidth; ++i) {
 			color pixelColor;
 			for (int s = 0; s < samplesPerPixel; ++s) {
 				auto u = (i + randomDouble()) / (imageWidth - 1);
-				auto v = (currentRow + randomDouble()) / (imageHeight - 1);
+				auto v = (currentImageRow + randomDouble()) / (imageHeight - 1);
 
 				ray r = camera.getRay(u, v);
 
@@ -91,8 +91,8 @@ void render(std::atomic<int>& scanLinesLeft, const int imageWidth, const int ima
 
 			pixelColor.combine(samplesPerPixel);
 
-			iw.writeToPNGBuffer(currentRow * imageWidth + i, pixelColor);
-			iw.writeToJPGBuffer(currentRow * imageWidth + i, pixelColor);
+			iw.writeToJPGBuffer(3 * (bufferRow * imageWidth + i), pixelColor);
+			iw.writeToPNGBuffer(3 * (bufferRow * imageWidth + i), pixelColor);
 		}
 
 	}
