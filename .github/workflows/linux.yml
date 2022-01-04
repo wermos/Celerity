@@ -48,5 +48,5 @@ jobs:
     
       - name: Run executable
         run: |
-          cd build/Tracer
-          ./RayTracer
+          cd build/Celerity
+          ./Celerity
