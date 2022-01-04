@@ -1,4 +1,4 @@
-name: Linux GCC
+name: Linux
 on:
   push:
     branches: main
@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        gcc-version: [ 10 ] #kept it like this to allow for future additions in the build matrix
+        gcc-version: [ 11 ] #kept it like this to allow for future additions in the build matrix
         BUILD_TYPE: [ Release, Debug, Profile ]
 
     name: Ubuntu 20.04 (GCC ${{ matrix.gcc-version }}) (${{ matrix.BUILD_TYPE}} Build)
@@ -17,9 +17,11 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-get update -q
           sudo apt-get install -yq --no-install-recommends \
-                               gcc-${{ matrix.gcc-version }}
+                               gcc-${{ matrix.gcc-version }} \
+                               g++-${{ matrix.gcc-version }}
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
