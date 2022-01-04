@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(RayTracer VERSION 0.4.3.2)
+project(Celerity VERSION 0.4.3.2)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -40,16 +40,14 @@ file(GLOB_RECURSE SOURCES
 	)
 
 # add the executable
-add_executable(RayTracer ${SOURCES})
+add_executable(Celerity ${SOURCES})
 
-#message(STATUS "The value of INCLUDE_DIRS is ${INCLUDE_DIRS}")
-target_include_directories(RayTracer PUBLIC include)
+target_include_directories(Celerity PUBLIC include)
 foreach(DIR ${INCLUDE_DIRS})
-	#message(STATUS "${DIR} was just added to target_include_directories.")
-	target_include_directories(RayTracer PUBLIC ${DIR})
+	target_include_directories(Celerity PUBLIC ${DIR})
 endforeach()
 
-target_include_directories(RayTracer PUBLIC ../shared)
+target_include_directories(Celerity PUBLIC ../shared)
 
-target_link_libraries(RayTracer PUBLIC utilities)
-target_link_libraries(RayTracer PUBLIC ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(Celerity PUBLIC utilities)
+target_link_libraries(Celerity PUBLIC ${CMAKE_THREAD_LIBS_INIT})
