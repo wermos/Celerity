@@ -9,7 +9,7 @@
 #include <mutex>
 #include <thread>
 
-#define PROFILE 1
+#define PROFILE 1 //TODO: Add Profile build mode
 
 #if PROFILE == 1
 	/**
