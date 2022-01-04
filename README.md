@@ -30,6 +30,6 @@ A ray-tracing engine, written using [this book](https://raytracing.github.io/boo
     * The executable will be in `build/Tracer/`. The name of the executable `RayTracer` (Linux) or `RayTracer.exe` (Windows).
 
 # Benchmarks
-The benchmarks for the code are stored in a file in the current working directory. The default name for the file is `results.json`, and currently there is no way to change it other than modifying the source code.
+The benchmarks for the code are stored in a file in the current working directory. The default name for the file is `results.json`, and currently there is no way to change it (other than modifying the source code).
 
 To see a nice visual depiction of all the profiling data, one can simply upload the `.json` file into [Perfetto UI](https://ui.perfetto.dev/).
