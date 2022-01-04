@@ -11,4 +11,5 @@ build/*
 # Build output
 *.png
 *.jpg
+*.ppm
 *.json
