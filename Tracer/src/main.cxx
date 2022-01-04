@@ -3,28 +3,20 @@
 #include <thread> // For std::thread
 #include <functional> // For std::ref and std::cref
 #include <atomic> // For std:atomic<T>
-#include <syncstream> // For std::osyncstream
-
-// Math includes
-#include "vec3.hpp"
-#include "color.hpp"
-#include "ray.hpp"
 
 // Object-related includes
-#include "hittable.hpp"
 #include "sphere.hpp"
 #include "hittableList.hpp"
 
 // Material-related includes
-//#include "material.hpp"
 #include "lambertian.hpp"
 #include "metal.hpp"
 
 // Camera includes
 #include "camera.hpp"
 
-// Utility includes
-#include "utility.hpp"
+// Renderer includes
+#include "renderer.hpp"
 
 // Image writer includes
 #include "ppmWriter.hpp"
@@ -35,68 +27,6 @@
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
-
-color rayColor(const ray& r, const HittableList& world, int depth) {
-	// If we've exceeded the ray bounce limit, no more light is gathered.
-	if (depth <= 0) {
-		return color(0, 0, 0);
-	}
-
-	HitRecord record;
-
-	if (world.hit(r, 0.001, infinity, record)) {
-		//TODO: Investigate whether it is worth it to make the tolerance customizable.
-		ray scattered;
-		color attenuation;
-
-		if (record.material->scatter(r, record, attenuation, scattered)) {
-			return attenuation * rayColor(scattered, world, depth - 1);
-		}
-
-		return color(0, 0, 0);
-	}
-
-	vec3 unitDirection = unitVector(r.direction());
-	//normalizing makes all the coordinates vary from [-1, 1] (inclusive)
-
-	auto t = 0.5 * (unitDirection.y() + 1.0);
-	//This is a trick to make the y value vary from [0, 1]
-
-	return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
-	//This is a linear combination of the start and end colors to make a
-	//smooth and linear color gradient.
-}
-
-void render(std::atomic<int>& scanLinesLeft, const int imageWidth, const int imageHeight,
-			const HittableList& world, const int maxRayDepth, const Camera& camera,
-			const int samplesPerPixel, imageWriter& iw) {
-	while (scanLinesLeft >= 0) {
-		int currentImageRow = scanLinesLeft;
-		scanLinesLeft--;
-		int bufferRow = imageHeight - currentImageRow - 1;
-
-		std::osyncstream syncedLog(std::clog);
-		syncedLog << "\rScanlines remaining: " << currentImageRow << " " << std::flush;
-
-		for (int i = 0; i < imageWidth; ++i) {
-			color pixelColor;
-			for (int s = 0; s < samplesPerPixel; ++s) {
-				auto u = (i + randomDouble()) / (imageWidth - 1);
-				auto v = (currentImageRow + randomDouble()) / (imageHeight - 1);
-
-				ray r = camera.getRay(u, v);
-
-				pixelColor += rayColor(r, world, maxRayDepth);
-			}
-
-			pixelColor.combine(samplesPerPixel);
-
-			iw.writeToJPGBuffer(3 * (bufferRow * imageWidth + i), pixelColor);
-			iw.writeToPNGBuffer(3 * (bufferRow * imageWidth + i), pixelColor);
-		}
-
-	}
-}
 
 int main() {
 	Instrumentor::get().beginSession("main");
@@ -137,11 +67,11 @@ int main() {
 		//This will be modified by multiple threads so it needs to be thread-safe
 		std::atomic<int> scanLinesLeft = imageHeight - 1;
 
-		// Kick off each thread with the render() task
+		// Kick off each thread with the Renderer::multiCoreRender() task
 		for (int i = 0; i < numThreads; ++i) {
-			threadPool[i] = std::thread(render, std::ref(scanLinesLeft), imageWidth, imageHeight,
-										std::cref(world), maxRayDepth, std::cref(camera),
-										samplesPerPixel, std::ref(iw));
+			threadPool[i] = std::thread(Renderer::multiCoreRender, std::ref(scanLinesLeft),
+										imageWidth, imageHeight, std::cref(world), maxRayDepth,
+										std::cref(camera), samplesPerPixel, std::ref(iw));
 		}
 
 		// Wait for all threads to finish their tasks
