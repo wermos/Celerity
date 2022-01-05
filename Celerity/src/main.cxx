@@ -1,5 +1,5 @@
 // STL includes
-#include <iostream> // For std::cerr and std::cout
+#include <iostream> // For std::clog and std::cout
 #include <thread> // For std::thread
 #include <functional> // For std::ref and std::cref
 #include <atomic> // For std:atomic<T>
@@ -29,16 +29,16 @@
 #include "stb_image_write.h"
 
 int main() {
-	Instrumentor::get().beginSession("main");
+	Instrumentor::get().beginSession("Celerity");
 	{
 		PROFILE_FUNCTION();
 
 		// Image
 		constexpr auto aspectRatio = 16.0 / 9.0;
-		constexpr int imageWidth = 1920;
-		constexpr int imageHeight = static_cast<int>(imageWidth / aspectRatio);
-		constexpr int samplesPerPixel = 100;
-		constexpr int maxRayDepth = 50;
+		constexpr std::size_t imageWidth = 1920;
+		constexpr std::size_t imageHeight = static_cast<std::size_t>(imageWidth / aspectRatio);
+		constexpr std::size_t samplesPerPixel = 100;
+		constexpr std::size_t maxRayDepth = 50;
 
 		// World
 		HittableList world;
@@ -68,14 +68,14 @@ int main() {
 		std::atomic<int> scanLinesLeft = imageHeight - 1;
 
 		// Kick off each thread with the Renderer::multiCoreRender() task
-		for (int i = 0; i < numThreads; ++i) {
+		for (auto i = 0; i < numThreads; ++i) {
 			threadPool[i] = std::thread(Renderer::multiCoreRender, std::ref(scanLinesLeft),
 										imageWidth, imageHeight, std::cref(world), maxRayDepth,
 										std::cref(camera), samplesPerPixel, std::ref(iw));
 		}
 
 		// Wait for all threads to finish their tasks
-		for (int i = 0; i < numThreads; ++i) {
+		for (auto i = 0; i < numThreads; ++i) {
 			threadPool[i].join();
 		}
 
