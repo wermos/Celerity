@@ -37,7 +37,7 @@ namespace Renderer {
 						  const Camera& camera, const int samplesPerPixel,
 						  imageWriter& iw, ppmWriter& pw) {
 		for (int j = imageHeight - 1; j >= 0; --j) {
-			std::cerr << "\rScanlines remaining: " << j << " " << std::flush;
+			std::clog << "\rScanlines remaining: " << j << " " << std::flush;
 
 			for (int i = 0; i < imageWidth; ++i) {
 				color pixelColor;
@@ -61,7 +61,7 @@ namespace Renderer {
 
 	void multiCoreRender(std::atomic<int>& scanLinesLeft, const int imageWidth,
 						 const int imageHeight, const HittableList& world,
-						 const int maxRayDepth, const Camera& camera, 
+						 const int maxRayDepth, const Camera& camera,
 						 const int samplesPerPixel, imageWriter& iw) {
 		while (scanLinesLeft >= 0) {
 			int currentImageRow = scanLinesLeft;
