@@ -29,10 +29,6 @@
 #include "stb_image_write.h"
 
 int main() {
-	Instrumentor::get().beginSession("Celerity");
-	{
-		PROFILE_FUNCTION();
-
 		// Image
 		constexpr auto aspectRatio = 16.0 / 9.0;
 		constexpr std::size_t imageWidth = 1920;
@@ -45,8 +41,8 @@ int main() {
 
 		auto groundMaterial = std::make_shared<Lambertian>(color(0.8, 0.8, 0.0));
 		auto centerMaterial = std::make_shared<Lambertian>(color(0.7, 0.3, 0.3));
-		auto leftMaterial   = std::make_shared<Metal>(color(0.8, 0.8, 0.8));
-		auto rightMaterial  = std::make_shared<Metal>(color(0.8, 0.6, 0.2));
+		auto leftMaterial   = std::make_shared<Metal>(color(0.8, 0.8, 0.8), 0.3);
+		auto rightMaterial  = std::make_shared<Metal>(color(0.8, 0.6, 0.2), 1.0);
 
 		world.add(std::make_shared<Sphere>(point3( 0.0, -100.5, -1.0), 100.0, groundMaterial));
 		world.add(std::make_shared<Sphere>(point3( 0.0,    0.0, -1.0),   0.5, centerMaterial));
@@ -97,6 +93,4 @@ int main() {
 		}
 
 		std::clog << "Done.\n";
-	}
-	Instrumentor::get().endSession();
 }
