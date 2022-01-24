@@ -16,7 +16,7 @@ class Lambertian : public Material {
             const ray& in, const HitRecord& record, color& attenuation, ray& scattered
         ) const override;
 
-    public:
+    private:
         color m_albedo;
 };
 
