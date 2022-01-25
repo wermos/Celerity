@@ -11,6 +11,7 @@
 // Material-related includes
 #include "lambertian.hpp"
 #include "metal.hpp"
+#include "dielectric.hpp"
 
 // Camera includes
 #include "camera.hpp"
@@ -40,13 +41,14 @@ int main() {
 		HittableList world;
 
 		auto groundMaterial = std::make_shared<Lambertian>(color(0.8, 0.8, 0.0));
-		auto centerMaterial = std::make_shared<Lambertian>(color(0.7, 0.3, 0.3));
-		auto leftMaterial   = std::make_shared<Metal>(color(0.8, 0.8, 0.8), 0.3);
-		auto rightMaterial  = std::make_shared<Metal>(color(0.8, 0.6, 0.2), 1.0);
+		auto centerMaterial = std::make_shared<Lambertian>(color(0.1, 0.2, 0.5));
+		auto leftMaterial   = std::make_shared<Dielectric>(1.5);
+		auto rightMaterial  = std::make_shared<Metal>(color(0.8, 0.6, 0.2), 0.0);
 
 		world.add(std::make_shared<Sphere>(point3( 0.0, -100.5, -1.0), 100.0, groundMaterial));
 		world.add(std::make_shared<Sphere>(point3( 0.0,    0.0, -1.0),   0.5, centerMaterial));
 		world.add(std::make_shared<Sphere>(point3(-1.0,    0.0, -1.0),   0.5, leftMaterial));
+		world.add(std::make_shared<Sphere>(point3(-1.0,    0.0, -1.0),  -0.4, leftMaterial));
 		world.add(std::make_shared<Sphere>(point3( 1.0,    0.0, -1.0),   0.5, rightMaterial));
 
 		// Camera
