@@ -16,6 +16,11 @@ bool Dielectric::scatter(
 	vec3 direction;
 
 	if (cannotRefract || reflectance(cosTheta, refractionRatio) > randomDouble()) {
+		// The idea behind the second condition is that, if the reflectance is r
+		// (where 0 <= r <= 1), then we have to reflect the ray 100 * r% of the time.
+		// To achieve this, we take a Monte Carlo approach and generate random doubles
+		// to compare with.
+		// For example, if r = 0.2, then we must reflect the ray 20% of the time.
 		direction = vec3::reflect(unitDirection, record.normal);
 	} else {
 		direction = vec3::refract(unitDirection, record.normal, refractionRatio);
