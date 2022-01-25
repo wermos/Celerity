@@ -129,8 +129,8 @@ class vec3 {
 		Float m_e[3];
 
 		static const Float randomFloat(Float min, Float max) {
-			// Returns a random real in [min, max).
-			static std::uniform_real_distribution<Float> distribution(min, max);
+			// Returns a random real in [min, max].
+			static std::uniform_real_distribution<Float> distribution(min, std::nextafter(max));
 #ifdef USE_DOUBLE_AS_FLOAT_TYPE
 			static std::mt19937_64 generator;
 #else
