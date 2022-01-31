@@ -19,8 +19,8 @@ inline Float degreesToRadians(Float degrees) {
 }
 
 inline Float randomDouble() {
-	// Returns a random real in [0,1].
-	static std::uniform_real_distribution<Float> distribution(0.0, std::nextafter(1.0));
+	// Returns a random real in [0, 1].
+	static std::uniform_real_distribution<Float> distribution(0.0, std::nextafter(1.0, std::numeric_limits<Float>::infinity()));
 #ifdef USE_DOUBLE_AS_FLOAT_TYPE
 			static std::mt19937_64 generator;
 #else
@@ -32,7 +32,7 @@ inline Float randomDouble() {
 
 inline Float randomDouble(Float min, Float max) {
 	// Returns a random real in [min, max].
-	static std::uniform_real_distribution<Float> distribution(min, std::nextafter(max));
+	static std::uniform_real_distribution<Float> distribution(min, std::nextafter(max, std::numeric_limits<Float>::infinity()));
 #ifdef USE_DOUBLE_AS_FLOAT_TYPE
 	static std::mt19937_64 generator;
 #else

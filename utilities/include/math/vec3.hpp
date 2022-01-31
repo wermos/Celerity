@@ -2,6 +2,7 @@
 #define VEC3_HPP
 
 #include <cmath>
+#include <limits>
 #include <ostream>
 #include <random>
 #include <numbers>
@@ -130,7 +131,7 @@ class vec3 {
 
 		static const Float randomFloat(Float min, Float max) {
 			// Returns a random real in [min, max].
-			static std::uniform_real_distribution<Float> distribution(min, std::nextafter(max));
+			static std::uniform_real_distribution<Float> distribution(min, std::nextafter(max, std::numeric_limits<Float>::infinity()));
 #ifdef USE_DOUBLE_AS_FLOAT_TYPE
 			static std::mt19937_64 generator;
 #else
