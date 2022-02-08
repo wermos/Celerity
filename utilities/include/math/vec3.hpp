@@ -108,6 +108,16 @@ class vec3 {
 			return perpendicularComponent + parallelComponent;
 		}
 
+		static vec3 randomInUnitDisk() {
+			while (true) {
+				auto p = vec3(randomFloat(-1, 1), randomFloat(-1, 1), 0);
+				if (p.length_squared() >= 1) {
+					continue;
+				}
+				return p;
+			}
+		}
+
 		friend std::ostream& operator<<(std::ostream& out, const vec3& v);
 
 		friend vec3 operator+(const vec3& u, const vec3& v);

@@ -52,7 +52,13 @@ int main() {
 		world.add(std::make_shared<Sphere>(point3( 1.0,    0.0, -1.0),   0.5, rightMaterial));
 
 		// Camera
-		Camera camera(point3(-2, 2, 1), point3(0, 0, -1), vec3(0, 1, 0), 90, aspectRatio);
+		point3 lookFrom(3,3,2);
+		point3 lookAt(0,0,-1);
+		vec3 viewUp(0,1,0);
+		Float distanceToFocus = (lookFrom - lookAt).length();
+		Float aperture = 2.0;
+
+		Camera camera(lookFrom, lookAt, viewUp, 20, aspectRatio, aperture, distanceToFocus);
 
 		//Initialize file writers
 		// Making a PPM while using multiple threads is a massive pain and not worth it.

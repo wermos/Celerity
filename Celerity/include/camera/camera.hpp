@@ -11,7 +11,8 @@
 class Camera {
 	public:
 		Camera(point3 lookFrom, point3 lookAt, vec3 viewUp,
-			   double vfov, double aspectRatio) {
+			   Float vfov, Float aspectRatio, Float aperture,
+			   Float focusDistance) {
 			// vfov = vertical field-of-view, in degrees
 			const auto theta = degreesToRadians(vfov);
 			const auto h = tan(theta / 2);
@@ -22,18 +23,24 @@ class Camera {
 
 			// Now we have a complete orthonormal basis (u,v,w) to describe
 			// our camera’s orientation.
-			auto w = unitVector(lookFrom - lookAt);
-			auto u = unitVector(cross(viewUp, w));
-			auto v = cross(w, u);
+			w = unitVector(lookFrom - lookAt);
+			u = unitVector(cross(viewUp, w));
+			v = cross(w, u);
 
 			m_origin = lookFrom;
-			m_horizontal = viewportWidth * u;
-			m_vertical = viewportHeight * v;
-			m_lowerLeftCorner = m_origin - m_horizontal / 2 - m_vertical / 2 - w;
+			m_horizontal = focusDistance * viewportWidth * u;
+			m_vertical = focusDistance * viewportHeight * v;
+			m_lowerLeftCorner = m_origin - (m_horizontal / 2) - (m_vertical / 2) - (focusDistance * w);
+
+			lensRadius = aperture / 2;
 		}
 
 		const ray getRay(Float s, Float t) const {
-			return {m_origin, m_lowerLeftCorner + (s * m_horizontal) + (t * m_vertical) - m_origin};
+			vec3 rd = lensRadius * vec3::randomInUnitDisk();
+			vec3 offset = u * rd.x() + v * rd.y();
+
+			return {m_origin + offset,
+				m_lowerLeftCorner + (s * m_horizontal) + (t * m_vertical) - m_origin - offset};
 		}
 
 	private:
@@ -41,6 +48,8 @@ class Camera {
 		point3 m_lowerLeftCorner;
 		vec3 m_horizontal;
 		vec3 m_vertical;
+		vec3 u, v, w;
+		Float lensRadius;
 };
 
 #endif // CAMERA_HPP
