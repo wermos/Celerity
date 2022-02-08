@@ -30,7 +30,7 @@ jobs:
               --config ${{ matrix.BUILD_TYPE }} `
               -- /m:12
     
-    - name: Run executable
-      run: |
-        cd build/Celerity/${{ matrix.BUILD_TYPE }}
-        & "./Celerity.exe"
+#   - name: Run executable
+#      run: |
+#        cd build/Celerity/${{ matrix.BUILD_TYPE }}
+#        & "./Celerity.exe"

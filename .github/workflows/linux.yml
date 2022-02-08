@@ -46,7 +46,7 @@ jobs:
                 --config ${{ matrix.BUILD_TYPE }} \
                 -- -j2
     
-      - name: Run executable
-        run: |
-          cd build/Celerity
-          ./Celerity
+#      - name: Run executable
+#        run: |
+#          cd build/Celerity
+#          ./Celerity
