@@ -26,8 +26,8 @@
 // Profiling includes
 #include "instrumentor.hpp"
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
+// STB Image include
+#include "stb_image_library.hpp"
 
 HittableList randomScene() {
 	HittableList world;
