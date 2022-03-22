@@ -5,11 +5,9 @@
 # Build directory
 build/*
 
+# Docs
+docs/*
+
 # Clangd
 .cache/*
 
-# Build output
-*.png
-*.jpg
-*.ppm
-*.json
