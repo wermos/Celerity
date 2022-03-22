@@ -4,7 +4,10 @@ Celerity
 
 A multi-threaded ray-tracing engine in C++20, written using [this book](https://raytracing.github.io/books/RayTracingInOneWeekend.html) for inspiration and the theory behind the ideas.
 
-![The current rendered scene](./assets/images/pic.png)
+<figure>
+  <img src="./assets/images/pic.png" alt="The current rendered scene"/>
+  <figcaption>A 1280×720p scene with 487 spheres, and 500 samples per pixel.</figcaption>
+</figure>
 
 # Building the Project
 
