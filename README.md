@@ -1,6 +1,10 @@
-# Tracer [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![](https://tokei.rs/b1/github/wermos/Tracer)](https://tokei.rs/b1/github/wermos/Tracer) [![Windows](https://github.com/wermos/Tracer/actions/workflows/windows.yml/badge.svg)](https://github.com/wermos/Tracer/actions/workflows/windows.yml) [![Linux](https://github.com/wermos/Tracer/actions/workflows/linux.yml/badge.svg)](https://github.com/wermos/Tracer/actions/workflows/linux.yml)
+Celerity 
+====
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![](https://tokei.rs/b1/github/wermos/Tracer)](https://tokei.rs/b1/github/wermos/Tracer) [![Windows](https://github.com/wermos/Tracer/actions/workflows/windows.yml/badge.svg)](https://github.com/wermos/Tracer/actions/workflows/windows.yml) [![Linux](https://github.com/wermos/Tracer/actions/workflows/linux.yml/badge.svg)](https://github.com/wermos/Tracer/actions/workflows/linux.yml)
 
 A multi-threaded ray-tracing engine in C++20, written using [this book](https://raytracing.github.io/books/RayTracingInOneWeekend.html) for inspiration and the theory behind the ideas.
+
+![The current rendered scene](./assets/images/pic.png)
 
 # Building the Project
 
@@ -27,5 +31,4 @@ A multi-threaded ray-tracing engine in C++20, written using [this book](https://
 	    ```
 3. Run the executable.
     * The executable will be in `build/Celerity/`. The name of the executable `RayTracer` (Linux) or `RayTracer.exe` (Windows).
-4. After running, the program saves two images called `pic.jpg` and `pic.png` to the current working directory:
-![The current rendered scene](./"The Evolution of Celerity"/"pic (22).png")
+4. After running, the program saves two images called `pic.jpg` and `pic.png` to the current working directory.
