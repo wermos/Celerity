@@ -75,3 +75,6 @@ pic (21)       Same garbage, but I changed the build type to release and upped t
 
 pic (22)       Finally works! Runtime was ~32 mins. I used 500 samples, and the dimensions
                were the full 1280 x 720. Time to implement some optimizations.
+			   
+pic (23)       Made a full sized 1920 x 1080p image. Runtime was 75 mins. Same number of
+               samples as last time.
