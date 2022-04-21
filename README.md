@@ -6,7 +6,7 @@ A multi-threaded ray-tracing engine in C++20, written using [this book](https://
 
 <figure>
   <img src="./assets/images/pic.png" alt="The current rendered scene"/>
-  <figcaption>A 1280×720p scene with 487 spheres, and 500 samples per pixel.</figcaption>
+  <figcaption>A 1920×1080p scene with 487 spheres, and 500 samples per pixel.</figcaption>
 </figure>
 
 # Building the Project
