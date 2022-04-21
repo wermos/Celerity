@@ -13,58 +13,114 @@
 
 class vec3 {
 	public:
-		vec3() : m_e{0, 0, 0} {}
-		vec3(Float e0, Float e1, Float e2) : m_e{e0, e1, e2} {}
-		vec3(const color& c) : m_e{c.raw_r(), c.raw_b(), c.raw_g()} {}
+		constexpr vec3() noexcept : m_e{0, 0, 0} {}
+		constexpr vec3(Float e0, Float e1, Float e2) noexcept : m_e{e0, e1, e2} {}
+		constexpr vec3(const color& c) noexcept : m_e{c.raw_r(), c.raw_b(), c.raw_g()} {}
 
-		Float x() const {
+		constexpr Float x() const {
 			return m_e[0];
 		}
 
-		Float y() const {
+		constexpr Float y() const {
 			return m_e[1];
 		}
 
-		Float z() const {
+		constexpr Float z() const {
 			return m_e[2];
 		}
 
-
-		vec3 operator-() const {
+		constexpr vec3 operator-() const {
 			return vec3(-m_e[0], -m_e[1], -m_e[2]);
 		}
 
-		Float operator[](int i) const {
+		constexpr const Float& operator[](int i) const {
 			return m_e[i];
 		}
 
-		Float& operator[](int i) {
+		constexpr Float& operator[](int i) {
 			return m_e[i];
 		}
 
-		vec3& operator+=(const vec3& v) {
-			m_e[0] += v.m_e[0];
-			m_e[1] += v.m_e[1];
-			m_e[2] += v.m_e[2];
-			return *this;
+		friend constexpr vec3& operator+=(vec3& u, const vec3& v) {
+			u.m_e[0] += v.m_e[0];
+			u.m_e[1] += v.m_e[1];
+			u.m_e[2] += v.m_e[2];
+			return u;
 		}
 
-		vec3& operator*=(const Float t) {
-			m_e[0] *= t;
-			m_e[1] *= t;
-			m_e[2] *= t;
-			return *this;
+		friend constexpr vec3& operator-=(vec3& u, const vec3& v) {
+			u.m_e[0] -= v.m_e[0];
+			u.m_e[1] -= v.m_e[1];
+			u.m_e[2] -= v.m_e[2];
+			return u;
 		}
 
-		vec3& operator/=(const Float t) {
-			return *this *= (1 / t);
+		friend constexpr vec3& operator*=(vec3& v, const Float t) {
+			v.m_e[0] *= t;
+			v.m_e[1] *= t;
+			v.m_e[2] *= t;
+			return v;
 		}
 
-		Float inline length() const {
+		friend constexpr vec3& operator*=(const Float t, vec3& v) {
+			return v *= t;
+		}
+
+		friend constexpr vec3& operator/=(vec3& v, const Float t) {
+			return v *= (1 / t);
+		}
+
+		friend constexpr vec3 operator+(const vec3& u, const vec3& v) {
+			vec3 copy = u;
+			copy += v;
+			return copy;
+		}
+
+		friend constexpr vec3 operator-(const vec3& u, const vec3& v) {
+			vec3 copy = u;
+			copy -= v;
+			return copy;
+		}
+
+		friend constexpr vec3 operator*(const vec3& v, const Float t) {
+			vec3 copy = v;
+			copy *= t;
+			return copy;
+		}
+
+		friend constexpr vec3 operator*(const Float t, const vec3& v) {
+			vec3 copy = v;
+			copy *= t;
+			return copy;
+		}
+
+		friend constexpr vec3 operator/(const vec3& v, const Float t) {
+			vec3 copy = v;
+			copy /= t;
+			return copy;
+		}
+
+		constexpr static Float dot(const vec3& u, const vec3& v) {
+			return u.m_e[0] * v.m_e[0]
+				 + u.m_e[1] * v.m_e[1]
+				 + u.m_e[2] * v.m_e[2];
+		}
+
+		constexpr static vec3 cross(const vec3& u, const vec3& v) {
+			return vec3(u.m_e[1] * v.m_e[2] - u.m_e[2] * v.m_e[1],
+						u.m_e[2] * v.m_e[0] - u.m_e[0] * v.m_e[2],
+						u.m_e[0] * v.m_e[1] - u.m_e[1] * v.m_e[0]);
+		}
+
+		constexpr static vec3 unitVector(vec3 v) {
+			return v / v.length();
+		}
+
+		constexpr Float length() const {
 			return std::sqrt(length_squared());
 		}
 
-		Float inline length_squared() const {
+		constexpr Float length_squared() const {
 			return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
 		}
 
@@ -89,17 +145,17 @@ class vec3 {
 #endif
 		}
 
-		const bool nearZero() const {
+		constexpr bool nearZero() const {
 			// Returns true if the vector is close to zero in all dimensions.
 			const Float threshold = 1e-8;
 			return (fabs(m_e[0]) < threshold) && (fabs(m_e[1]) < threshold) && (fabs(m_e[2]) < threshold);
 		}
 
-		static const vec3 reflect(const vec3& v, const vec3& normal) {
+		constexpr static const vec3 reflect(const vec3& v, const vec3& normal) {
 			return v - 2 * dot(v, normal) * normal;
 		}
 
-		static const vec3 refract(
+		constexpr static const vec3 refract(
 			const vec3& incidentRay, const vec3& normal, Float refractiveIndexRatio) {
 			Float cosTheta = dot(-incidentRay, normal);
 
@@ -118,24 +174,12 @@ class vec3 {
 			}
 		}
 
-		friend std::ostream& operator<<(std::ostream& out, const vec3& v);
+		friend std::ostream& operator<<(std::ostream& out, const vec3& v) {
+			out << v.m_e[0] << " " << v.m_e[1] << " " << v.m_e[2];
+			return out;
+		}
 
-		friend vec3 operator+(const vec3& u, const vec3& v);
-
-		friend vec3 operator-(const vec3& u, const vec3& v);
-
-		friend vec3 operator*(const vec3& u, const vec3& v);
-		friend vec3 operator*(Float t, const vec3& v);
-		friend vec3 operator*(const vec3& v, Float t);
-
-		friend vec3 operator/(vec3 v, Float t);
-
-		friend Float dot(const vec3& u, const vec3& v);
-		friend vec3 cross(const vec3& u, const vec3& v);
-
-		friend vec3 unitVector(vec3 v);
-		//TODO: Make operator implementations depend on each other
-		//TODO: Change name of "unit_vector" function to "normalize"
+		//TODO: Change name of "unitVector" function to "normalize"
 	private:
 		Float m_e[3];
 

@@ -23,9 +23,9 @@ class Camera {
 
 			// Now we have a complete orthonormal basis (u,v,w) to describe
 			// our camera’s orientation.
-			w = unitVector(lookFrom - lookAt);
-			u = unitVector(cross(viewUp, w));
-			v = cross(w, u);
+			w = vec3::unitVector(lookFrom - lookAt);
+			u = vec3::unitVector(vec3::cross(viewUp, w));
+			v = vec3::cross(w, u);
 
 			m_origin = lookFrom;
 			m_horizontal = focusDistance * viewportWidth * u;

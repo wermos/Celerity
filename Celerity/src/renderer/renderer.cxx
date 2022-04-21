@@ -21,7 +21,7 @@ namespace Renderer {
 			return color(0, 0, 0);
 		}
 
-		vec3 unitDirection = unitVector(r.direction());
+		vec3 unitDirection = vec3::unitVector(r.direction());
 		//normalizing makes all the coordinates vary from [-1, 1] (inclusive)
 
 		auto t = 0.5 * (unitDirection.y() + 1.0);

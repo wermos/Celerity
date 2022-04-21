@@ -8,8 +8,8 @@ bool Dielectric::scatter(
 	attenuation = color(1.0, 1.0, 1.0);
 	Float refractionRatio = record.frontFace ? (1.0 / m_refractiveIndex) : m_refractiveIndex;
 
-	vec3 unitDirection = unitVector(in.direction());
-	Float cosTheta = dot(-unitDirection, record.normal);
+	vec3 unitDirection = vec3::unitVector(in.direction());
+	Float cosTheta = vec3::dot(-unitDirection, record.normal);
 	Float sinTheta = sqrt(1.0 - cosTheta * cosTheta);
 
 	bool cannotRefract = refractionRatio * sinTheta > 1.0;

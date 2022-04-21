@@ -3,7 +3,7 @@
 bool Sphere::hit(const ray& r, Float tMin, Float tMax, HitRecord& record) const {
     vec3 oc = r.origin() - m_center;
     auto a = r.direction().length_squared();
-    auto half_b = dot(oc, r.direction());
+    auto half_b = vec3::dot(oc, r.direction());
     auto c = oc.length_squared() - m_radius * m_radius;
 
     auto discriminant = half_b * half_b - a * c;
