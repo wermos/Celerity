@@ -23,9 +23,6 @@
 #include "ppmWriter.hpp"
 #include "imageWriter.hpp"
 
-// Profiling includes
-#include "instrumentor.hpp"
-
 // STB Image include
 #include "stb_image_library.hpp"
 
