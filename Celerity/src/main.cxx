@@ -96,6 +96,8 @@ int main() {
 		std::clog << "Finished scene initialization.\n";
 
 		//Initialize file writers
+		// TODO: Image writer API doesn't make sense fix it. One class should generate all types
+		// of images.
 		// Making a PPM while using multiple threads is a massive pain and not worth it.
 		// ppmWriter pw(imageWidth, imageHeight);
 		imageWriter iw(imageWidth, imageHeight);
