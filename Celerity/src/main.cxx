@@ -110,14 +110,14 @@ int main() {
 
 		std::clog << "Commencing ray tracing...";
 		// Kick off each thread with the Renderer::multiCoreRender() task
-		for (auto i = 0; i < numThreads; ++i) {
+		for (std::size_t i = 0; i < numThreads; ++i) {
 			threadPool[i] = std::thread(Renderer::multiCoreRender, std::ref(scanLinesLeft),
 										imageWidth, imageHeight, std::cref(world), maxRayDepth,
 										std::cref(camera), samplesPerPixel, std::ref(iw));
 		}
 
 		// Wait for all threads to finish their tasks
-		for (auto i = 0; i < numThreads; ++i) {
+		for (std::size_t i = 0; i < numThreads; ++i) {
 			threadPool[i].join();
 		}
 

@@ -124,7 +124,7 @@ class vec3 {
 			return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
 		}
 
-		static const vec3 randomInUnitSphere() {
+		static vec3 randomInUnitSphere() {
 			// Generate theta and phi for spherical coordinates, and return
 			// the Cartesian coordinates.
 
@@ -151,11 +151,11 @@ class vec3 {
 			return (fabs(m_e[0]) < threshold) && (fabs(m_e[1]) < threshold) && (fabs(m_e[2]) < threshold);
 		}
 
-		constexpr static const vec3 reflect(const vec3& v, const vec3& normal) {
+		constexpr static vec3 reflect(const vec3& v, const vec3& normal) {
 			return v - 2 * dot(v, normal) * normal;
 		}
 
-		constexpr static const vec3 refract(
+		constexpr static vec3 refract(
 			const vec3& incidentRay, const vec3& normal, Float refractiveIndexRatio) {
 			Float cosTheta = dot(-incidentRay, normal);
 
@@ -183,7 +183,7 @@ class vec3 {
 	private:
 		Float m_e[3];
 
-		static const Float randomFloat(Float min, Float max) {
+		static Float randomFloat(Float min, Float max) {
 			// Returns a random real in [min, max].
 			static std::uniform_real_distribution<Float> distribution(min, std::nextafter(max, std::numeric_limits<Float>::infinity()));
 #ifdef USE_DOUBLE_AS_FLOAT_TYPE

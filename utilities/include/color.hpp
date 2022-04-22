@@ -59,7 +59,7 @@ class color {
 
 		//TODO: Make operator implementations depend on each other
 
-		static const Float randomFloat() {
+		static Float randomFloat() {
 			// Returns a random real in [-1, 1].
 			static std::uniform_real_distribution<Float> distribution(-1, std::nextafter(1, std::numeric_limits<Float>::infinity()));
 #ifdef USE_DOUBLE_AS_FLOAT_TYPE
@@ -71,7 +71,7 @@ class color {
 			return distribution(generator);
 		}
 
-		static const Float randomFloat(Float min, Float max) {
+		static Float randomFloat(Float min, Float max) {
 			// Returns a random real in [min, max].
 			static std::uniform_real_distribution<Float> distribution(min, std::nextafter(max, std::numeric_limits<Float>::infinity()));
 #ifdef USE_DOUBLE_AS_FLOAT_TYPE
@@ -83,11 +83,11 @@ class color {
 			return distribution(generator);
 		}
 
-		static const color random() {
+		static color random() {
 			return {randomFloat(), randomFloat(), randomFloat()};
 		}
 
-		static const color random(Float min, Float max) {
+		static color random(Float min, Float max) {
 			return {randomFloat(min, max), randomFloat(min, max), randomFloat(min, max)};
 		}
 
