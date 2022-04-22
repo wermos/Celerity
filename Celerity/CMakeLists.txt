@@ -11,18 +11,6 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(THREADS_THREAD_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED) # TODO: Make this optional
 
-# Add a Profile build type to generate runtime information
-# Update the documentation string of CMAKE_BUILD_TYPE for GUIs
-set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
-	"Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel Profile."
-  	FORCE)
-
-# Do a #define PROFILE so that the conditionally included code is actually included.
-if (CMAKE_BUILD_TYPE STREQUAL "Profile")
-	set(CMAKE_BUILD_TYPE Release)
-	add_compile_definitions(PROFILE)
-endif()
-
 # add the utilities library
 add_subdirectory(../utilities utilities)
 
@@ -46,6 +34,13 @@ target_include_directories(Celerity PUBLIC include)
 foreach(DIR ${INCLUDE_DIRS})
 	target_include_directories(Celerity PUBLIC ${DIR})
 endforeach()
+
+# -Werror
+target_compile_options(Celerity PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+	$<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra -Wpedantic>
+	$<$<CXX_COMPILER_ID:Clang>:-Weverything> 
+)
 
 target_include_directories(Celerity PUBLIC ../shared)
 
