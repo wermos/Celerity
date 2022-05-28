@@ -43,15 +43,47 @@ class color {
 			return *this;
 		}
 
+		constexpr color& operator*=(const color& c) {
+			m_color[0] *= c.m_color[0];
+			m_color[1] *= c.m_color[1];
+			m_color[2] *= c.m_color[2];
+			return *this;
+		}
+
+		constexpr color& operator*=(Float t) {
+			m_color[0] *= t;
+			m_color[1] *= t;
+			m_color[2] *= t;
+			return *this;
+		}
+
 		color combine(int samplesPerPixel);
 
 		friend std::ostream& operator<<(std::ostream& out, const color& pixelColor);
 
-		friend constexpr color operator+(const color& c1, const color& c2);
+		friend constexpr color operator+(const color& c1, const color& c2) {
+			color copy = c1;
+			copy += c2;
+			return copy;
+		}
 
-		friend constexpr color operator*(const color& u, const color& v);
-		friend constexpr color operator*(Float t, const color& c);
-		//TODO: Make operator implementations depend on each other
+		friend constexpr color operator*(const color& c1, const color& c2) {
+			color copy = c1;
+			copy *= c2;
+			return copy;
+		}
+
+		friend constexpr color operator*(Float t, const color& c) {
+			color copy = c;
+			copy *= t;
+			return copy;
+		}
+
+		friend constexpr color operator*(const color& c, Float t) {
+			color copy = c;
+			copy *= t;
+			return copy;
+		}
 
 		static Float randomFloat() {
 			// Returns a random real number in [-1, 1].
