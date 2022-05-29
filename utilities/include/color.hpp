@@ -25,15 +25,15 @@ class color {
 		}
 
 		constexpr int r(Float max = 255.0) const {
-			return static_cast<int>(255.0 * m_color[0]);
+			return static_cast<int>(max * m_color[0]);
 		}
 
 		constexpr int g(Float max = 255.0) const {
-			return static_cast<int>(255.0 * m_color[1]);
+			return static_cast<int>(max * m_color[1]);
 		}
 
 		constexpr int b(Float max = 255.0) const {
-			return static_cast<int>(255.0 * m_color[2]);
+			return static_cast<int>(max * m_color[2]);
 		}
 
 		constexpr color& operator+=(const color& c) {

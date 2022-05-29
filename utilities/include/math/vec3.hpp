@@ -7,7 +7,8 @@
 #include <random>
 #include <numbers>
 
-#include "float.hpp"
+#include "float.hpp" // for the Float macro
+#include "constexpr.hpp" // for the CMATH_CONSTEXPR macro
 
 #include "color.hpp"
 
@@ -116,7 +117,7 @@ class vec3 {
 			return v / v.length();
 		}
 
-		constexpr Float length() const {
+		CMATH_CONSTEXPR Float length() const {
 			return std::sqrt(length_squared());
 		}
 
@@ -145,7 +146,7 @@ class vec3 {
 #endif
 		}
 
-		constexpr bool nearZero() const {
+		CMATH_CONSTEXPR bool nearZero() const {
 			// Returns true if the vector is close to zero in all dimensions.
 			const Float threshold = 1e-8;
 			return (fabs(m_e[0]) < threshold) && (fabs(m_e[1]) < threshold) && (fabs(m_e[2]) < threshold);
