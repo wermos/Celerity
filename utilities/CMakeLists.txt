@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(utilities VERSION 0.5)
+project(utilities VERSION 0.5.3)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -19,16 +19,22 @@ file(GLOB_RECURSE INCLUDE_DIRS LIST_DIRECTORIES TRUE
 					# ain .hpp files.)
 	)
 
+add_subdirectory(libs/stb)
+
 add_library(utilities ${SOURCES})
 
-#message(STATUS "The value of INCLUDE_DIRS is ${INCLUDE_DIRS}")
+# -Werror
+target_compile_options(utilities PUBLIC
+    $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX /wd4244 /wd4305>
+	$<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra -Wpedantic>
+	$<$<CXX_COMPILER_ID:Clang>:-Weverything> 
+)
+
 target_include_directories(utilities PUBLIC include)
 foreach(DIR ${INCLUDE_DIRS})
-	#message(STATUS "${DIR} was just added to target_include_directories.")
 	target_include_directories(utilities PUBLIC ${DIR})
 endforeach()
 
 target_include_directories(utilities PUBLIC ../shared)
 
-#include the header-only stb library in the search path
-target_include_directories(utilities PUBLIC stb)
+target_link_libraries(utilities PUBLIC stb_image)

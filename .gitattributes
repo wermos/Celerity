@@ -1,2 +1,2 @@
-utilities/stb/** linguist-vendored
+utilities/libs/stb_image_write.h linguist-vendored
 docs/** linguist-documentation
