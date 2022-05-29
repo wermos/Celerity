@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(stb_image VERSION 1.16)
+project(stb_image VERSION 2.27) 
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
