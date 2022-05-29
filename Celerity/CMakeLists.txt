@@ -37,7 +37,7 @@ endforeach()
 
 # -Werror
 target_compile_options(Celerity PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+    $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX /wd4100 /wd4189>
 	$<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra -Wpedantic>
 	$<$<CXX_COMPILER_ID:Clang>:-Weverything> 
 )
