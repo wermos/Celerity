@@ -9,9 +9,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_library(stb_image INTERFACE stb_image_library.hpp)
 
-# -Werror
-target_compile_options(stb_image INTERFACE
-    $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX /wd4996>
-) # TODO: Fix this hack
-
 target_include_directories(stb_image INTERFACE .)

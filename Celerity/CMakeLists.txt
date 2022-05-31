@@ -35,13 +35,6 @@ foreach(DIR ${INCLUDE_DIRS})
 	target_include_directories(Celerity PUBLIC ${DIR})
 endforeach()
 
-# -Werror
-target_compile_options(Celerity PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX /wd4100 /wd4189>
-	$<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra -Wpedantic>
-	$<$<CXX_COMPILER_ID:Clang>:-Weverything> 
-)
-
 target_include_directories(Celerity PUBLIC ../shared)
 
 target_link_libraries(Celerity PUBLIC utilities)

@@ -20,15 +20,9 @@ file(GLOB_RECURSE INCLUDE_DIRS LIST_DIRECTORIES TRUE
 	)
 
 add_subdirectory(libs/stb)
+add_subdirectory(libs/xsimd)
 
 add_library(utilities ${SOURCES})
-
-# -Werror
-target_compile_options(utilities PUBLIC
-    $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX /wd4244 /wd4305>
-	$<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra -Wpedantic>
-	$<$<CXX_COMPILER_ID:Clang>:-Weverything> 
-)
 
 target_include_directories(utilities PUBLIC include)
 foreach(DIR ${INCLUDE_DIRS})
@@ -36,5 +30,7 @@ foreach(DIR ${INCLUDE_DIRS})
 endforeach()
 
 target_include_directories(utilities PUBLIC ../shared)
+target_include_directories(utilities PUBLIC xsimd)
 
+target_link_libraries(utilities PUBLIC xsimd)
 target_link_libraries(utilities PUBLIC stb_image)
