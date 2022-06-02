@@ -1,22 +1,36 @@
 #ifndef VEC3_HPP
 #define VEC3_HPP
 
+/* STL includes */
 #include <cmath>
 #include <limits>
 #include <ostream>
 #include <random>
 #include <numbers>
+#include <type_traits>
 
+/* xsimd includes */
+#include <xsimd/xsimd.hpp>
+
+/* Preprocessor macro file includes */
 #include "float.hpp" // for the Float macro
 #include "constexpr.hpp" // for the CMATH_CONSTEXPR macro
 
+/* color header include */
 #include "color.hpp"
 
-class vec3 {
+// It needs to be aligned<xsimd::sse4_2, Float> on 128-bit boundaries because we are going to load the components into
+// SSE registers for addition and stuff
+class alignas(16) vec3 {
 	public:
 		constexpr vec3() noexcept : m_e{0, 0, 0} {}
 		constexpr vec3(Float e0, Float e1, Float e2) noexcept : m_e{e0, e1, e2} {}
 		constexpr vec3(const color& c) noexcept : m_e{c.raw_r(), c.raw_b(), c.raw_g()} {}
+
+		template <typename T = Float, typename Arch>
+		constexpr vec3(xsimd::batch<T, Arch> reg) noexcept {
+			reg.store_aligned(m_e);
+		}
 
 		constexpr Float x() const {
 			return m_e[0];
@@ -31,7 +45,15 @@ class vec3 {
 		}
 
 		constexpr vec3 operator-() const {
-			return vec3(-m_e[0], -m_e[1], -m_e[2]);
+			if (std::is_constant_evaluated()) {
+				// constexpr branch
+				return {-m_e[0], -m_e[1], -m_e[2]};
+			} else {
+				// runtime branch
+				xsimd::batch<Float, xsimd::sse4_2> op = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(m_e);
+
+				return {xsimd::neg(op)};
+			}
 		}
 
 		constexpr const Float& operator[](int i) const {
@@ -43,23 +65,56 @@ class vec3 {
 		}
 
 		friend constexpr vec3& operator+=(vec3& u, const vec3& v) {
-			u.m_e[0] += v.m_e[0];
-			u.m_e[1] += v.m_e[1];
-			u.m_e[2] += v.m_e[2];
+			if (std::is_constant_evaluated()) {
+				u.m_e[0] += v.m_e[0];
+				u.m_e[1] += v.m_e[1];
+				u.m_e[2] += v.m_e[2];
+			} else {
+				// runtime branch
+				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
+				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+
+				op1 += op2;
+
+				op1.store_aligned(u.m_e);
+			}
+
 			return u;
 		}
 
 		friend constexpr vec3& operator-=(vec3& u, const vec3& v) {
-			u.m_e[0] -= v.m_e[0];
-			u.m_e[1] -= v.m_e[1];
-			u.m_e[2] -= v.m_e[2];
+			if (std::is_constant_evaluated()) {
+				u.m_e[0] -= v.m_e[0];
+				u.m_e[1] -= v.m_e[1];
+				u.m_e[2] -= v.m_e[2];
+			} else {
+				// runtime branch
+				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
+				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+
+				op1 -= op2;
+
+				op1.store_aligned(u.m_e);
+			}
+
 			return u;
 		}
 
 		friend constexpr vec3& operator*=(vec3& v, const Float t) {
-			v.m_e[0] *= t;
-			v.m_e[1] *= t;
-			v.m_e[2] *= t;
+			if (std::is_constant_evaluated()) {
+				v.m_e[0] *= t;
+				v.m_e[1] *= t;
+				v.m_e[2] *= t;
+			} else {
+				// runtime branch
+				xsimd::batch<Float, xsimd::sse4_2> op1(t);
+				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+
+				op1 *= op2;
+
+				op1.store_aligned(v.m_e);
+			}
+
 			return v;
 		}
 
