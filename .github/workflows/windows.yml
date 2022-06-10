@@ -9,8 +9,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        BUILD_TYPE: [ Release, Debug ] #, Profile ]
-        #Removing the Profile build for now because the CMake stuff required for correctly handling that is pretty complex
+        BUILD_TYPE: [ Release, Debug ]
 
     name: Windows (VS 2019) (${{ matrix.BUILD_TYPE }} Build)
     steps:
