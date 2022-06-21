@@ -66,6 +66,7 @@ class alignas(16) vec3 {
 
 		friend constexpr vec3& operator+=(vec3& u, const vec3& v) {
 			if (std::is_constant_evaluated()) {
+				// constexpr branch
 				u.m_e[0] += v.m_e[0];
 				u.m_e[1] += v.m_e[1];
 				u.m_e[2] += v.m_e[2];
@@ -84,6 +85,7 @@ class alignas(16) vec3 {
 
 		friend constexpr vec3& operator-=(vec3& u, const vec3& v) {
 			if (std::is_constant_evaluated()) {
+				// constexpr branch
 				u.m_e[0] -= v.m_e[0];
 				u.m_e[1] -= v.m_e[1];
 				u.m_e[2] -= v.m_e[2];
@@ -102,6 +104,7 @@ class alignas(16) vec3 {
 
 		friend constexpr vec3& operator*=(vec3& v, const Float t) {
 			if (std::is_constant_evaluated()) {
+				// constexpr branch
 				v.m_e[0] *= t;
 				v.m_e[1] *= t;
 				v.m_e[2] *= t;
@@ -157,9 +160,17 @@ class alignas(16) vec3 {
 		}
 
 		constexpr static Float dot(const vec3& u, const vec3& v) {
-			return u.m_e[0] * v.m_e[0]
-				 + u.m_e[1] * v.m_e[1]
-				 + u.m_e[2] * v.m_e[2];
+			if (std::is_constant_evaluated()) {
+				// constexpr branch
+				return u.m_e[0] * v.m_e[0]
+					 + u.m_e[1] * v.m_e[1]
+					 + u.m_e[2] * v.m_e[2];
+			} else {
+				// runtime branch
+				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
+				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+				return xsimd::hadd(op1 * op2);
+			}
 		}
 
 		constexpr static vec3 cross(const vec3& u, const vec3& v) {
@@ -177,7 +188,14 @@ class alignas(16) vec3 {
 		}
 
 		constexpr Float length_squared() const {
-			return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
+			if (std::is_constant_evaluated()) {
+				// constexpr branch
+				return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
+			} else {
+				// runtime branch
+				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(m_e);
+				return xsimd::hadd(op1 * op1);
+			}
 		}
 
 		static vec3 randomInUnitSphere() {
