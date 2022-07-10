@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         gcc-version: [ 11 ] #kept it like this to allow for future additions in the build matrix
-        BUILD_TYPE: [ Release, Debug, Profile ]
+        BUILD_TYPE: [ Release, Debug ]
 
     name: Ubuntu 20.04 (GCC ${{ matrix.gcc-version }}) (${{ matrix.BUILD_TYPE}} Build)
     steps:
