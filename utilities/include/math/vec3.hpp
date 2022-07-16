@@ -179,7 +179,9 @@ class alignas(16) vec3 {
 						u.m_e[0] * v.m_e[1] - u.m_e[1] * v.m_e[0]);
 		}
 
-		constexpr static vec3 unitVector(vec3 v) {
+		CMATH_CONSTEXPR static vec3 unitVector(vec3 v) {
+			// This function needs the CMATH_CONSTEXPR macro because it calls a function which uses a cmath
+			// function under the hood.
 			return v / v.length();
 		}
 
