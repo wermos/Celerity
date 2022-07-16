@@ -9,7 +9,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(THREADS_THREAD_PREFER_PTHREAD_FLAG TRUE)
-find_package(Threads REQUIRED) # TODO: Make this optional
+find_package(Threads REQUIRED)
+
+# xsimd build flags
+# TODO: Remove this stopgap and use proper CMake to compile xsimd.
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_COMPILER_IS_GNUCXX)
+    # this flag only works on Clang and GCC
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+endif()
 
 # add the utilities library
 add_subdirectory(../utilities utilities)
