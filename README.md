@@ -9,6 +9,8 @@ A multi-threaded ray-tracing engine in C++20, written using [this book](https://
   <figcaption>A 1920×1080p scene with 487 spheres, and 500 samples per pixel.</figcaption>
 </figure>
 
+The above picture was rendered on my machine, which has an i5-1135G7 processor with 4 cores (with SMT, so 8 logical cores). It took 36 mins 13 secs to render the image.
+
 # Building the Project
 
 ## Pre-Requisites
@@ -33,5 +35,5 @@ A multi-threaded ray-tracing engine in C++20, written using [this book](https://
 	    cmake --build build -- -j4	# for 4 cores
 	    ```
 3. Run the executable.
-    * The executable will be in `build/Celerity/`. The name of the executable `RayTracer` (Linux) or `RayTracer.exe` (Windows).
+    * The executable will be in `build/Celerity/`. The name of the executable `Celerity` (Linux) or `Celerity.exe` (Windows).
 4. After running, the program saves two images called `pic.jpg` and `pic.png` to the current working directory.
