@@ -1,6 +1,6 @@
 Celerity 
 ====
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![](https://tokei.rs/b1/github/wermos/Celerity)](https://tokei.rs/b1/github/wermos/Celerity) [![Windows](https://github.com/wermos/Celerity/actions/workflows/windows.yml/badge.svg)](https://github.com/wermos/Celerity/actions/workflows/windows.yml) [![Linux](https://github.com/wermos/Celerity/actions/workflows/linux.yml/badge.svg)](https://github.com/wermos/Celerity/actions/workflows/linux.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Windows](https://github.com/wermos/Celerity/actions/workflows/windows.yml/badge.svg)](https://github.com/wermos/Celerity/actions/workflows/windows.yml) [![Linux](https://github.com/wermos/Celerity/actions/workflows/linux.yml/badge.svg)](https://github.com/wermos/Celerity/actions/workflows/linux.yml)
 
 A multi-threaded ray-tracing engine in C++20, written using [this book](https://raytracing.github.io/books/RayTracingInOneWeekend.html) for inspiration and the theory behind the ideas.
 
