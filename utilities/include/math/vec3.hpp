@@ -3,11 +3,12 @@
 
 /* STL includes */
 #include <cmath>
+#include <cstddef> // for the std::size_t type
 #include <limits>
-#include <ostream>
+#include <ostream> // for std::cout
 #include <random>
 #include <numbers>
-#include <type_traits>
+#include <type_traits> // for std::is_constant_evaluated()
 
 /* xsimd includes */
 #include <xsimd/xsimd.hpp>
@@ -32,19 +33,19 @@ class alignas(16) vec3 {
 			reg.store_aligned(m_e);
 		}
 
-		constexpr Float x() const {
+		constexpr Float x() noexcept const {
 			return m_e[0];
 		}
 
-		constexpr Float y() const {
+		constexpr Float y() noexcept const {
 			return m_e[1];
 		}
 
-		constexpr Float z() const {
+		constexpr Float z() noexcept const {
 			return m_e[2];
 		}
 
-		constexpr vec3 operator-() const {
+		constexpr vec3 operator-() noexcept const {
 			if (std::is_constant_evaluated()) {
 				// constexpr branch
 				return {-m_e[0], -m_e[1], -m_e[2]};
@@ -56,15 +57,15 @@ class alignas(16) vec3 {
 			}
 		}
 
-		constexpr const Float& operator[](int i) const {
+		constexpr const Float& operator[](std::size_t i) noexcept const {
 			return m_e[i];
 		}
 
-		constexpr Float& operator[](int i) {
+		constexpr Float& operator[](std::size_t i) noexcept {
 			return m_e[i];
 		}
 
-		friend constexpr vec3& operator+=(vec3& u, const vec3& v) {
+		friend constexpr vec3& operator+=(vec3& u, const vec3& v) noexcept {
 			if (std::is_constant_evaluated()) {
 				// constexpr branch
 				u.m_e[0] += v.m_e[0];
@@ -83,7 +84,7 @@ class alignas(16) vec3 {
 			return u;
 		}
 
-		friend constexpr vec3& operator-=(vec3& u, const vec3& v) {
+		friend constexpr vec3& operator-=(vec3& u, const vec3& v) noexcept {
 			if (std::is_constant_evaluated()) {
 				// constexpr branch
 				u.m_e[0] -= v.m_e[0];
@@ -102,7 +103,7 @@ class alignas(16) vec3 {
 			return u;
 		}
 
-		friend constexpr vec3& operator*=(vec3& v, const Float t) {
+		friend constexpr vec3& operator*=(vec3& v, const Float t) noexcept {
 			if (std::is_constant_evaluated()) {
 				// constexpr branch
 				v.m_e[0] *= t;
@@ -121,15 +122,15 @@ class alignas(16) vec3 {
 			return v;
 		}
 
-		friend constexpr vec3& operator*=(const Float t, vec3& v) {
+		friend constexpr vec3& operator*=(const Float t, vec3& v) noexcept {
 			return v *= t;
 		}
 
-		friend constexpr vec3& operator/=(vec3& v, const Float t) {
+		friend constexpr vec3& operator/=(vec3& v, const Float t) noexcept {
 			return v *= (1 / t);
 		}
 
-		friend constexpr vec3 operator+(const vec3& u, const vec3& v) {
+		friend constexpr vec3 operator+(const vec3& u, const vec3& v) noexcept {
 			vec3 copy = u;
 			copy += v;
 			return copy;
@@ -141,25 +142,25 @@ class alignas(16) vec3 {
 			return copy;
 		}
 
-		friend constexpr vec3 operator*(const vec3& v, const Float t) {
+		friend constexpr vec3 operator*(const vec3& v, const Float t) noexcept {
 			vec3 copy = v;
 			copy *= t;
 			return copy;
 		}
 
-		friend constexpr vec3 operator*(const Float t, const vec3& v) {
+		friend constexpr vec3 operator*(const Float t, const vec3& v) noexcept {
 			vec3 copy = v;
 			copy *= t;
 			return copy;
 		}
 
-		friend constexpr vec3 operator/(const vec3& v, const Float t) {
+		friend constexpr vec3 operator/(const vec3& v, const Float t) noexcept {
 			vec3 copy = v;
 			copy /= t;
 			return copy;
 		}
 
-		constexpr static Float dot(const vec3& u, const vec3& v) {
+		constexpr static Float dot(const vec3& u, const vec3& v) noexcept {
 			if (std::is_constant_evaluated()) {
 				// constexpr branch
 				return u.m_e[0] * v.m_e[0]
@@ -173,23 +174,23 @@ class alignas(16) vec3 {
 			}
 		}
 
-		constexpr static vec3 cross(const vec3& u, const vec3& v) {
+		constexpr static vec3 cross(const vec3& u, const vec3& v) noexcept {
 			return vec3(u.m_e[1] * v.m_e[2] - u.m_e[2] * v.m_e[1],
 						u.m_e[2] * v.m_e[0] - u.m_e[0] * v.m_e[2],
 						u.m_e[0] * v.m_e[1] - u.m_e[1] * v.m_e[0]);
 		}
 
-		CMATH_CONSTEXPR static vec3 unitVector(vec3 v) {
+		CMATH_CONSTEXPR static vec3 unitVector(vec3 v) noexcept {
 			// This function needs the CMATH_CONSTEXPR macro because it calls a function which uses a cmath
 			// function under the hood.
 			return v / v.length();
 		}
 
-		CMATH_CONSTEXPR Float length() const {
+		CMATH_CONSTEXPR Float length() noexcept const {
 			return std::sqrt(length_squared());
 		}
 
-		constexpr Float length_squared() const {
+		constexpr Float length_squared() noexcept const {
 			if (std::is_constant_evaluated()) {
 				// constexpr branch
 				return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
@@ -200,7 +201,7 @@ class alignas(16) vec3 {
 			}
 		}
 
-		static vec3 randomInUnitSphere() {
+		static vec3 randomInUnitSphere() noexcept {
 			// Generate theta and phi for spherical coordinates, and return
 			// the Cartesian coordinates.
 
@@ -221,18 +222,19 @@ class alignas(16) vec3 {
 #endif
 		}
 
-		CMATH_CONSTEXPR bool nearZero() const {
+		CMATH_CONSTEXPR bool nearZero() noexcept const {
 			// Returns true if the vector is close to zero in all dimensions.
 			const Float threshold = 1e-8;
 			return (fabs(m_e[0]) < threshold) && (fabs(m_e[1]) < threshold) && (fabs(m_e[2]) < threshold);
 		}
 
-		constexpr static vec3 reflect(const vec3& v, const vec3& normal) {
+		// TODO: Refactor this stuff: Remove these functions from the vec3 class and move them some place else.
+		constexpr static vec3 reflect(const vec3& v, const vec3& normal) noexcept {
 			return v - 2 * dot(v, normal) * normal;
 		}
 
 		constexpr static vec3 refract(
-			const vec3& incidentRay, const vec3& normal, Float refractiveIndexRatio) {
+			const vec3& incidentRay, const vec3& normal, Float refractiveIndexRatio) noexcept {
 			Float cosTheta = dot(-incidentRay, normal);
 
 			vec3 perpendicularComponent = refractiveIndexRatio * (incidentRay + cosTheta * normal);
@@ -240,7 +242,7 @@ class alignas(16) vec3 {
 			return perpendicularComponent + parallelComponent;
 		}
 
-		static vec3 randomInUnitDisk() {
+		static vec3 randomInUnitDisk() noexcept {
 			while (true) {
 				auto p = vec3(randomFloat(-1, 1), randomFloat(-1, 1), 0);
 				if (p.length_squared() >= 1) {
