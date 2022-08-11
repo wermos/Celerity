@@ -26,26 +26,35 @@ class alignas(16) vec3 {
 	public:
 		constexpr vec3() noexcept : m_e{0, 0, 0} {}
 		constexpr vec3(Float e0, Float e1, Float e2) noexcept : m_e{e0, e1, e2} {}
-		constexpr vec3(const color& c) noexcept : m_e{c.raw_r(), c.raw_b(), c.raw_g()} {}
 
 		template <typename T = Float, typename Arch>
 		constexpr vec3(xsimd::batch<T, Arch> reg) noexcept {
 			reg.store_aligned(m_e);
 		}
 
-		constexpr Float x() noexcept const {
+		/* getter functions */
+		constexpr Float x() const noexcept {
 			return m_e[0];
 		}
 
-		constexpr Float y() noexcept const {
+		constexpr Float y() const noexcept {
 			return m_e[1];
 		}
 
-		constexpr Float z() noexcept const {
+		constexpr Float z() const noexcept {
 			return m_e[2];
 		}
 
-		constexpr vec3 operator-() noexcept const {
+		constexpr const Float& operator[](std::size_t i) const noexcept {
+			return m_e[i];
+		}
+
+		constexpr Float& operator[](std::size_t i) noexcept {
+			return m_e[i];
+		}
+
+		/* unary negation operator */
+		constexpr vec3 operator-() const noexcept {
 			if (std::is_constant_evaluated()) {
 				// constexpr branch
 				return {-m_e[0], -m_e[1], -m_e[2]};
@@ -55,14 +64,6 @@ class alignas(16) vec3 {
 
 				return {xsimd::neg(op)};
 			}
-		}
-
-		constexpr const Float& operator[](std::size_t i) noexcept const {
-			return m_e[i];
-		}
-
-		constexpr Float& operator[](std::size_t i) noexcept {
-			return m_e[i];
 		}
 
 		friend constexpr vec3& operator+=(vec3& u, const vec3& v) noexcept {
@@ -186,11 +187,11 @@ class alignas(16) vec3 {
 			return v / v.length();
 		}
 
-		CMATH_CONSTEXPR Float length() noexcept const {
+		CMATH_CONSTEXPR Float length() const noexcept {
 			return std::sqrt(length_squared());
 		}
 
-		constexpr Float length_squared() noexcept const {
+		constexpr Float length_squared() const noexcept {
 			if (std::is_constant_evaluated()) {
 				// constexpr branch
 				return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
@@ -222,7 +223,7 @@ class alignas(16) vec3 {
 #endif
 		}
 
-		CMATH_CONSTEXPR bool nearZero() noexcept const {
+		CMATH_CONSTEXPR bool nearZero() const noexcept {
 			// Returns true if the vector is close to zero in all dimensions.
 			const Float threshold = 1e-8;
 			return (fabs(m_e[0]) < threshold) && (fabs(m_e[1]) < threshold) && (fabs(m_e[2]) < threshold);
