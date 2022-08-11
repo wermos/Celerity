@@ -11,15 +11,15 @@ class ray {
 		constexpr ray(const point3& origin, const vec3& direction) noexcept
 			: m_origin(origin), m_direction(direction) {}
 
-		constexpr point3 origin() const {
+		constexpr point3 origin() const noexcept {
 			return m_origin;
 		}
 
-		constexpr vec3 direction() const {
+		constexpr vec3 direction() const noexcept {
 			return m_direction;
 		}
 
-		constexpr point3 at(Float t) const {
+		constexpr point3 at(Float t) const noexcept {
 			return m_origin + t * m_direction;
 		}
 
