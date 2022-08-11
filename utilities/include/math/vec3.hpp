@@ -7,7 +7,7 @@
 #include <limits>
 #include <ostream> // for std::cout
 #include <random>
-#include <numbers>
+#include <numbers> // for std::numbers::pi
 #include <type_traits> // for std::is_constant_evaluated()
 
 /* xsimd includes */
@@ -17,19 +17,34 @@
 #include "float.hpp" // for the Float macro
 #include "constexpr.hpp" // for the CMATH_CONSTEXPR macro
 
-/* color header include */
-#include "color.hpp"
-
 // It needs to be aligned<xsimd::sse4_2, Float> on 128-bit boundaries because we are going to load the components into
 // SSE registers for addition and stuff
 class alignas(16) vec3 {
 	public:
-		constexpr vec3() noexcept : m_e{0, 0, 0} {}
-		constexpr vec3(Float e0, Float e1, Float e2) noexcept : m_e{e0, e1, e2} {}
+		constexpr vec3() noexcept {
+			if (std::is_constant_evaluated()) {
+				m_e[0] = 0;
+				m_e[1] = 0;
+				m_e[2] = 0;
+			} else {
+				reg = xsimd::batch<float, xsimd::sse2>();
+			}
+		}
 
-		template <typename T = Float, typename Arch>
-		constexpr vec3(xsimd::batch<T, Arch> reg) noexcept {
-			reg.store_aligned(m_e);
+		constexpr vec3(float x, float y, float z) noexcept {
+			if (std::is_constant_evaluated()) {
+				m_e[0] = x;
+				m_e[1] = y;
+				m_e[2] = z;
+			} else {
+				reg = xsimd::batch<float, xsimd::sse2>{x, y, z};
+			}
+		}
+
+		// it is not possible for this constructor to be called at compile-time
+		// so the `constexpr` keyword is not required.
+		vec3(xsimd::batch<float, xsimd::sse2> data) noexcept {
+			reg = data;
 		}
 
 		/* getter functions */
@@ -60,9 +75,7 @@ class alignas(16) vec3 {
 				return {-m_e[0], -m_e[1], -m_e[2]};
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(m_e);
-
-				return {xsimd::neg(op)};
+				return {xsimd::neg(reg)};
 			}
 		}
 
@@ -74,12 +87,7 @@ class alignas(16) vec3 {
 				u.m_e[2] += v.m_e[2];
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
-				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
-
-				op1 += op2;
-
-				op1.store_aligned(u.m_e);
+				u.reg += v.reg;
 			}
 
 			return u;
@@ -93,12 +101,7 @@ class alignas(16) vec3 {
 				u.m_e[2] -= v.m_e[2];
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
-				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
-
-				op1 -= op2;
-
-				op1.store_aligned(u.m_e);
+				u.reg -= v.reg;
 			}
 
 			return u;
@@ -112,12 +115,9 @@ class alignas(16) vec3 {
 				v.m_e[2] *= t;
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op1(t);
-				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+				xsimd::batch<float, xsimd::sse2> op(t);
 
-				op1 *= op2;
-
-				op1.store_aligned(v.m_e);
+				v.reg *= op;
 			}
 
 			return v;
@@ -137,7 +137,7 @@ class alignas(16) vec3 {
 			return copy;
 		}
 
-		friend constexpr vec3 operator-(const vec3& u, const vec3& v) {
+		friend constexpr vec3 operator-(const vec3& u, const vec3& v) noexcept {
 			vec3 copy = u;
 			copy -= v;
 			return copy;
@@ -169,16 +169,15 @@ class alignas(16) vec3 {
 					 + u.m_e[2] * v.m_e[2];
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
-				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
-				return xsimd::hadd(op1 * op2);
+				return xsimd::hadd(u.reg * v.reg);
 			}
 		}
 
 		constexpr static vec3 cross(const vec3& u, const vec3& v) noexcept {
-			return vec3(u.m_e[1] * v.m_e[2] - u.m_e[2] * v.m_e[1],
-						u.m_e[2] * v.m_e[0] - u.m_e[0] * v.m_e[2],
-						u.m_e[0] * v.m_e[1] - u.m_e[1] * v.m_e[0]);
+			// TODO: Write SIMD version of cross product
+			return {u.m_e[1] * v.m_e[2] - u.m_e[2] * v.m_e[1],
+					u.m_e[2] * v.m_e[0] - u.m_e[0] * v.m_e[2],
+					u.m_e[0] * v.m_e[1] - u.m_e[1] * v.m_e[0]};
 		}
 
 		CMATH_CONSTEXPR static vec3 unitVector(vec3 v) noexcept {
@@ -197,8 +196,7 @@ class alignas(16) vec3 {
 				return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(m_e);
-				return xsimd::hadd(op1 * op1);
+				return xsimd::hadd(reg * reg);
 			}
 		}
 
@@ -260,7 +258,10 @@ class alignas(16) vec3 {
 
 		//TODO: Change name of "unitVector" function to "normalize"
 	private:
-		Float m_e[3];
+		union {
+			float m_e[3];
+			xsimd::batch<float, xsimd::sse2> reg;
+		};
 
 		static Float randomFloat(Float min, Float max) {
 			// Returns a random real in [min, max].
