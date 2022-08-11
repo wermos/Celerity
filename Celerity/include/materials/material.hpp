@@ -4,6 +4,9 @@
 #include "hitRecord.hpp"
 #include "utility.hpp"
 
+#include "ray.hpp"
+#include "color.hpp"
+
 class Material {
 	public:
 		virtual bool scatter(

@@ -27,7 +27,7 @@ class alignas(16) vec3 {
 				m_e[1] = 0;
 				m_e[2] = 0;
 			} else {
-				reg = xsimd::batch<float, xsimd::sse2>();
+				reg = xsimd::batch<float, xsimd::sse2>{0, 0, 0};
 			}
 		}
 
