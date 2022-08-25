@@ -1,3 +1,7 @@
 [submodule "utilities/libs/xsimd"]
 	path = utilities/libs/xsimd
 	url = https://github.com/xtensor-stack/xsimd.git
+	branch = master
+[submodule "shared/libs/googletest"]
+	path = shared/libs/googletest
+	url = https://github.com/google/googletest.git
