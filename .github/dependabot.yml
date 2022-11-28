@@ -11,7 +11,7 @@ updates:
     schedule:
       interval: "daily"
  
-  # Maintain dependencies for Bundler
+  # Maintain dependencies for Git submodules
   - package-ecosystem: "gitsubmodule"
     schedule:
       interval: "weekly"
