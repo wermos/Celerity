@@ -13,5 +13,6 @@ updates:
  
   # Maintain dependencies for Git submodules
   - package-ecosystem: "gitsubmodule"
+    directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
