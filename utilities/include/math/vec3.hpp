@@ -169,7 +169,7 @@ class alignas(16) vec3 {
 				// runtime branch
 				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
 				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
-				return xsimd::hadd(op1 * op2);
+				return xsimd::reduce_add<Float, xsimd::sse4_2>(op1 * op2);
 			}
 		}
 
@@ -196,7 +196,7 @@ class alignas(16) vec3 {
 			} else {
 				// runtime branch
 				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(m_e);
-				return xsimd::hadd(op1 * op1);
+				return xsimd::reduce_add<Float, xsimd::sse4_2>(op1 * op1);
 			}
 		}
 
