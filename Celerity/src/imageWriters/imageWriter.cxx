@@ -1,5 +1,8 @@
 #include "imageWriter.hpp"
 
+// STB Image include
+#include "stb_image_library.hpp"
+
 #include <fstream>
 
 ImageWriter::ImageWriter(const int imageWidth, const int imageHeight)

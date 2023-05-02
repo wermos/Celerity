@@ -5,7 +5,6 @@
 #include <string>
 
 #include "color.hpp"
-#include "stb_image_write.h"
 
 class ImageWriter {
    public:
