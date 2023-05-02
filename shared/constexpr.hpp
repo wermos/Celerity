@@ -1,7 +1,7 @@
 #ifndef CONSTEXPR_HPP
 #define CONSTEXPR_HPP
 
-#include <cstddef> // for the libstdc++ macros (if any)
+#include <cstddef>  // for the libstdc++ macros (if any)
 
 /**
  * In C++20, the functions in the cmath header are not required to be marked
@@ -17,12 +17,12 @@
  * For this reason, if the Standard Library implementation we are using is
  * GNU's, then we mark the functions which use cmath functions in the
  * implmentation as constexpr, and otherwise we don't.
-*/
+ */
 #if defined(__GLIBCXX__) && __GLIBCXX__ >= 20210923L
- 	/* Using GNU GCC libstdc++, so also using its STL implementation */
-	#define CMATH_CONSTEXPR constexpr
+/* Using GNU GCC libstdc++, so also using its STL implementation */
+#define CMATH_CONSTEXPR constexpr
 #else
-	#define CMATH_CONSTEXPR
-#endif // __GLIBCXX__
+#define CMATH_CONSTEXPR
+#endif  // __GLIBCXX__
 
-#endif // CONSTEXPR_HPP
+#endif  // CONSTEXPR_HPP

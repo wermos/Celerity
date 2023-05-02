@@ -8,33 +8,34 @@
 #include "stb_image_write.h"
 
 class ImageWriter {
-	public:
-		ImageWriter(const int imageWidth, const int imageHeight);
+   public:
+    ImageWriter(const int imageWidth, const int imageHeight);
 
-		void writeToImageBuffer(const color c);
+    void writeToImageBuffer(const color c);
 
-		void writeToImageBuffer(int index, const color c);
+    void writeToImageBuffer(int index, const color c);
 
-		// TODO: Explore the stbi_write_png_func and stbi_write_jpg_func functions
-		// which might not require having the entire image in memory while writing
-		// it.
-		void writeToPNGFile(const std::string& filename = "pic.png");
+    // TODO: Explore the stbi_write_png_func and stbi_write_jpg_func functions
+    // which might not require having the entire image in memory while writing
+    // it.
+    void writeToPNGFile(const std::string& filename = "pic.png");
 
-		void writeToJPGFile(const std::string& filename = "pic.jpg");
+    void writeToJPGFile(const std::string& filename = "pic.jpg");
 
-		void writeToPPMFile(const std::string& filename = "pic.ppm");
+    void writeToPPMFile(const std::string& filename = "pic.ppm");
 
-		~ImageWriter();
-	private:
-		// Image File Data
-		const int m_imgComp = 3; // number of channels in the image
-		const int m_imgWidth, m_imgHeight;
-		const int m_strideInBytes;
+    ~ImageWriter();
 
-		// Constant pointer to non-const data
-		uint8_t* const m_imgData;
+   private:
+    // Image File Data
+    const int m_imgComp = 3;  // number of channels in the image
+    const int m_imgWidth, m_imgHeight;
+    const int m_strideInBytes;
 
-		int m_imgDataCounter;
+    // Constant pointer to non-const data
+    uint8_t* const m_imgData;
+
+    int m_imgDataCounter;
 };
 
-#endif // IMAGE_WRITER_HPP
+#endif  // IMAGE_WRITER_HPP

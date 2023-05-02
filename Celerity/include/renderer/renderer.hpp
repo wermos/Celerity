@@ -2,19 +2,19 @@
 #define RENDERER_HPP
 
 // STL includes
-#include <thread> // For std::thread
-#include <atomic> // For std:atomic<T>
-#include <syncstream> // For std::osyncstream
+#include <atomic>      // For std:atomic<T>
+#include <syncstream>  // For std::osyncstream
+#include <thread>      // For std::thread
 
 // Math includes
-#include "vec3.hpp"
 #include "color.hpp"
 #include "ray.hpp"
+#include "vec3.hpp"
 
 // Object-related includes
 #include "hittable.hpp"
-#include "sphere.hpp"
 #include "hittableList.hpp"
+#include "sphere.hpp"
 
 // Material-related includes
 #include "lambertian.hpp"
@@ -30,14 +30,14 @@
 #include "imageWriter.hpp"
 
 namespace Renderer {
-	void singleCoreRender(const int imageWidth, const int imageHeight,
-						  const HittableList& world, const int maxRayDepth,
-						  const Camera& camera, const int samplesPerPixel,
-						  ImageWriter& iw);
-	
-	void multiCoreRender(std::atomic<int>& scanLinesLeft, const int imageWidth,
-						 const int imageHeight, const HittableList& world,
-						 const int maxRayDepth, const Camera& camera, 
-						 const int samplesPerPixel, ImageWriter& iw);
-}
-#endif // RENDERER_HPP
+void singleCoreRender(const int imageWidth, const int imageHeight,
+                      const HittableList& world, const int maxRayDepth,
+                      const Camera& camera, const int samplesPerPixel,
+                      ImageWriter& iw);
+
+void multiCoreRender(std::atomic<int>& scanLinesLeft, const int imageWidth,
+                     const int imageHeight, const HittableList& world,
+                     const int maxRayDepth, const Camera& camera,
+                     const int samplesPerPixel, ImageWriter& iw);
+}  // namespace Renderer
+#endif  // RENDERER_HPP
