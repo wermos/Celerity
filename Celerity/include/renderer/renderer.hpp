@@ -27,18 +27,17 @@
 #include "utility.hpp"
 
 // Image writer includes
-#include "ppmWriter.hpp"
 #include "imageWriter.hpp"
 
 namespace Renderer {
 	void singleCoreRender(const int imageWidth, const int imageHeight,
 						  const HittableList& world, const int maxRayDepth,
 						  const Camera& camera, const int samplesPerPixel,
-						  imageWriter& iw, ppmWriter& pw);
+						  ImageWriter& iw);
 	
 	void multiCoreRender(std::atomic<int>& scanLinesLeft, const int imageWidth,
 						 const int imageHeight, const HittableList& world,
 						 const int maxRayDepth, const Camera& camera, 
-						 const int samplesPerPixel, imageWriter& iw);
+						 const int samplesPerPixel, ImageWriter& iw);
 }
 #endif // RENDERER_HPP

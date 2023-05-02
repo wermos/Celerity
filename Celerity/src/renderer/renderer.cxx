@@ -35,7 +35,7 @@ namespace Renderer {
 	void singleCoreRender(const int imageWidth, const int imageHeight,
 						  const HittableList& world, const int maxRayDepth,
 						  const Camera& camera, const int samplesPerPixel,
-						  imageWriter& iw, ppmWriter& pw) {
+						  ImageWriter& iw) {
 		for (int j = imageHeight - 1; j >= 0; --j) {
 			std::clog << "\rScanlines remaining: " << j << " " << std::flush;
 
@@ -52,9 +52,7 @@ namespace Renderer {
 
 				pixelColor.combine(samplesPerPixel);
 
-				pw.writeToBuffer(pixelColor);
-				iw.writeToPNGBuffer(pixelColor);
-				iw.writeToJPGBuffer(pixelColor);
+				iw.writeToImageBuffer(pixelColor);
 			}
 		}
 	}
@@ -62,7 +60,7 @@ namespace Renderer {
 	void multiCoreRender(std::atomic<int>& scanLinesLeft, const int imageWidth,
 						 const int imageHeight, const HittableList& world,
 						 const int maxRayDepth, const Camera& camera,
-						 const int samplesPerPixel, imageWriter& iw) {
+						 const int samplesPerPixel, ImageWriter& iw) {
 		while (scanLinesLeft >= 0) {
 			int currentImageRow = scanLinesLeft;
 			scanLinesLeft--;
@@ -84,8 +82,7 @@ namespace Renderer {
 
 				pixelColor.combine(samplesPerPixel);
 
-				iw.writeToJPGBuffer(3 * (bufferRow * imageWidth + i), pixelColor);
-				iw.writeToPNGBuffer(3 * (bufferRow * imageWidth + i), pixelColor);
+				iw.writeToImageBuffer(3 * (bufferRow * imageWidth + i), pixelColor);
 			}
 
 		}

@@ -20,7 +20,6 @@
 #include "renderer.hpp"
 
 // Image writer includes
-#include "ppmWriter.hpp"
 #include "imageWriter.hpp"
 
 // STB Image include
@@ -95,17 +94,13 @@ int main() {
 
 		std::clog << "Finished scene initialization.\n";
 
-		//Initialize file writers
-		// TODO: Image writer API doesn't make sense fix it. One class should generate all types
-		// of images.
-		// Making a PPM while using multiple threads is a massive pain and not worth it.
-		// ppmWriter pw(imageWidth, imageHeight);
-		imageWriter iw(imageWidth, imageHeight);
+		// Initialize file writers
+		ImageWriter iw(imageWidth, imageHeight);
 
 		// Thread-related initializations
 		const auto numThreads = std::thread::hardware_concurrency();
 		auto threadPool = new std::thread[numThreads];
-		//This will be modified by multiple threads so it needs to be thread-safe
+		// This will be modified by multiple threads so it needs to be thread-safe
 		std::atomic<int> scanLinesLeft = imageHeight - 1;
 
 		std::clog << "Commencing ray tracing...";
@@ -126,17 +121,8 @@ int main() {
 		std::clog << "\n";
 
 		// Write image file to disk
-		if (iw.writePNG() != 0) {
-			std::cout << "PNG Image generated successfully.\n";
-		} else {
-			std::cout << "An error occurred while generating the PNG image.\n";
-		}
-
-		if (iw.writeJPG() != 0) {
-			std::cout << "JPG Image generated successfully.\n";
-		} else {
-			std::cout << "An error occurred while generating the JPG image.\n";
-		}
+		iw.writeToPNGFile();
+		iw.writeToJPGFile();
 
 		std::clog << "Done.\n";
 }
