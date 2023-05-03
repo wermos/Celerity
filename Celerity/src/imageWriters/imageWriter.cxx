@@ -45,9 +45,9 @@ void ImageWriter::writeToJPGFile(
                                      m_imgComp, m_imgData, 80);
 
     if (returnValue != 0) {
-        std::cout << "PNG Image generated successfully.\n";
+        std::cout << "JPG Image generated successfully.\n";
     } else {
-        std::cout << "An error occurred while generating the PNG image.\n";
+        std::cout << "An error occurred while generating the JPG image.\n";
     }
 }
 
