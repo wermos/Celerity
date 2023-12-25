@@ -13,7 +13,7 @@ jobs:
 
     name: Windows (VS 2019) (${{ matrix.BUILD_TYPE }} Build)
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
   
