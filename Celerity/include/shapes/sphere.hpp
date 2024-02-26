@@ -1,5 +1,4 @@
-#ifndef SPHERE_HPP
-#define SPHERE_HPP
+#pragma once
 
 #include <memory>
 
@@ -28,5 +27,3 @@ class Sphere : public HittableObject {
         Float m_radius;
 		std::shared_ptr<Material> m_material;
 };
-
-#endif // SPHERE_HPP

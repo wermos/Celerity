@@ -1,5 +1,4 @@
-#ifndef MATERIAL_HPP
-#define MATERIAL_HPP
+#pragma once
 
 #include "hitRecord.hpp"
 #include "utility.hpp"
@@ -10,5 +9,3 @@ class Material {
 			const ray& in, const HitRecord& record, color& attenuation, ray& scattered
 		) const = 0;
 };
-
-#endif // MATERIAL_HPP

@@ -1,5 +1,4 @@
-#ifndef DIELECTRIC_HPP
-#define DIELECTRIC_HPP
+#pragma once
 
 #include <cmath>
 
@@ -29,5 +28,3 @@ class Dielectric : public Material {
 			return r_0 + (1 - r_0) * std::pow((1 - cosine), 5);
 		}
 };
-
-#endif // DIELECTRIC_HPP

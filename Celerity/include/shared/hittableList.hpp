@@ -1,5 +1,4 @@
-#ifndef HITTABLE_LIST_HPP
-#define HITTABLE_LIST_HPP
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -26,5 +25,3 @@ class HittableList : public HittableObject {
     private:
         std::vector<std::shared_ptr<HittableObject>> m_objects;
 };
-
-#endif // HITTABLE_LIST_HPP

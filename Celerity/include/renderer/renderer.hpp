@@ -1,5 +1,4 @@
-#ifndef RENDERER_HPP
-#define RENDERER_HPP
+#pragma once
 
 // STL includes
 #include <thread> // For std::thread
@@ -41,4 +40,3 @@ namespace Renderer {
 						 const int maxRayDepth, const Camera& camera, 
 						 const int samplesPerPixel, imageWriter& iw);
 }
-#endif // RENDERER_HPP

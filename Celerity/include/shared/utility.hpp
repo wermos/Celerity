@@ -1,5 +1,4 @@
-#ifndef UTILITY_HPP
-#define UTILITY_HPP
+#pragma once
 
 #include <limits>
 #include <random>
@@ -7,13 +6,10 @@
 
 #include "float.hpp"
 
-
 // Constants
-
 inline constexpr Float infinity = std::numeric_limits<Float>::infinity();
 
 // Utility Functions
-
 inline Float degreesToRadians(Float degrees) {
 	return (degrees * std::numbers::pi) / 180.0;
 }
@@ -41,5 +37,3 @@ inline Float randomDouble(Float min, Float max) {
 
 	return distribution(generator);
 }
-
-#endif // UTILITY_HPP

@@ -1,5 +1,4 @@
-#ifndef LAMBERTIAN_HPP
-#define LAMBERTIAN_HPP
+#pragma once
 
 #include "float.hpp"
 
@@ -20,5 +19,3 @@ class Lambertian : public Material {
 	private:
 		color m_albedo;
 };
-
-#endif // LAMBERTIAN_HPP

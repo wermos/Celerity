@@ -1,5 +1,4 @@
-#ifndef METAL_HPP
-#define METAL_HPP
+#pragma once
 
 #include "float.hpp"
 
@@ -22,5 +21,3 @@ class Metal : public Material {
 		color m_albedo;
 		Float m_fuzz;
 };
-
-#endif // METAL_HPP

@@ -1,5 +1,4 @@
-#ifndef HIT_RECORD_HPP
-#define HIT_RECORD_HPP
+#pragma once
 
 #include <memory>
 
@@ -22,5 +21,3 @@ struct HitRecord {
 		normal = frontFace ? outwardNormal : -outwardNormal;
 	}
 };
-
-#endif // HIT_RECORD_HPP
