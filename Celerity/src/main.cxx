@@ -1,8 +1,9 @@
 // STL includes
-#include <iostream> // For std::clog and std::cout
-#include <thread> // For std::thread
+#include <iostream>   // For std::clog and std::cout
+#include <thread>     // For std::thread
 #include <functional> // For std::ref and std::cref
-#include <atomic> // For std:atomic<T>
+#include <atomic>     // For std:atomic<T>
+#include <cstddef>    // For std::size_t
 
 // Camera includes
 #include "camera.hpp"
