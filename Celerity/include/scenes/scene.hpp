@@ -4,4 +4,6 @@
 
 namespace Scene {
     HittableList randomScene();
+
+    HittableList CornellSphere();
 }

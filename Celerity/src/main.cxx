@@ -31,19 +31,21 @@ int main() {
 		constexpr Float aspectRatio = static_cast<Float>(imageWidth) / imageHeight;
 		// constexpr std::size_t imageHeight = static_cast<std::size_t>(imageWidth / aspectRatio);
 		constexpr std::size_t samplesPerPixel = 1;
-		constexpr std::size_t maxRayDepth = 15;
+		constexpr std::size_t maxRayDepth = 10;
 
 		// World
-		auto world = Scene::randomScene();
+		auto world = Scene::CornellSphere();
 
 		// Camera
-		point3 lookFrom(13, 2, 3);
-		point3 lookAt(0, 0, 0);
+		// point3 lookFrom(13, 2, 3);
+		// point3 lookAt(0, 0, 0);
+		point3 lookFrom{0.0, 0.0, 0.0};
+		point3 lookAt{0.0, 0.0, 1.0};
 		vec3 viewUp(0, 1, 0);
-		Float distanceToFocus = 10;
-		Float aperture = 0.1;
+		Float distanceToFocus = 5;
+		Float aperture = 10;
 
-		Camera camera(lookFrom, lookAt, viewUp, 20, aspectRatio, aperture, distanceToFocus);
+		Camera camera(lookFrom, lookAt, viewUp, 30, aspectRatio, aperture, distanceToFocus);
 
 		std::clog << "Finished scene initialization.\n";
 
@@ -51,29 +53,32 @@ int main() {
 		// TODO: Image writer API doesn't make sense fix it. One class should generate all types
 		// of images.
 		// Making a PPM while using multiple threads is a massive pain and not worth it.
-		// ppmWriter pw(imageWidth, imageHeight);
+		ppmWriter pw(imageWidth, imageHeight);
 		imageWriter iw(imageWidth, imageHeight);
 
-		// Thread-related initializations
-		const auto numThreads = std::thread::hardware_concurrency();
-		auto threadPool = new std::thread[numThreads];
-		//This will be modified by multiple threads so it needs to be thread-safe
-		std::atomic<int> scanLinesLeft = imageHeight - 1;
+		// // Thread-related initializations
+		// const auto numThreads = std::thread::hardware_concurrency();
+		// auto threadPool = new std::thread[numThreads];
+		// //This will be modified by multiple threads so it needs to be thread-safe
+		// std::atomic<int> scanLinesLeft = imageHeight - 1;
 
-		std::clog << "Commencing ray tracing...";
-		// Kick off each thread with the Renderer::multiCoreRender() task
-		for (std::size_t i = 0; i < numThreads; ++i) {
-			threadPool[i] = std::thread(Renderer::multiCoreRender, std::ref(scanLinesLeft),
-										imageWidth, imageHeight, std::cref(world), maxRayDepth,
-										std::cref(camera), samplesPerPixel, std::ref(iw));
-		}
+		// std::clog << "Commencing ray tracing...";
+		// // Kick off each thread with the Renderer::multiCoreRender() task
+		// for (std::size_t i = 0; i < numThreads; ++i) {
+		// 	threadPool[i] = std::thread(Renderer::multiCoreRender, std::ref(scanLinesLeft),
+		// 								imageWidth, imageHeight, std::cref(world), maxRayDepth,
+		// 								std::cref(camera), samplesPerPixel, std::ref(iw));
+		// }
 
-		// Wait for all threads to finish their tasks
-		for (std::size_t i = 0; i < numThreads; ++i) {
-			threadPool[i].join();
-		}
+		// // Wait for all threads to finish their tasks
+		// for (std::size_t i = 0; i < numThreads; ++i) {
+		// 	threadPool[i].join();
+		// }
 
-		delete[] threadPool;
+		// delete[] threadPool;
+		Renderer::singleCoreRender(
+			imageWidth, imageHeight, world, maxRayDepth, camera,
+			samplesPerPixel, iw, pw);
 
 		std::clog << "\n";
 

@@ -24,21 +24,24 @@ add_subdirectory(../utilities utilities)
 file(GLOB_RECURSE SOURCES
 	CONFIGURE_DEPENDS
 	src/*.cxx
-	)
+)
 
-	file(GLOB_RECURSE INCLUDE_DIRS LIST_DIRECTORIES TRUE
+file(GLOB_RECURSE INCLUDE_DIRS LIST_DIRECTORIES TRUE
 	CONFIGURE_DEPENDS
 	include/*[^hpp] # The idea is to include all the `files' inside include/ as
 					# well as the directories, but to exclude all the .hpp
 					# files. (The assumption is that the directories only cont-
 					# ain .hpp files.)
-	)
+)
 
 # add the executable
 add_executable(Celerity ${SOURCES})
 
+# message("Sources found ${SOURCES}")
+
 target_include_directories(Celerity PUBLIC include)
 foreach(DIR ${INCLUDE_DIRS})
+	# message("Directory found ${DIR}")
 	target_include_directories(Celerity PUBLIC ${DIR})
 endforeach()
 
