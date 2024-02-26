@@ -4,10 +4,10 @@
 
 #include "float.hpp"
 
-#include "hittable.hpp"
-#include "hitRecord.hpp"
+#include "shared/hittable.hpp"
+#include "shared/hitRecord.hpp"
 
-#include "material.hpp"
+#include "materials/material.hpp"
 
 #include "vec3.hpp"
 #include "ray.hpp"

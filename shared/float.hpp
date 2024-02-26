@@ -1,5 +1,4 @@
-#ifndef FLOAT_HPP
-#define FLOAT_HPP
+#pragma once
 
 /**
  * This little trick is used by PBRT (https://github.com/mmp/pbrt-v3) and
@@ -17,5 +16,3 @@ typedef double Float;
 #else
 typedef float Float;
 #endif // USE_DOUBLE_AS_FLOAT_TYPE
-
-#endif

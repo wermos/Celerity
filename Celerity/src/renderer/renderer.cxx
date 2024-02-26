@@ -1,4 +1,4 @@
-#include "renderer.hpp"
+#include "renderer/renderer.hpp"
 
 namespace Renderer {
 	color rayColor(const ray& r, const HittableList& world, int depth) {

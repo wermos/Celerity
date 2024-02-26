@@ -1,5 +1,4 @@
-#ifndef PPM_WRITER_HPP
-#define PPM_WRITER_HPP
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -34,5 +33,3 @@ class ppmWriter {
 
 		const int m_imageWidth, m_imageHeight;
 };
-
-#endif // PPM_WRITER_HPP

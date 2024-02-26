@@ -1,4 +1,4 @@
-#include "metal.hpp"
+#include "materials/metal.hpp"
 
 #include "vec3.hpp"
 

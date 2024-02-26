@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hittableList.hpp"
+#include "shared/hittableList.hpp"
 
 namespace Scenes {
     HittableList randomScene();

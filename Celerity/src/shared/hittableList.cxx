@@ -1,4 +1,4 @@
-#include "hittableList.hpp"
+#include "shared/hittableList.hpp"
 
 bool HittableList::hit(const ray& r, Float tMin, Float tMax, HitRecord& rec) const {
     HitRecord tempRecord;

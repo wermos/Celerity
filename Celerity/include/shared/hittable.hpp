@@ -2,7 +2,7 @@
 
 #include "float.hpp"
 
-#include "hitRecord.hpp"
+#include "shared/hitRecord.hpp"
 #include "ray.hpp"
 
 class HittableObject {

@@ -1,5 +1,4 @@
-#ifndef CONSTEXPR_HPP
-#define CONSTEXPR_HPP
+#pragma once
 
 #include <cstddef> // for the libstdc++ macros (if any)
 
@@ -24,5 +23,3 @@
 #else
 	#define CMATH_CONSTEXPR
 #endif // __GLIBCXX__
-
-#endif // CONSTEXPR_HPP

@@ -1,10 +1,9 @@
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#pragma once
 
 #include "vec3.hpp"
 #include "ray.hpp"
 
-#include "utility.hpp"
+#include "shared/utility.hpp"
 
 #include <cmath>
 
@@ -51,5 +50,3 @@ class Camera {
 		vec3 u, v, w;
 		Float lensRadius;
 };
-
-#endif // CAMERA_HPP

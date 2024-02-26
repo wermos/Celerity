@@ -11,23 +11,24 @@
 #include "ray.hpp"
 
 // Object-related includes
-#include "hittable.hpp"
-#include "sphere.hpp"
-#include "hittableList.hpp"
+#include "shapes/sphere.hpp"
+
+#include "shared/hittable.hpp"
+#include "shared/hittableList.hpp"
 
 // Material-related includes
-#include "lambertian.hpp"
-#include "metal.hpp"
+#include "materials/lambertian.hpp"
+#include "materials/metal.hpp"
 
 // Camera includes
-#include "camera.hpp"
+#include "camera/camera.hpp"
 
 // Utility includes
-#include "utility.hpp"
+#include "shared/utility.hpp"
 
 // Image writer includes
-#include "ppmWriter.hpp"
-#include "imageWriter.hpp"
+#include "imageWriters/ppmWriter.hpp"
+#include "imageWriters/imageWriter.hpp"
 
 namespace Renderer {
 	void singleCoreRender(const int imageWidth, const int imageHeight,

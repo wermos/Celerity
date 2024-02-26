@@ -6,17 +6,17 @@
 #include <cstddef>    // For std::size_t
 
 // Camera includes
-#include "camera.hpp"
+#include "camera/camera.hpp"
 
 // Scene includes
-#include "scene.hpp"
+#include "scenes/scene.hpp"
 
 // Renderer includes
-#include "renderer.hpp"
+#include "renderer/renderer.hpp"
 
 // Image writer includes
-#include "ppmWriter.hpp"
-#include "imageWriter.hpp"
+#include "imageWriters/ppmWriter.hpp"
+#include "imageWriters/imageWriter.hpp"
 
 // STB Image include
 #include "stb_image_library.hpp"

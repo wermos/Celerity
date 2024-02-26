@@ -1,4 +1,4 @@
-#include "ppmWriter.hpp"
+#include "imageWriters/ppmWriter.hpp"
 
 ppmWriter::ppmWriter(int imageWidth, int imageHeight) : m_imageWidth(imageWidth),
 	m_imageHeight(imageHeight) {

@@ -1,4 +1,4 @@
-#include "dielectric.hpp"
+#include "materials/dielectric.hpp"
 
 #include "vec3.hpp"
 

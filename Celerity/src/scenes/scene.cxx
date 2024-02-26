@@ -1,18 +1,19 @@
 // Object-related includes
-#include "sphere.hpp"
-#include "hittableList.hpp"
+#include "shapes/sphere.hpp"
+
+#include "shared/hittableList.hpp"
 
 // Material-related includes
-#include "lambertian.hpp"
-#include "metal.hpp"
-#include "dielectric.hpp"
+#include "materials/lambertian.hpp"
+#include "materials/metal.hpp"
+#include "materials/dielectric.hpp"
 
 #include "color.hpp"
 #include "vec3.hpp"
 
-#include "utility.hpp"
+#include "shared/utility.hpp"
 
-#include "scene.hpp"
+#include "scenes/scene.hpp"
 
 #include <memory>
 

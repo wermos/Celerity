@@ -4,8 +4,8 @@
 
 #include "float.hpp"
 
-#include "hitRecord.hpp"
-#include "material.hpp"
+#include "shared/hitRecord.hpp"
+#include "materials/material.hpp"
 
 #include "color.hpp"
 

@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "hittable.hpp"
+#include "shared/hittable.hpp"
 
 class HittableList : public HittableObject {
     public:

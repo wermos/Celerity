@@ -1,4 +1,4 @@
-#include "lambertian.hpp"
+#include "materials/lambertian.hpp"
 
 #include "vec3.hpp"
 

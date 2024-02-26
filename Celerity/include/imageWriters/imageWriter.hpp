@@ -1,5 +1,4 @@
-#ifndef IMAGE_WRITER_HPP
-#define IMAGE_WRITER_HPP
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -65,5 +64,3 @@ class imageWriter {
 
 		int m_jpgDataCounter, m_pngDataCounter;
 };
-
-#endif // IMAGE_WRITER_HPP

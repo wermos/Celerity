@@ -1,4 +1,4 @@
-#include "imageWriter.hpp"
+#include "imageWriters/imageWriter.hpp"
 
 imageWriter::imageWriter(const int imageWidth, const int imageHeight) :
 	m_imageWidth(imageWidth), m_imageHeight(imageHeight),
