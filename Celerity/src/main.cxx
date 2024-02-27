@@ -29,7 +29,7 @@ int main() {
 		constexpr std::size_t imageWidth = 480;
 		constexpr std::size_t imageHeight = static_cast<std::size_t>(imageWidth / aspectRatio);
 		constexpr std::size_t samplesPerPixel = 50;
-		constexpr std::size_t maxRayDepth = 20;
+		constexpr std::size_t maxRayDepth = 15;
 
 		// World
 		auto world = Scenes::randomScene();
@@ -73,15 +73,15 @@ int main() {
 
 		// Write image file to disk
 		if (iw.writePNG() != 0) {
-			std::cout << "PNG Image generated successfully.\n";
+			std::clog << "PNG Image generated successfully.\n";
 		} else {
-			std::cout << "An error occurred while generating the PNG image.\n";
+			std::cerr << "An error occurred while generating the PNG image.\n";
 		}
 
 		if (iw.writeJPG() != 0) {
-			std::cout << "JPG Image generated successfully.\n";
+			std::clog << "JPG Image generated successfully.\n";
 		} else {
-			std::cout << "An error occurred while generating the JPG image.\n";
+			std::cerr << "An error occurred while generating the JPG image.\n";
 		}
 
 		std::clog << "Done.\n";
