@@ -4,8 +4,7 @@
 #include "shared/utility.hpp"
 
 class Material {
-	public:
-		virtual bool scatter(
-			const ray& in, const HitRecord& record, color& attenuation, ray& scattered
-		) const = 0;
+   public:
+    virtual bool scatter(const ray& in, const HitRecord& record,
+                         color& attenuation, ray& scattered) const = 0;
 };
