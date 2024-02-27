@@ -54,26 +54,22 @@ int main() {
 
 		// Thread-related initializations
 		const auto numThreads = std::thread::hardware_concurrency();
-		auto threadPool = new std::thread[numThreads];
-		//This will be modified by multiple threads so it needs to be thread-safe
+		auto threadPool = new std::jthread[numThreads];
+		// The variable  will be modified by multiple threads so it needs to be thread-safe
 		std::atomic<int> scanLinesLeft = imageHeight - 1;
 
 		std::clog << "Commencing ray tracing...";
+
 		// Kick off each thread with the Renderer::multiCoreRender() task
 		for (std::size_t i = 0; i < numThreads; ++i) {
-			threadPool[i] = std::thread(Renderer::multiCoreRender, std::ref(scanLinesLeft),
+			threadPool[i] = std::jthread(Renderer::multiCoreRender, std::ref(scanLinesLeft),
 										imageWidth, imageHeight, std::cref(world), maxRayDepth,
 										std::cref(camera), samplesPerPixel, std::ref(iw));
 		}
 
-		// Wait for all threads to finish their tasks
-		for (std::size_t i = 0; i < numThreads; ++i) {
-			threadPool[i].join();
-		}
-
 		delete[] threadPool;
 
-		std::clog << "\n";
+		std::clog << '\n';
 
 		// Write image file to disk
 		if (iw.writePNG() != 0) {
