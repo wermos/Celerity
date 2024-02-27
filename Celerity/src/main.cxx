@@ -28,8 +28,8 @@ int main() {
 		constexpr Float aspectRatio = 16.0 / 9.0;
 		constexpr std::size_t imageWidth = 480;
 		constexpr std::size_t imageHeight = static_cast<std::size_t>(imageWidth / aspectRatio);
-		constexpr std::size_t samplesPerPixel = 500;
-		constexpr std::size_t maxRayDepth = 50;
+		constexpr std::size_t samplesPerPixel = 50;
+		constexpr std::size_t maxRayDepth = 20;
 
 		// World
 		auto world = Scenes::randomScene();
