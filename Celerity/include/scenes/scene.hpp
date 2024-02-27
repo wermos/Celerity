@@ -3,5 +3,5 @@
 #include "shared/hittableList.hpp"
 
 namespace Scenes {
-    HittableList randomScene();
+HittableList randomScene();
 }
