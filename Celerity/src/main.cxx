@@ -14,13 +14,13 @@
 // Renderer includes
 #include "renderer/renderer.hpp"
 
-// Image writer includes
+// Image writer include
 #include "imageWriters/imageWriter.hpp"
-#include "imageWriters/ppmWriter.hpp"
 
 // STB Image include
-#include "float.hpp"
 #include "stb_image_library.hpp"
+
+#include "float.hpp"
 
 int main() {
     // Image
@@ -46,12 +46,8 @@ int main() {
 
     std::clog << "Finished scene initialization.\n";
 
-    // Initialize file writers
-    //  TODO: Image writer API doesn't make sense fix it. One class should
-    //  generate all types of images. Making a PPM while using multiple threads
-    //  is a massive pain and not worth it. ppmWriter pw(imageWidth,
-    //  imageHeight);
-    imageWriter iw(imageWidth, imageHeight);
+    // Initialize file writer
+    ImageWriter iw(imageWidth, imageHeight);
 
     // Thread-related initializations
     const auto numThreads = std::thread::hardware_concurrency();
@@ -75,16 +71,22 @@ int main() {
     std::clog << '\n';
 
     // Write image file to disk
-    if (iw.writePNG() != 0) {
+    if (iw.writePNG() == 0) {
         std::clog << "PNG Image generated successfully.\n";
     } else {
         std::cerr << "An error occurred while generating the PNG image.\n";
     }
 
-    if (iw.writeJPG() != 0) {
+    if (iw.writeJPG() == 0) {
         std::clog << "JPG Image generated successfully.\n";
     } else {
         std::cerr << "An error occurred while generating the JPG image.\n";
+    }
+
+    if (iw.writePPM() == 0) {
+        std::clog << "PPM Image generated successfully.\n";
+    } else {
+        std::cerr << "An error occurred while generating the PPM image.\n";
     }
 
     std::clog << "Done.\n";

@@ -10,16 +10,15 @@
 
 // Image writer includes
 #include "imageWriters/imageWriter.hpp"
-#include "imageWriters/ppmWriter.hpp"
 
 namespace Renderer {
 void singleCoreRender(const int imageWidth, const int imageHeight,
                       const HittableList& world, const int maxRayDepth,
                       const Camera& camera, const int samplesPerPixel,
-                      imageWriter& iw, ppmWriter& pw);
+                      ImageWriter& iw);
 
 void multiCoreRender(std::atomic<int>& scanLinesLeft, const int imageWidth,
                      const int imageHeight, const HittableList& world,
                      const int maxRayDepth, const Camera& camera,
-                     const int samplesPerPixel, imageWriter& iw);
+                     const int samplesPerPixel, ImageWriter& iw);
 }  // namespace Renderer
