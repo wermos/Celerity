@@ -32,7 +32,7 @@ class ImageWriter {
         // TODO: Finish the comment
         int result = stbi_write_png(m_pngFileName.c_str(),
                               static_cast<int>(m_imageWidth),
-                              static_cast<int>(m_imageHeight), m_pngComp,
+                              static_cast<int>(m_imageHeight), m_Comp,
                               m_imgData, m_strideInBytes);
         
         if (result == 0) {
@@ -45,7 +45,7 @@ class ImageWriter {
     int writeJPG() {
         int result = stbi_write_jpg(
             m_jpgFileName.c_str(), static_cast<int>(m_imageWidth),
-            static_cast<int>(m_imageHeight), m_jpgComp, m_imgData, 80);
+            static_cast<int>(m_imageHeight), m_Comp, m_imgData, 80);
         
         if (result == 0) {
             return -1;
@@ -68,17 +68,19 @@ class ImageWriter {
         * <max value of color> tells the viewer how to normalize the color values
         */
 
-        std::ofstream m_file(m_ppmFileName, std::ofstream::out | std::ofstream::trunc);
+        std::ofstream m_file(m_ppmFileName, std::ofstream::out | std::ofstream::binary | std::ofstream::trunc);
 
         if (m_file.good()) {
-            m_file << "P3\n" << m_imageWidth << ' ' << m_imageHeight << "\n255\n";
+            m_file << "P6\n" << m_imageWidth << " " << m_imageHeight << "\n255\n";
 
             for (std::size_t i = 0; i < 3 * m_imageHeight * m_imageWidth; i += 3) {
-                m_file << static_cast<int>(m_imgData[i]) << ' '
-                       << static_cast<int>(m_imgData[i + 1]) << ' '
-                       << static_cast<int>(m_imgData[i + 2]) << ' '
-                       << '\n';
+                m_file << m_imgData[i]
+                       << m_imgData[i + 1]
+                       << m_imgData[i + 2];
             }
+
+            // TODO: Fix this:
+            // m_file.write((const char*)&m_imgData, m_Comp * m_imageWidth * m_imageHeight);
 
             m_file.close();
 
@@ -91,10 +93,8 @@ class ImageWriter {
     ~ImageWriter();
 
    private:
-    // number of channels in the JPG image
-    static constexpr int m_jpgComp = 3;
-    // number of channels in the PNG image
-    static constexpr int m_pngComp = 3;
+    // number of channels in the image
+    static constexpr int m_Comp = 3;
     
     const std::size_t m_imageWidth;
     const std::size_t m_imageHeight;
