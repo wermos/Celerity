@@ -5,7 +5,7 @@
 bool Metal::scatter(const ray& in, const HitRecord& record, color& attenuation,
                     ray& scattered) const {
     vec3 reflected =
-        vec3::reflect(vec3::unitVector(in.direction()), record.normal);
+        vec3::reflect(vec3::normalize(in.direction()), record.normal);
 
     scattered =
         ray(record.point, reflected + m_fuzz * vec3::randomInUnitSphere());

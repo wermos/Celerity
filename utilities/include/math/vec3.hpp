@@ -50,7 +50,7 @@ class alignas(16) vec3 {
 				return {-m_e[0], -m_e[1], -m_e[2]};
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(m_e);
+				auto op = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(m_e);
 
 				return {xsimd::neg(op)};
 			}
@@ -72,8 +72,8 @@ class alignas(16) vec3 {
 				u.m_e[2] += v.m_e[2];
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
-				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+				auto op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
+				auto op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
 
 				op1 += op2;
 
@@ -91,8 +91,8 @@ class alignas(16) vec3 {
 				u.m_e[2] -= v.m_e[2];
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
-				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+				auto op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
+				auto op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
 
 				op1 -= op2;
 
@@ -111,7 +111,7 @@ class alignas(16) vec3 {
 			} else {
 				// runtime branch
 				xsimd::batch<Float, xsimd::sse4_2> op1(t);
-				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+				auto op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
 
 				op1 *= op2;
 
@@ -167,8 +167,9 @@ class alignas(16) vec3 {
 					 + u.m_e[2] * v.m_e[2];
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
-				xsimd::batch<Float, xsimd::sse4_2> op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+				auto op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
+				auto op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+
 				return xsimd::reduce_add<Float, xsimd::sse4_2>(op1 * op2);
 			}
 		}
@@ -179,7 +180,7 @@ class alignas(16) vec3 {
 					u.m_e[0] * v.m_e[1] - u.m_e[1] * v.m_e[0]};
 		}
 
-		CMATH_CONSTEXPR static vec3 unitVector(vec3 v) {
+		CMATH_CONSTEXPR static vec3 normalize(vec3 v) {
 			// This function needs the CMATH_CONSTEXPR macro because it calls a function which uses a cmath
 			// function under the hood.
 			return v / v.length();
@@ -195,7 +196,8 @@ class alignas(16) vec3 {
 				return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(m_e);
+				auto op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(m_e);
+
 				return xsimd::reduce_add<Float, xsimd::sse4_2>(op1 * op1);
 			}
 		}
@@ -237,6 +239,7 @@ class alignas(16) vec3 {
 
 			vec3 perpendicularComponent = refractiveIndexRatio * (incidentRay + cosTheta * normal);
 			vec3 parallelComponent = -sqrt(1.0 - perpendicularComponent.length_squared()) * normal;
+
 			return perpendicularComponent + parallelComponent;
 		}
 
@@ -246,6 +249,7 @@ class alignas(16) vec3 {
 				if (p.length_squared() >= 1) {
 					continue;
 				}
+
 				return p;
 			}
 		}
@@ -255,7 +259,6 @@ class alignas(16) vec3 {
 			return out;
 		}
 
-		//TODO: Change name of "unitVector" function to "normalize"
 	private:
 		Float m_e[3];
 
