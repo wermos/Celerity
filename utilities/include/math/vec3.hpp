@@ -19,7 +19,9 @@
 /* color header include */
 #include "color.hpp"
 
-// It needs to be aligned<xsimd::sse4_2, Float> on 128-bit boundaries because we are going to load the components into
+#include <xmmintrin.h>
+
+// It needs to be aligned on 128-bit boundaries because we are going to load the components into
 // SSE registers for addition and stuff
 class alignas(16) vec3 {
 	public:
@@ -29,7 +31,7 @@ class alignas(16) vec3 {
 
 		template <typename T = Float, typename Arch>
 		constexpr vec3(xsimd::batch<T, Arch> reg) noexcept {
-			reg.store_aligned(m_e);
+			reg.store_unaligned(m_e);
 		}
 
 		constexpr Float x() const {
@@ -159,18 +161,22 @@ class alignas(16) vec3 {
 			return copy;
 		}
 
+		// constexpr static Float dot(const vec3& u, const vec3& v) {
 		constexpr static Float dot(const vec3& u, const vec3& v) {
 			if (std::is_constant_evaluated()) {
-				// constexpr branch
+			// 	// constexpr branch
 				return u.m_e[0] * v.m_e[0]
 					 + u.m_e[1] * v.m_e[1]
 					 + u.m_e[2] * v.m_e[2];
 			} else {
 				// runtime branch
-				auto op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
-				auto op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+				__m128 r1 = _mm_load_ps(u.m_e);
+				__m128 r2 = _mm_load_ps(v.m_e);
 
-				return xsimd::reduce_add(op1 * op2);
+				// __m128 temp = _mm_mul_ps(r1, r2);
+				
+				// return _mm_hadd_ps();
+				return _mm_cvtss_f32(_mm_dp_ps(r1, r2, 0x71));
 			}
 		}
 
@@ -196,9 +202,9 @@ class alignas(16) vec3 {
 				return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
 			} else {
 				// runtime branch
-				auto op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(m_e);
+				__m128 r1 = _mm_load_ps(m_e);
 
-				return xsimd::reduce_add(op1 * op1);
+				return _mm_cvtss_f32(_mm_dp_ps(r1, r1, 0x71));
 			}
 		}
 
@@ -226,7 +232,7 @@ class alignas(16) vec3 {
 		CMATH_CONSTEXPR bool nearZero() const {
 			// Returns true if the vector is close to zero in all dimensions.
 			const Float threshold = 1e-8;
-			return (fabs(m_e[0]) < threshold) && (fabs(m_e[1]) < threshold) && (fabs(m_e[2]) < threshold);
+			return (std::fabs(m_e[0]) < threshold) && (std::fabs(m_e[1]) < threshold) && (std::fabs(m_e[2]) < threshold);
 		}
 
 		constexpr static vec3 reflect(const vec3& v, const vec3& normal) {
