@@ -2,6 +2,8 @@
 
 #include "vec3.hpp"
 
+#include <cmath>
+
 bool Dielectric::scatter(const ray& in, const HitRecord& record,
                          color& attenuation, ray& scattered) const {
     attenuation = color(1.0, 1.0, 1.0);
@@ -10,7 +12,7 @@ bool Dielectric::scatter(const ray& in, const HitRecord& record,
 
     vec3 unitDirection = vec3::normalize(in.direction());
     Float cosTheta = vec3::dot(-unitDirection, record.normal);
-    Float sinTheta = sqrt(1.0 - cosTheta * cosTheta);
+    Float sinTheta = std::sqrt(1.0 - cosTheta * cosTheta);
 
     bool cannotRefract = refractionRatio * sinTheta > 1.0;
     vec3 direction;
