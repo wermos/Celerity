@@ -21,6 +21,7 @@ file(GLOB_RECURSE INCLUDE_DIRS LIST_DIRECTORIES TRUE
 
 add_subdirectory(libs/stb)
 add_subdirectory(libs/xsimd)
+add_subdirectory(libs/spdlog)
 
 add_library(utilities ${SOURCES})
 
@@ -31,6 +32,8 @@ endforeach()
 
 target_include_directories(utilities PUBLIC ../shared)
 target_include_directories(utilities PUBLIC xsimd)
+target_include_directories(utilities PUBLIC spdlog/include)
 
 target_link_libraries(utilities PUBLIC xsimd)
 target_link_libraries(utilities PUBLIC stb_image)
+target_link_libraries(utilities PUBLIC spdlog)
