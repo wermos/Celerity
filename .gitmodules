@@ -4,3 +4,6 @@
 [submodule "utilities/libs/googletest"]
 	path = utilities/libs/googletest
 	url = https://github.com/google/googletest.git
+[submodule "utilities/libs/spdlog"]
+	path = utilities/libs/spdlog
+	url = https://github.com/gabime/spdlog.git
