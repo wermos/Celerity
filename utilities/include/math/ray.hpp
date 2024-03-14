@@ -19,7 +19,7 @@ class ray {
 			return m_direction;
 		}
 
-		constexpr point3 at(Float t) const {
+		constexpr point3 at(float t) const {
 			return m_origin + t * m_direction;
 		}
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "color.hpp"
-#include "float.hpp"
 #include "materials/material.hpp"
 #include "shared/hitRecord.hpp"
 

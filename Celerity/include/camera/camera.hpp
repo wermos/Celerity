@@ -8,8 +8,8 @@
 
 class Camera {
    public:
-    Camera(point3 lookFrom, point3 lookAt, vec3 viewUp, Float vfov,
-           Float aspectRatio, Float aperture, Float focusDistance) {
+    Camera(point3 lookFrom, point3 lookAt, vec3 viewUp, float vfov,
+           float aspectRatio, float aperture, float focusDistance) {
         // vfov = vertical field-of-view, in degrees
         const auto theta = degreesToRadians(vfov);
         const auto h = tan(theta / 2);
@@ -33,7 +33,7 @@ class Camera {
         lensRadius = aperture / 2;
     }
 
-    const ray getRay(Float s, Float t) const {
+    const ray getRay(float s, float t) const {
         vec3 rd = lensRadius * vec3::randomInUnitDisk();
         vec3 offset = u * rd.x() + v * rd.y();
 
@@ -47,5 +47,5 @@ class Camera {
     vec3 m_horizontal;
     vec3 m_vertical;
     vec3 u, v, w;
-    Float lensRadius;
+    float lensRadius;
 };

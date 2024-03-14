@@ -26,7 +26,7 @@
 
 int main() {
     // Image
-    constexpr Float aspectRatio = 16.0 / 9.0;
+    constexpr float aspectRatio = 16.0 / 9.0;
     constexpr std::size_t imageWidth = 480;
     constexpr std::size_t imageHeight =
         static_cast<std::size_t>(imageWidth / aspectRatio);
@@ -40,8 +40,8 @@ int main() {
     constexpr point3 lookFrom(13, 2, 3);
     constexpr point3 lookAt(0, 0, 0);
     constexpr vec3 viewUp(0, 1, 0);
-    constexpr Float distanceToFocus = 10;
-    constexpr Float aperture = 0.1;
+    constexpr float distanceToFocus = 10;
+    constexpr float aperture = 0.1;
 
     const Camera camera(lookFrom, lookAt, viewUp, 20, aspectRatio, aperture,
                   distanceToFocus);

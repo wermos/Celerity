@@ -18,7 +18,7 @@ class HittableList : public HittableObject {
         m_objects.push_back(object);
     }
 
-    virtual bool hit(const ray& r, Float tMin, Float tMax,
+    virtual bool hit(const ray& r, float tMin, float tMax,
                      HitRecord& rec) const override;
 
    private:

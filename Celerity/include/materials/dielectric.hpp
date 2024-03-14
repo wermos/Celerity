@@ -3,22 +3,21 @@
 #include <cmath>
 
 #include "color.hpp"
-#include "float.hpp"
 #include "materials/material.hpp"
 #include "shared/hitRecord.hpp"
 
 class Dielectric : public Material {
    public:
-    constexpr Dielectric(Float refractiveIndex) noexcept
+    constexpr Dielectric(float refractiveIndex) noexcept
         : m_refractiveIndex(refractiveIndex) {}
 
     virtual bool scatter(const ray& in, const HitRecord& rec,
                          color& attenuation, ray& scattered) const override;
 
    private:
-    Float m_refractiveIndex;
+    float m_refractiveIndex;
 
-    static Float reflectance(Float cosine, Float refractiveIndexRatio) {
+    static float reflectance(float cosine, float refractiveIndexRatio) {
         // Use Schlick's approximation for the Fresnel equations for
         // reflectance.
         auto r_0 = (1 - refractiveIndexRatio) / (1 + refractiveIndexRatio);

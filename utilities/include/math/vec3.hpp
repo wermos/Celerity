@@ -9,11 +9,7 @@
 #include <numbers>
 #include <type_traits>
 
-/* xsimd includes */
-#include <xsimd/xsimd.hpp>
-
 /* Preprocessor macro file includes */
-#include "float.hpp" // for the Float macro
 #include "constexpr.hpp" // for the CMATH_CONSTEXPR macro
 
 /* color header include */
@@ -26,23 +22,23 @@
 class alignas(16) vec3 {
 	public:
 		constexpr vec3() noexcept : m_e{0, 0, 0} {}
-		constexpr vec3(Float e0, Float e1, Float e2) noexcept : m_e{e0, e1, e2} {}
+		constexpr vec3(float e0, float e1, float e2) noexcept : m_e{e0, e1, e2} {}
 		constexpr vec3(const color& c) noexcept : m_e{c.raw_r(), c.raw_b(), c.raw_g()} {}
 
-		template <typename T = Float, typename Arch>
+		template <typename T = float, typename Arch>
 		constexpr vec3(xsimd::batch<T, Arch> reg) noexcept {
 			reg.store_unaligned(m_e);
 		}
 
-		constexpr Float x() const {
+		constexpr float x() const {
 			return m_e[0];
 		}
 
-		constexpr Float y() const {
+		constexpr float y() const {
 			return m_e[1];
 		}
 
-		constexpr Float z() const {
+		constexpr float z() const {
 			return m_e[2];
 		}
 
@@ -52,17 +48,17 @@ class alignas(16) vec3 {
 				return {-m_e[0], -m_e[1], -m_e[2]};
 			} else {
 				// runtime branch
-				auto op = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(m_e);
+				auto op = xsimd::batch<float, xsimd::sse4_2>::load_aligned(m_e);
 
 				return {xsimd::neg(op)};
 			}
 		}
 
-		constexpr const Float& operator[](int i) const {
+		constexpr const float& operator[](int i) const {
 			return m_e[i];
 		}
 
-		constexpr Float& operator[](int i) {
+		constexpr float& operator[](int i) {
 			return m_e[i];
 		}
 
@@ -74,8 +70,8 @@ class alignas(16) vec3 {
 				u.m_e[2] += v.m_e[2];
 			} else {
 				// runtime branch
-				auto op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
-				auto op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+				auto op1 = xsimd::batch<float, xsimd::sse4_2>::load_aligned(u.m_e);
+				auto op2 = xsimd::batch<float, xsimd::sse4_2>::load_aligned(v.m_e);
 
 				op1 += op2;
 
@@ -93,8 +89,8 @@ class alignas(16) vec3 {
 				u.m_e[2] -= v.m_e[2];
 			} else {
 				// runtime branch
-				auto op1 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(u.m_e);
-				auto op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+				auto op1 = xsimd::batch<float, xsimd::sse4_2>::load_aligned(u.m_e);
+				auto op2 = xsimd::batch<float, xsimd::sse4_2>::load_aligned(v.m_e);
 
 				op1 -= op2;
 
@@ -104,7 +100,7 @@ class alignas(16) vec3 {
 			return u;
 		}
 
-		friend constexpr vec3& operator*=(vec3& v, const Float t) {
+		friend constexpr vec3& operator*=(vec3& v, const float t) {
 			if (std::is_constant_evaluated()) {
 				// constexpr branch
 				v.m_e[0] *= t;
@@ -112,8 +108,8 @@ class alignas(16) vec3 {
 				v.m_e[2] *= t;
 			} else {
 				// runtime branch
-				xsimd::batch<Float, xsimd::sse4_2> op1(t);
-				auto op2 = xsimd::batch<Float, xsimd::sse4_2>::load_aligned(v.m_e);
+				xsimd::batch<float, xsimd::sse4_2> op1(t);
+				auto op2 = xsimd::batch<float, xsimd::sse4_2>::load_aligned(v.m_e);
 
 				op1 *= op2;
 
@@ -123,11 +119,11 @@ class alignas(16) vec3 {
 			return v;
 		}
 
-		friend constexpr vec3& operator*=(const Float t, vec3& v) {
+		friend constexpr vec3& operator*=(const float t, vec3& v) {
 			return v *= t;
 		}
 
-		friend constexpr vec3& operator/=(vec3& v, const Float t) {
+		friend constexpr vec3& operator/=(vec3& v, const float t) {
 			return v *= (1 / t);
 		}
 
@@ -143,26 +139,26 @@ class alignas(16) vec3 {
 			return copy;
 		}
 
-		friend constexpr vec3 operator*(const vec3& v, const Float t) {
+		friend constexpr vec3 operator*(const vec3& v, const float t) {
 			vec3 copy = v;
 			copy *= t;
 			return copy;
 		}
 
-		friend constexpr vec3 operator*(const Float t, const vec3& v) {
+		friend constexpr vec3 operator*(const float t, const vec3& v) {
 			vec3 copy = v;
 			copy *= t;
 			return copy;
 		}
 
-		friend constexpr vec3 operator/(const vec3& v, const Float t) {
+		friend constexpr vec3 operator/(const vec3& v, const float t) {
 			vec3 copy = v;
 			copy /= t;
 			return copy;
 		}
 
-		// constexpr static Float dot(const vec3& u, const vec3& v) {
-		constexpr static Float dot(const vec3& u, const vec3& v) {
+		// constexpr static float dot(const vec3& u, const vec3& v) {
+		constexpr static float dot(const vec3& u, const vec3& v) {
 			if (std::is_constant_evaluated()) {
 			// 	// constexpr branch
 				return u.m_e[0] * v.m_e[0]
@@ -192,11 +188,11 @@ class alignas(16) vec3 {
 			return v / v.length();
 		}
 
-		CMATH_CONSTEXPR Float length() const {
+		CMATH_CONSTEXPR float length() const {
 			return std::sqrt(length_squared());
 		}
 
-		constexpr Float length_squared() const {
+		constexpr float length_squared() const {
 			if (std::is_constant_evaluated()) {
 				// constexpr branch
 				return m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2];
@@ -219,8 +215,8 @@ class alignas(16) vec3 {
 
 			// Different from the book:
 			// https://raytracing.github.io/books/RayTracingInOneWeekend.html#diffusematerials
-			Float thetaRad = randomFloat(0, 1) * std::numbers::pi;
-			Float phiRad = randomFloat(0, 2) * std::numbers::pi;
+			float thetaRad = randomfloat(0, 1) * std::numbers::pi;
+			float phiRad = randomfloat(0, 2) * std::numbers::pi;
 
 #ifdef USE_DOUBLE_AS_FLOAT_TYPE
 			return {sin(thetaRad) * cos(phiRad), sin(thetaRad) * sin(phiRad), cos(thetaRad)};
@@ -231,7 +227,7 @@ class alignas(16) vec3 {
 
 		CMATH_CONSTEXPR bool nearZero() const {
 			// Returns true if the vector is close to zero in all dimensions.
-			const Float threshold = 1e-8;
+			const float threshold = 1e-8;
 			return (std::fabs(m_e[0]) < threshold) && (std::fabs(m_e[1]) < threshold) && (std::fabs(m_e[2]) < threshold);
 		}
 
@@ -240,8 +236,8 @@ class alignas(16) vec3 {
 		}
 
 		constexpr static vec3 refract(
-			const vec3& incidentRay, const vec3& normal, Float refractiveIndexRatio) {
-			Float cosTheta = dot(-incidentRay, normal);
+			const vec3& incidentRay, const vec3& normal, float refractiveIndexRatio) {
+			float cosTheta = dot(-incidentRay, normal);
 
 			vec3 perpendicularComponent = refractiveIndexRatio * (incidentRay + cosTheta * normal);
 			vec3 parallelComponent = -sqrt(1.0 - perpendicularComponent.length_squared()) * normal;
@@ -251,7 +247,7 @@ class alignas(16) vec3 {
 
 		static vec3 randomInUnitDisk() {
 			while (true) {
-				auto p = vec3(randomFloat(-1, 1), randomFloat(-1, 1), 0);
+				auto p = vec3(randomfloat(-1, 1), randomfloat(-1, 1), 0);
 				if (p.length_squared() >= 1) {
 					continue;
 				}
@@ -266,11 +262,11 @@ class alignas(16) vec3 {
 		}
 
 	private:
-		Float m_e[3];
+		float m_e[3];
 
-		static Float randomFloat(Float min, Float max) {
+		static float randomfloat(float min, float max) {
 			// Returns a random real in [min, max].
-			static std::uniform_real_distribution<Float> distribution(min, std::nextafter(max, std::numeric_limits<Float>::infinity()));
+			static std::uniform_real_distribution<float> distribution(min, std::nextafter(max, std::numeric_limits<float>::infinity()));
 #ifdef USE_DOUBLE_AS_FLOAT_TYPE
 			static std::mt19937_64 generator;
 #else

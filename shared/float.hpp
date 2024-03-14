@@ -12,7 +12,7 @@
  *    given scene.
 */
 #ifdef USE_DOUBLE_AS_FLOAT_TYPE
-typedef double Float;
+typedef double float;
 #else
-typedef float Float;
+typedef float float;
 #endif // USE_DOUBLE_AS_FLOAT_TYPE

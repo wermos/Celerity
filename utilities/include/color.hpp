@@ -4,35 +4,33 @@
 #include <ostream>
 #include <random>
 
-#include "float.hpp"
-
 class color {
 	public:
 		constexpr color(
-			const Float r = 0, const Float g = 0, const Float b = 0) noexcept
+			const float r = 0, const float g = 0, const float b = 0) noexcept
 		: m_color{r, g, b} {}
 
-		constexpr Float raw_r() const {
+		constexpr float raw_r() const {
 			return m_color[0];
 		}
 
-		constexpr Float raw_g() const {
+		constexpr float raw_g() const {
 			return m_color[1];
 		}
 
-		constexpr Float raw_b() const {
+		constexpr float raw_b() const {
 			return m_color[2];
 		}
 
-		constexpr int r(Float max = 255.0) const {
+		constexpr int r(float max = 255.0) const {
 			return static_cast<int>(max * m_color[0]);
 		}
 
-		constexpr int g(Float max = 255.0) const {
+		constexpr int g(float max = 255.0) const {
 			return static_cast<int>(max * m_color[1]);
 		}
 
-		constexpr int b(Float max = 255.0) const {
+		constexpr int b(float max = 255.0) const {
 			return static_cast<int>(max * m_color[2]);
 		}
 
@@ -50,7 +48,7 @@ class color {
 			return *this;
 		}
 
-		constexpr color& operator*=(Float t) {
+		constexpr color& operator*=(float t) {
 			m_color[0] *= t;
 			m_color[1] *= t;
 			m_color[2] *= t;
@@ -73,38 +71,32 @@ class color {
 			return copy;
 		}
 
-		friend constexpr color operator*(Float t, const color& c) {
+		friend constexpr color operator*(float t, const color& c) {
 			color copy = c;
 			copy *= t;
 			return copy;
 		}
 
-		friend constexpr color operator*(const color& c, Float t) {
+		friend constexpr color operator*(const color& c, float t) {
 			color copy = c;
 			copy *= t;
 			return copy;
 		}
 
-		static Float randomFloat() {
+		static float randomFloat() {
 			// Returns a random real number in [-1, 1].
-			static std::uniform_real_distribution<Float> distribution(-1, std::nextafter(1, std::numeric_limits<Float>::infinity()));
-#ifdef USE_DOUBLE_AS_FLOAT_TYPE
-			static std::mt19937_64 generator;
-#else
+			static std::uniform_real_distribution<float> distribution(-1, std::nextafter(1, std::numeric_limits<float>::infinity()));
+
 			static std::mt19937 generator;
-#endif
 
 			return distribution(generator);
 		}
 
-		static Float randomFloat(Float min, Float max) {
+		static float randomFloat(float min, float max) {
 			// Returns a random real number in [min, max].
-			static std::uniform_real_distribution<Float> distribution(min, std::nextafter(max, std::numeric_limits<Float>::infinity()));
-#ifdef USE_DOUBLE_AS_FLOAT_TYPE
-			static std::mt19937_64 generator;
-#else
+			static std::uniform_real_distribution<float> distribution(min, std::nextafter(max, std::numeric_limits<float>::infinity()));
+			
 			static std::mt19937 generator;
-#endif
 
 			return distribution(generator);
 		}
@@ -113,14 +105,14 @@ class color {
 			return {randomFloat(), randomFloat(), randomFloat()};
 		}
 
-		static color random(Float min, Float max) {
+		static color random(float min, float max) {
 			return {randomFloat(min, max), randomFloat(min, max), randomFloat(min, max)};
 		}
 
 	private:
-		Float m_color[3];
+		float m_color[3];
 
-		constexpr Float clamp(Float x, Float min, Float max) {
+		constexpr float clamp(float x, float min, float max) {
 			if (x < min) {
 				return min;
 			}
