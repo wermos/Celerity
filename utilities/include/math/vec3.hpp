@@ -48,10 +48,6 @@ class alignas(16) vec3 {
 				// Negate the data
 				__m128 negData = _mm_xor_ps(data, negZero);
 
-
-				// auto op = xsimd::batch<float, xsimd::sse4_2>::load_aligned(m_e);
-
-				// return {xsimd::neg(op)};
 				return {negData};
 			}
 		}
@@ -75,12 +71,6 @@ class alignas(16) vec3 {
 
 				__m128 op1 = _mm_load_ps(u.m_e);
 				__m128 op2 = _mm_load_ps(v.m_e);
-				// auto op1 = xsimd::batch<float, xsimd::sse4_2>::load_aligned(u.m_e);
-				// auto op2 = xsimd::batch<float, xsimd::sse4_2>::load_aligned(v.m_e);
-
-				// op1 += op2;
-
-				// op1.store_aligned(u.m_e);
 
 				op1 = _mm_add_ps(op1, op2);
 				_mm_store_ps(u.m_e, op1);
@@ -101,12 +91,6 @@ class alignas(16) vec3 {
 
 				__m128 op1 = _mm_load_ps(u.m_e);
 				__m128 op2 = _mm_load_ps(v.m_e);
-				// auto op1 = xsimd::batch<float, xsimd::sse4_2>::load_aligned(u.m_e);
-				// auto op2 = xsimd::batch<float, xsimd::sse4_2>::load_aligned(v.m_e);
-
-				// op1 -= op2;
-
-				// op1.store_aligned(u.m_e);
 
 				op1 = _mm_sub_ps(op1, op2);
 				_mm_store_ps(u.m_e, op1);
@@ -126,12 +110,6 @@ class alignas(16) vec3 {
 
 				__m128 op1 = _mm_set1_ps(t);
 				__m128 op2 = _mm_load_ps(v.m_e);
-				// xsimd::batch<float, xsimd::sse4_2> op1(t);
-				// auto op2 = xsimd::batch<float, xsimd::sse4_2>::load_aligned(v.m_e);
-
-				// op1 *= op2;
-
-				// op1.store_aligned(v.m_e);
 
 				op1 = _mm_mul_ps(op1, op2);
 
@@ -191,9 +169,6 @@ class alignas(16) vec3 {
 				__m128 r1 = _mm_load_ps(u.m_e);
 				__m128 r2 = _mm_load_ps(v.m_e);
 
-				// __m128 temp = _mm_mul_ps(r1, r2);
-				
-				// return _mm_hadd_ps();
 				return _mm_cvtss_f32(_mm_dp_ps(r1, r2, 0x71));
 			}
 		}
