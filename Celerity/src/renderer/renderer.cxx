@@ -48,8 +48,8 @@ void singleCoreRender(const int imageWidth, const int imageHeight,
         for (int i = 0; i < imageWidth; ++i) {
             color pixelColor;
             for (int s = 0; s < samplesPerPixel; ++s) {
-                auto u = (i + randomDouble()) / (imageWidth - 1);
-                auto v = (j + randomDouble()) / (imageHeight - 1);
+                auto u = (i + randomFloat()) / (imageWidth - 1);
+                auto v = (j + randomFloat()) / (imageHeight - 1);
 
                 ray r = camera.getRay(u, v);
 
@@ -79,8 +79,8 @@ void multiCoreRender(std::atomic<int>& scanLinesLeft, const int imageWidth,
         for (int i = 0; i < imageWidth; ++i) {
             color pixelColor;
             for (int s = 0; s < samplesPerPixel; ++s) {
-                auto u = (i + randomDouble()) / (imageWidth - 1);
-                auto v = (currentImageRow + randomDouble()) / (imageHeight - 1);
+                auto u = (i + randomFloat()) / (imageWidth - 1);
+                auto v = (currentImageRow + randomFloat()) / (imageHeight - 1);
 
                 ray r = camera.getRay(u, v);
 

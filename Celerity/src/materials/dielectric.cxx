@@ -18,7 +18,7 @@ bool Dielectric::scatter(const ray& in, const HitRecord& record,
     vec3 direction;
 
     if (cannotRefract ||
-        reflectance(cosTheta, refractionRatio) > randomDouble()) {
+        reflectance(cosTheta, refractionRatio) > randomFloat()) {
         // The idea behind the second condition is that, if the reflectance is r
         // (where 0 <= r <= 1), then we have to reflect the ray 100 * r% of the
         // time. To achieve this, we take a Monte Carlo approach and generate

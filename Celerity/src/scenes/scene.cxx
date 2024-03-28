@@ -23,9 +23,9 @@ HittableList randomScene() {
 
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
-            auto chooseMaterial = randomDouble();
-            point3 center(a + 0.9 * randomDouble(), 0.2,
-                          b + 0.9 * randomDouble());
+            auto chooseMaterial = randomFloat();
+            point3 center(a + 0.9 * randomFloat(), 0.2,
+                          b + 0.9 * randomFloat());
 
             if ((center - point3(4, 0.2, 0)).length() > 0.9) {
                 std::shared_ptr<Material> sphereMaterial;
@@ -39,7 +39,7 @@ HittableList randomScene() {
                 } else if (chooseMaterial < 0.95) {
                     // metal material
                     auto albedo = color::random(0.5, 1);
-                    auto fuzz = randomDouble(0, 0.5);
+                    auto fuzz = randomFloat(0, 0.5);
                     sphereMaterial = std::make_shared<Metal>(albedo, fuzz);
                     world.add(
                         std::make_shared<Sphere>(center, 0.2, sphereMaterial));

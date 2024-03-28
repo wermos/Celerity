@@ -22,8 +22,6 @@
 // spdlog include
 #include "spdlog/spdlog.h"
 
-#include "float.hpp"
-
 int main() {
     // Image
     constexpr float aspectRatio = 16.0 / 9.0;
