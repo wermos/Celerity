@@ -1,7 +1,4 @@
-#ifndef RAY_HPP
-#define RAY_HPP
-
-#include "float.hpp"
+#pragma once
 
 #include "vec3.hpp"
 
@@ -27,5 +24,3 @@ class ray {
 		point3 m_origin;
 		vec3 m_direction;
 };
-
-#endif // RAY_HPP
