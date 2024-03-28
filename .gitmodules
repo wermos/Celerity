@@ -1,6 +1,3 @@
-[submodule "utilities/libs/xsimd"]
-	path = utilities/libs/xsimd
-	url = https://github.com/xtensor-stack/xsimd.git
 [submodule "utilities/libs/googletest"]
 	path = utilities/libs/googletest
 	url = https://github.com/google/googletest.git
