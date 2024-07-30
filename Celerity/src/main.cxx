@@ -22,6 +22,8 @@
 // spdlog include
 #include "spdlog/spdlog.h"
 
+#include "progressReporter.hpp"
+
 int main() {
     // Image
     constexpr float aspectRatio = 16.0 / 9.0;
@@ -58,12 +60,17 @@ int main() {
 
     spdlog::info("Commencing ray tracing...");
 
+    // Create a single ProgressReporter instance
+    ProgressReporter progressReporter(imageHeight);
+    progressReporter.start();
+
     // Kick off each thread with the Renderer::multiCoreRender() task
     for (std::size_t i = 0; i < numThreads; ++i) {
         threadPool[i] =
             std::jthread(Renderer::multiCoreRender, std::ref(scanLinesLeft),
                          imageWidth, imageHeight, std::cref(world), maxRayDepth,
-                         std::cref(camera), samplesPerPixel, std::ref(iw));
+                         std::cref(camera), samplesPerPixel, std::ref(iw),
+                         std::ref(progressReporter));
     }
 
     delete[] threadPool;

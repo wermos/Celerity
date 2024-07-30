@@ -1,4 +1,5 @@
 #include "renderer/renderer.hpp"
+#include "progressReporter.hpp"
 
 #include <iostream>
 #include <syncstream>
@@ -66,15 +67,12 @@ void singleCoreRender(const int imageWidth, const int imageHeight,
 void multiCoreRender(std::atomic<int>& scanLinesLeft, const int imageWidth,
                      const int imageHeight, const HittableList& world,
                      const int maxRayDepth, const Camera& camera,
-                     const int samplesPerPixel, ImageWriter& iw) {
+                     const int samplesPerPixel, ImageWriter& iw,
+                     ProgressReporter& progressReporter) {
     while (scanLinesLeft >= 0) {
         int currentImageRow = scanLinesLeft;
         scanLinesLeft--;
         int bufferRow = imageHeight - currentImageRow - 1;
-
-        std::osyncstream syncedLog(std::clog);  // TODO: Make this optional.
-        syncedLog << "\rScanlines remaining: " << currentImageRow << " "
-                  << std::flush;
 
         for (int i = 0; i < imageWidth; ++i) {
             color pixelColor;
@@ -91,6 +89,9 @@ void multiCoreRender(std::atomic<int>& scanLinesLeft, const int imageWidth,
 
             iw.addPixel(3 * (bufferRow * imageWidth + i), pixelColor);
         }
+
+        progressReporter.scanlineProcessed();
+        progressReporter.update();
     }
 }
 }  // namespace Renderer
